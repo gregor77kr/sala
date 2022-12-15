@@ -7,7 +7,7 @@
 		</layout>
 	</appender>
 
-	<logger name="com.example.demo" level="info" additivity="false">
+	<logger name="net.mwav.sala" level="debug" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 
