@@ -26,17 +26,19 @@ public class CustomerService {
 	public SignUpResponse signUp(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
 		log.debug(signUpRequest.toString());
 
-		Optional<Customer> signedCustomer = customerRepository
+		Optional<Customer> signed = customerRepository
 				.findOneByNameOrEmail(signUpRequest.getName(), signUpRequest.getEmail());
 
-		if (signedCustomer.isPresent()) {
+		if (signed.isPresent()) {
 			throw new DataIntegrityViolationException("이미 가입한 사용자입니다.");
 		}
 
-		Customer signningCustomer = signUpRequest.toCustomer();
-		signningCustomer.digestPassword();
-		customerRepository.save(signningCustomer);
+		Customer customer = signUpRequest.toCustomer();
+		customer.digestPassword();
+		customer.generateCode();
+		customerRepository.save(customer);
 
-		return SignUpResponse.builder().build();
+		SignUpResponse response = SignUpResponse.map(customer);
+		return response;
 	}
 }

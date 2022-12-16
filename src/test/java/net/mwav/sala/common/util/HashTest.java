@@ -1,17 +1,16 @@
-package net.mwav.sala.common;
+package net.mwav.sala.common.util;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
 import lombok.extern.slf4j.Slf4j;
-import net.mwav.sala.common.util.HashUtils;
 
 @Slf4j
 class HashTest {
 
 	@Test
-	void normalTest() throws Exception {
+	void sha256Test() throws Exception {
 		String algorithm = "SHA-256";
 		String password = "sala project key";
 
@@ -23,7 +22,7 @@ class HashTest {
 	}
 
 	@Test
-	void normalSaltTest() throws Exception {
+	void saltTest() throws Exception {
 		String algorithm = "SHA-256";
 		String password = "sala project key";
 		String salt = "430c9f8d549e97971e5a706c0c084e32";
@@ -48,7 +47,7 @@ class HashTest {
 	}
 
 	@Test
-	void otherTest() throws Exception {
+	void md5Test() throws Exception {
 		String algorithm = "MD5";
 		String password = "sala project key";
 

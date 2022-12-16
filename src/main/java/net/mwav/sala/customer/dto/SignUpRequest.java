@@ -4,26 +4,27 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Data;
 import net.mwav.sala.customer.entity.Customer;
 
-@Getter
+@Data
 @Builder
-@ToString
 public class SignUpRequest implements Serializable {
 
 	private static final long serialVersionUID = 6084375370182024681L;
 
 	@NotBlank
 	@Size(min = 5, max = 25)
+	@Pattern(regexp = "^[a-zA-Z0-9]*$")
 	private String name;
 
-	@NotBlank
-	@Size(min = 8, max = 32)
+	@NotNull
+	@Pattern(regexp = "(?=.*[a-z])(?=.*[@#$%^&+=])(?=\\S+$).{8,32}")
 	private String password;
 
 	@NotBlank

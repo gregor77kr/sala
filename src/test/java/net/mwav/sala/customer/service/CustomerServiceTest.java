@@ -1,0 +1,61 @@
+package net.mwav.sala.customer.service;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.when;
+
+import java.security.NoSuchAlgorithmException;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import net.mwav.sala.customer.dto.SignUpRequest;
+import net.mwav.sala.customer.dto.SignUpResponse;
+import net.mwav.sala.customer.repository.CustomerRepository;
+
+@ExtendWith(MockitoExtension.class)
+class CustomerServiceTest {
+
+	@InjectMocks
+	private CustomerService customerService;
+
+	@Mock
+	private CustomerRepository customerRepository;
+
+	@Test
+	void signUpTest() throws NoSuchAlgorithmException {
+
+		SignUpRequest signUpRequest = SignUpRequest.builder()
+				.name("dummyuser")
+				.fullname("dummy user")
+				.email("admin@mwav.net")
+				.password("password")
+				.build();
+
+		SignUpResponse response = customerService.signUp(signUpRequest);
+		assertEquals(response.getEmail(), signUpRequest.getEmail());
+	}
+
+	@Test()
+	void dupSignUpTest() throws NoSuchAlgorithmException {
+
+		SignUpRequest signUpRequest = SignUpRequest.builder()
+				.name("dummyuser")
+				.fullname("dummy user")
+				.email("admin@mwav.net")
+				.password("password")
+				.build();
+
+		when(customerRepository.findOneByNameOrEmail(signUpRequest.getName(), signUpRequest.getEmail()))
+				.thenThrow(DataIntegrityViolationException.class);
+
+		assertThrows(DataIntegrityViolationException.class, () -> {
+			customerService.signUp(signUpRequest);
+		});
+	}
+
+}

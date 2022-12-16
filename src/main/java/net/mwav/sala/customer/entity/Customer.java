@@ -49,13 +49,13 @@ public class Customer implements Serializable {
 
 	@Builder.Default
 	@Column(name = "is_enabled")
-	private boolean is_enabled = true;
+	private boolean isEnabled = true;
 
 	@Column(name = "authentication_code")
-	private String authentication_code;
+	private String authenticationCode;
 
 	@Column(name = "is_authenticated")
-	private boolean is_authenticated;
+	private boolean isAuthenticated;
 
 	public void digestPassword() throws NoSuchAlgorithmException {
 		this.salt = HashUtils.getSalt();
