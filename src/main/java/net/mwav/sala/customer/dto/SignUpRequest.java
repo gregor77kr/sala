@@ -21,26 +21,26 @@ public class SignUpRequest implements Serializable {
 	@NotBlank
 	@Size(min = 5, max = 25)
 	@Pattern(regexp = "^[a-zA-Z0-9]*$")
-	private String name;
+	private final String name;
 
 	@NotNull
 	@Pattern(regexp = "(?=.*[a-z])(?=.*[@#$%^&+=])(?=\\S+$).{8,32}")
-	private String password;
+	private final String password;
 
 	@NotBlank
 	@Size(min = 1, max = 50)
-	private String fullname;
+	private final String fullname;
 
 	@NotBlank
 	@Email
 	@Size(max = 256)
-	private String email;
+	private final String email;
 
 	public Customer toCustomer() {
 		return Customer.builder(this.name)
-				.password(this.password)
-				.fullname(this.fullname)
-				.email(this.email)
-				.build();
+			.password(this.password)
+			.fullname(this.fullname)
+			.email(this.email)
+			.build();
 	}
 }

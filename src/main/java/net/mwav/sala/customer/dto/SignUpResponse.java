@@ -12,13 +12,13 @@ public class SignUpResponse implements Serializable {
 
 	private static final long serialVersionUID = 3039627668671968715L;
 
-	private Long customerId;
+	private final Long customerId;
 
-	private String email;
+	private final String email;
 
-	private String authenticationCode;
+	private final String authenticationCode;
 
-	private boolean isAuthenticated;
+	private final boolean isAuthenticated;
 
 	public static SignUpResponse map(Customer customer) {
 		return SignUpResponse.builder()

@@ -9,10 +9,10 @@ import lombok.Data;
 @Builder
 public class ExceptionResponse {
 
-	private int code;
+	private final int code;
 
-	private Series type;
+	private final Series type;
 
-	private String detail;
+	private final String detail;
 
 }
