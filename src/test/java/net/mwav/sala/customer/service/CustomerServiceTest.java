@@ -1,6 +1,5 @@
 package net.mwav.sala.customer.service;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import net.mwav.sala.customer.dto.SignUpRequest;
-import net.mwav.sala.customer.dto.SignUpResponse;
 import net.mwav.sala.customer.repository.CustomerRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,20 +23,6 @@ class CustomerServiceTest {
 
 	@Mock
 	private CustomerRepository customerRepository;
-
-	@Test
-	void signUpTest() throws NoSuchAlgorithmException {
-
-		SignUpRequest signUpRequest = SignUpRequest.builder()
-				.name("dummyuser")
-				.fullname("dummy user")
-				.email("admin@mwav.net")
-				.password("password")
-				.build();
-
-		SignUpResponse response = customerService.signUp(signUpRequest);
-		assertEquals(response.getEmail(), signUpRequest.getEmail());
-	}
 
 	@Test()
 	void dupSignUpTest() throws NoSuchAlgorithmException {

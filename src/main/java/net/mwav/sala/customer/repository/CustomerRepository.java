@@ -10,10 +10,6 @@ import net.mwav.sala.customer.entity.Customer;
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
 
-	Optional<Customer> findOneByName(String name);
-
-	Optional<Customer> findOneByEmail(String email);
-
 	Optional<Customer> findOneByNameOrEmail(String name, String email);
-
+	
 }

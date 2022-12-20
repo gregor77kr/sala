@@ -30,7 +30,7 @@ public class Customer implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "customer_id")
-	private Long id;
+	private long id;
 
 	@Column(name = "customer_name")
 	private String name;
@@ -51,19 +51,12 @@ public class Customer implements Serializable {
 	@Column(name = "is_enabled")
 	private boolean isEnabled = true;
 
-	@Column(name = "authentication_code")
-	private String authenticationCode;
-
 	@Column(name = "is_authenticated")
 	private boolean isAuthenticated;
 
 	public void digestPassword() throws NoSuchAlgorithmException {
 		this.salt = HashUtils.getSalt();
 		this.password = HashUtils.digest("SHA-256", this.password + this.salt);
-	}
-
-	public void generateCode() {
-
 	}
 
 	private String getSalt() {

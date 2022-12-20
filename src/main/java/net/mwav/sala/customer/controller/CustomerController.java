@@ -26,10 +26,11 @@ public class CustomerController {
 	private final CustomerService customerService;
 
 	@PostMapping(value = "/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> signUp(@Valid @RequestBody SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
+	public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
 		StandardResponseBody<SignUpResponse> response = StandardResponseBody
-			.success(customerService.signUp(signUpRequest));
+				.success(customerService.signUp(signUpRequest));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
+
 }
