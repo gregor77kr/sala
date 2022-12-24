@@ -1,5 +1,6 @@
 package net.mwav.sala.customer.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -21,25 +22,24 @@ public class CustomerAuthService {
 
 	@Transactional
 	public void sendAuthentication(long customerId) {
-		customerRepository.findById(customerId).orElseThrow();
+		customerRepository.findById(customerId).orElseThrow(NoSuchElementException::new);
 
 		Optional<CustomerAuth> customerAuth = customerAuthRepository.findOneByCustomerId(customerId);
 
-		customerAuth.ifPresentOrElse(c -> {
-			c.setAuthenticationRequest();
-		}, () -> {
+		if (customerAuth.isPresent()) {
+			customerAuth.get().setAuthenticationRequest();
+		} else {
 			CustomerAuth createdCustomerAuth = CustomerAuth.create(customerId);
 			customerAuthRepository.save(createdCustomerAuth);
-		});
+		}
 
 		// TODO : 메일발송
 	}
 
 	public void authenticate(AuthenticationRequest authenticationRequest) {
 		customerAuthRepository
-				.findOneByCustomerIdAndAuthenticationCode(authenticationRequest.getCustomerId(), authenticationRequest
-						.getAuthenticationCode())
-				.orElseThrow();
-
+			.findOneByCustomerIdAndAuthenticationCode(authenticationRequest.getCustomerId(), authenticationRequest
+				.getAuthenticationCode())
+			.orElseThrow(NoSuchElementException::new);
 	}
 }
