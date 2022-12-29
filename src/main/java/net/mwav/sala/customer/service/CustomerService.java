@@ -21,10 +21,10 @@ public class CustomerService {
 
 	@Transactional
 	public SignUpResponse signUp(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
-		Optional<Customer> signed = customerRepository
+		Optional<Customer> optionalCustomer = customerRepository
 				.findOneByNameOrEmail(signUpRequest.getName(), signUpRequest.getEmail());
 
-		signed.ifPresent(c -> {
+		optionalCustomer.ifPresent(c -> {
 			throw new DataIntegrityViolationException("이미 가입한 사용자입니다.");
 		});
 

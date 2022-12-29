@@ -9,7 +9,7 @@ import net.mwav.sala.customer.entity.CustomerAuth;
 
 @Repository
 public interface CustomerAuthRepository extends CrudRepository<CustomerAuth, Long> {
-
+	
 	Optional<CustomerAuth> findOneByCustomerId(long customerId);
 
 	Optional<CustomerAuth> findOneByCustomerIdAndAuthenticationCode(long customerId, String authenticationCode);

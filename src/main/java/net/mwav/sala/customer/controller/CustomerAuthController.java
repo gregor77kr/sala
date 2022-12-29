@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +26,8 @@ public class CustomerAuthController {
 
 	private final CustomerAuthService customerAuthService;
 
-	@PostMapping(value = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> sendAuthentication(@RequestBody Long customerId) {
+	@PostMapping(value = "/authentication/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> sendAuthentication(@PathVariable("customerId") Long customerId) {
 		log.debug("customerId : " + customerId);
 		customerAuthService.sendAuthentication(customerId);
 

@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Builder;
@@ -31,8 +34,9 @@ public class CustomerAuth implements Serializable {
 	@Column(name = "customer_auth_id")
 	private long customerAuthId;
 
-	@Column(name = "customer_id")
-	private long customerId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
 	@Column(name = "authentication_code")
 	private String authenticationCode;
@@ -43,8 +47,8 @@ public class CustomerAuth implements Serializable {
 	@Column(name = "expiry_date")
 	private LocalDateTime expiryDate;
 
-	public static CustomerAuth create(long customerId) {
-		CustomerAuth customerAuth = CustomerAuth.builder(customerId)
+	public static CustomerAuth create(Customer customer) {
+		CustomerAuth customerAuth = CustomerAuth.builder(customer)
 				.authenticationCode(RandomUtils.generateNumber(6))
 				.creationDate(LocalDateTime.now())
 				.expiryDate(LocalDateTime.now().plusDays(1))
@@ -59,7 +63,7 @@ public class CustomerAuth implements Serializable {
 		this.expiryDate = LocalDateTime.now().plusDays(1);
 	}
 
-	public static CustomerAuthBuilder builder(long customerId) {
-		return customerAuthBuilder().customerId(customerId);
+	public static CustomerAuthBuilder builder(Customer customer) {
+		return customerAuthBuilder().customer(customer);
 	}
 }
