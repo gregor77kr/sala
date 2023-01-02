@@ -1,6 +1,7 @@
 package net.mwav.sala.common.util;
 
 import java.util.Random;
+import java.util.UUID;
 
 import lombok.experimental.UtilityClass;
 
@@ -16,5 +17,9 @@ public class RandomUtils {
 		}
 
 		return sb.toString();
+	}
+
+	public String generateUUID() {
+		return UUID.randomUUID().toString();
 	}
 }

@@ -32,10 +32,10 @@ public class Customer implements Serializable {
 	@Column(name = "customer_id")
 	private long id;
 
-	@Column(name = "customer_name")
+	@Column(name = "name")
 	private String name;
 
-	@Column(name = "customer_fullname")
+	@Column(name = "fullname")
 	private String fullname;
 
 	@Column(name = "password")
