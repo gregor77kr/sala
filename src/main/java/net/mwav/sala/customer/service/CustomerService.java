@@ -19,7 +19,7 @@ public class CustomerService {
 
 	private final CustomerRepository customerRepository;
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public SignUpResponse signUp(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
 		Optional<Customer> optionalCustomer = customerRepository
 				.findOneByNameOrEmail(signUpRequest.getName(), signUpRequest.getEmail());

@@ -47,7 +47,7 @@ public class Subscription implements Serializable {
 	@Column(name = "subscription_no")
 	private String no;
 
-	@Column(name = "subscription_status")
+	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private SubscriptionStatus status;
 
