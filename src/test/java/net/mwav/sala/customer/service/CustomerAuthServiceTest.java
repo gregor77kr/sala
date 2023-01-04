@@ -31,8 +31,8 @@ public class CustomerAuthServiceTest {
 	public void sendTest() throws Exception {
 		Customer customer = Customer.builder("dummyuser").id(1).email("admin@mwav.net").build();
 
-		when(customerRepository.findById((long) 1))
-				.thenReturn(Optional.ofNullable(customer));
+		when(customerRepository.findOneById((long) 1))
+				.thenReturn(customer);
 
 		when(customerAuthRepository.findOneByCustomerId(1))
 				.thenReturn(Optional.ofNullable(CustomerAuth.builder(customer).build()));

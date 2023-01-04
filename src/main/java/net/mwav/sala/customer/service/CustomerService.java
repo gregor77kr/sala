@@ -1,7 +1,6 @@
 package net.mwav.sala.customer.service;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -20,13 +19,10 @@ public class CustomerService {
 	private final CustomerRepository customerRepository;
 
 	@Transactional(rollbackFor = Exception.class)
-	public SignUpResponse signUp(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
-		Optional<Customer> optionalCustomer = customerRepository
-				.findOneByNameOrEmail(signUpRequest.getName(), signUpRequest.getEmail());
-
-		optionalCustomer.ifPresent(c -> {
+	public SignUpResponse signUp(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {		
+		if (customerRepository.isSignedUp(signUpRequest)) {
 			throw new DataIntegrityViolationException("이미 가입한 사용자입니다.");
-		});
+		}
 
 		Customer customer = signUpRequest.toCustomer();
 		customer.digestPassword();

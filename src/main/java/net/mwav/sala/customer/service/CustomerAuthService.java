@@ -2,8 +2,6 @@ package net.mwav.sala.customer.service;
 
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +32,7 @@ public class CustomerAuthService {
 
 	@Transactional(rollbackFor = Exception.class)
 	private CustomerAuth setAuthentication(long customerId) {
-		Customer customer = customerRepository.findById(customerId).orElseThrow(EntityNotFoundException::new);
+		Customer customer = customerRepository.findOneById(customerId);
 
 		Optional<CustomerAuth> optionalCustomerAuth = customerAuthRepository.findOneByCustomerId(customer.getId());
 		CustomerAuth customerAuth;
@@ -50,9 +48,6 @@ public class CustomerAuthService {
 	}
 
 	public void authenticate(AuthenticationRequest authenticationRequest) {
-		customerAuthRepository
-				.findOneByCustomerIdAndAuthenticationCode(authenticationRequest.getCustomerId(), authenticationRequest
-						.getAuthenticationCode())
-				.orElseThrow(EntityNotFoundException::new);
+		customerAuthRepository.findOneByAuthentication(authenticationRequest);
 	}
 }

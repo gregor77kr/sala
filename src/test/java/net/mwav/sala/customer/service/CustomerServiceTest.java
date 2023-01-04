@@ -34,7 +34,7 @@ class CustomerServiceTest {
 				.password("password")
 				.build();
 
-		when(customerRepository.findOneByNameOrEmail(signUpRequest.getName(), signUpRequest.getEmail()))
+		when(customerRepository.isSignedUp(signUpRequest))
 				.thenThrow(DataIntegrityViolationException.class);
 
 		assertThrows(DataIntegrityViolationException.class, () -> {

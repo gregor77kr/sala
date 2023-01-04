@@ -48,11 +48,8 @@ public class CustomerAuth implements Serializable {
 	private LocalDateTime expiryDate;
 
 	public static CustomerAuth create(Customer customer) {
-		CustomerAuth customerAuth = CustomerAuth.builder(customer)
-				.authenticationCode(RandomUtils.generateNumber(6))
-				.creationDate(LocalDateTime.now())
-				.expiryDate(LocalDateTime.now().plusDays(1))
-				.build();
+		CustomerAuth customerAuth = CustomerAuth.builder(customer).build();
+		customerAuth.setAuthenticationRequest();
 
 		return customerAuth;
 	}
