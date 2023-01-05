@@ -1,13 +1,21 @@
 package net.mwav.sala.common.dto;
 
+import java.io.Serializable;
+
 import org.springframework.http.HttpStatus.Series;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
 @Builder
-public class ExceptionResponse {
+@Getter
+@ToString
+@EqualsAndHashCode
+public class ExceptionResponse implements Serializable {
+
+	private static final long serialVersionUID = 5623970806823149997L;
 
 	private final int code;
 

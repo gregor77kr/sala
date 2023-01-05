@@ -34,7 +34,7 @@ public class CustomerAuthService {
 	private CustomerAuth setAuthentication(long customerId) {
 		Customer customer = customerRepository.findOneById(customerId);
 
-		Optional<CustomerAuth> optionalCustomerAuth = customerAuthRepository.findOneByCustomerId(customer.getId());
+		Optional<CustomerAuth> optionalCustomerAuth = customerAuthRepository.findByCustomerId(customer.getId());
 		CustomerAuth customerAuth;
 
 		if (optionalCustomerAuth.isPresent()) {

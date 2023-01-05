@@ -13,12 +13,12 @@ import net.mwav.sala.customer.entity.CustomerAuth;
 @Repository
 public interface CustomerAuthRepository extends CrudRepository<CustomerAuth, Long> {
 
-	Optional<CustomerAuth> findOneByCustomerId(long customerId);
+	Optional<CustomerAuth> findByCustomerId(long customerId);
 
-	Optional<CustomerAuth> findOneByCustomerIdAndAuthenticationCode(long customerId, String authenticationCode);
+	Optional<CustomerAuth> findByCustomerIdAndAuthenticationCode(long customerId, String authenticationCode);
 
 	default CustomerAuth findOneByAuthentication(AuthenticationRequest authentication) {
-		return this.findOneByCustomerIdAndAuthenticationCode(authentication.getCustomerId(), authentication
+		return this.findByCustomerIdAndAuthenticationCode(authentication.getCustomerId(), authentication
 				.getAuthenticationCode()).orElseThrow(EntityNotFoundException::new);
 	}
 }

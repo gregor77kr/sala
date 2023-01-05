@@ -34,7 +34,7 @@ public class CustomerAuthServiceTest {
 		when(customerRepository.findOneById((long) 1))
 				.thenReturn(customer);
 
-		when(customerAuthRepository.findOneByCustomerId(1))
+		when(customerAuthRepository.findByCustomerId(1))
 				.thenReturn(Optional.ofNullable(CustomerAuth.builder(customer).build()));
 
 		customerAuthService.sendAuthentication(1);
