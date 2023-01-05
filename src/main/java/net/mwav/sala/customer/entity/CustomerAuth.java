@@ -13,15 +13,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.common.util.RandomUtils;
 
 @Entity
 @Table(name = "customer_auth")
 @Builder(builderMethodName = "customerAuthBuilder")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -45,6 +51,7 @@ public class CustomerAuth implements Serializable {
 	private LocalDateTime creationDate;
 
 	@Column(name = "expiry_date")
+	@Setter
 	private LocalDateTime expiryDate;
 
 	public static CustomerAuth create(Customer customer) {

@@ -3,6 +3,7 @@ package net.mwav.sala.customer.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ public class AuthenticationRequest implements Serializable {
 
 	private static final long serialVersionUID = -8388551690394192571L;
 
-	@NotBlank
+	@NotNull
 	private final long customerId;
 
 	@NotBlank

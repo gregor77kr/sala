@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -39,5 +40,17 @@ public class ExceptionAdvice {
 				.build();
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponseBody.create(error));
+	}
+
+	@ExceptionHandler({ HttpMediaTypeNotSupportedException.class })
+	public ResponseEntity<Object> mediaTypeException(Exception exception) {
+
+		ExceptionResponse error = ExceptionResponse.builder()
+				.code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+				.type(HttpStatus.UNSUPPORTED_MEDIA_TYPE.series())
+				.detail(HttpStatus.UNSUPPORTED_MEDIA_TYPE.getReasonPhrase())
+				.build();
+
+		return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(ExceptionResponseBody.create(error));
 	}
 }

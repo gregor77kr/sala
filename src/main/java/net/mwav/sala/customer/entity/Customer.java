@@ -11,15 +11,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.common.util.HashUtils;
 
 @Entity
 @Table(name = "customer")
 @Builder(builderMethodName = "customerBuilder")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -52,6 +58,7 @@ public class Customer implements Serializable {
 	private boolean isEnabled = true;
 
 	@Column(name = "is_authenticated")
+	@Setter
 	private boolean isAuthenticated;
 
 	public void digestPassword() throws NoSuchAlgorithmException {

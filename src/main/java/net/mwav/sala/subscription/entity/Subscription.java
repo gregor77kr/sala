@@ -15,9 +15,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import net.mwav.sala.common.util.RandomUtils;
 import net.mwav.sala.customer.entity.Customer;
@@ -28,6 +31,8 @@ import net.mwav.sala.subscription.constant.SubscriptionStatus;
 @Entity
 @Table(name = "subscription")
 @Builder(builderMethodName = "subscriptionBuilder")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @ToString
 @EqualsAndHashCode

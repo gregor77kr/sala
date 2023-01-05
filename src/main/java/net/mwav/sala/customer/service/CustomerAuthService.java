@@ -1,5 +1,6 @@
 package net.mwav.sala.customer.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.mwav.sala.common.exception.ExpiryException;
 import net.mwav.sala.customer.dto.AuthenticationRequest;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.customer.entity.CustomerAuth;
@@ -47,7 +49,20 @@ public class CustomerAuthService {
 		return customerAuth;
 	}
 
-	public void authenticate(AuthenticationRequest authenticationRequest) {
-		customerAuthRepository.findOneByAuthentication(authenticationRequest);
+	@Transactional(rollbackFor = Exception.class)
+	public void authenticate(AuthenticationRequest authenticationRequest) throws ExpiryException {
+		CustomerAuth customerAuth = customerAuthRepository.findOneByAuthentication(authenticationRequest);
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime creationDate = customerAuth.getCreationDate();
+		LocalDateTime expiryDate = customerAuth.getExpiryDate();
+
+		if (now.isAfter(expiryDate) || now.isBefore(creationDate)) {
+			throw new ExpiryException();
+		}
+
+		customerAuth.setExpiryDate(now);
+
+		Customer customer = customerAuth.getCustomer();
+		customer.setAuthenticated(true);
 	}
 }

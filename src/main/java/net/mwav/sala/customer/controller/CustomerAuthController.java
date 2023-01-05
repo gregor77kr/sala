@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.common.dto.StandardResponseBody;
+import net.mwav.sala.common.exception.ExpiryException;
 import net.mwav.sala.customer.dto.AuthenticationRequest;
 import net.mwav.sala.customer.service.CustomerAuthService;
 
@@ -36,7 +37,7 @@ public class CustomerAuthController {
 	}
 
 	@PutMapping(value = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) throws ExpiryException {
 		customerAuthService.authenticate(authenticationRequest);
 
 		StandardResponseBody<?> response = StandardResponseBody.success();

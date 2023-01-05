@@ -20,11 +20,11 @@ public class SignUpRequest implements Serializable {
 
 	@NotBlank
 	@Size(min = 5, max = 25)
-	@Pattern(regexp = "^[a-zA-Z0-9]*$")
+	@Pattern(regexp = "^[a-zA-Z0-9]*$", message = "영어 대소문자, 숫자만 사용할 수 있습니다.")
 	private final String name;
 
 	@NotNull
-	@Pattern(regexp = "(?=.*[a-z])(?=.*[@#$%^&+=])(?=\\S+$).{8,32}")
+	@Pattern(regexp = "(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,32}", message = "비밀번호는 8~32자 길이의 영어 소문자, 특수문자, 숫자가 포함된 문자입니다.")
 	private final String password;
 
 	@NotBlank
@@ -38,9 +38,9 @@ public class SignUpRequest implements Serializable {
 
 	public Customer toCustomer() {
 		return Customer.builder(this.name)
-			.password(this.password)
-			.fullname(this.fullname)
-			.email(this.email)
-			.build();
+				.password(this.password)
+				.fullname(this.fullname)
+				.email(this.email)
+				.build();
 	}
 }
