@@ -24,7 +24,7 @@ class CustomerRepositoryTest {
 				.password("password")
 				.build();
 
-		Customer customer = signUpRequest.toCustomer();
+		Customer customer = signUpRequest.toEntity();
 		Customer savedCustomer = customerRepository.save(customer);
 
 		assertEquals(customer, savedCustomer);

@@ -16,7 +16,7 @@ public class SignUpResponse implements Serializable {
 
 	private final boolean isAuthenticated;
 
-	public static SignUpResponse map(Customer customer) {
+	public static SignUpResponse from(Customer customer) {
 		return SignUpResponse.builder()
 				.customerId(customer.getId())
 				.isAuthenticated(customer.isAuthenticated())

@@ -24,11 +24,11 @@ public class CustomerService {
 			throw new DataIntegrityViolationException("이미 가입한 사용자입니다.");
 		}
 
-		Customer customer = signUpRequest.toCustomer();
+		Customer customer = signUpRequest.toEntity();
 		customer.digestPassword();
 		customerRepository.save(customer);
 
-		SignUpResponse response = SignUpResponse.map(customer);
+		SignUpResponse response = SignUpResponse.from(customer);
 		return response;
 	}
 

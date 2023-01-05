@@ -36,7 +36,7 @@ public class SignUpRequest implements Serializable {
 	@Size(max = 256)
 	private final String email;
 
-	public Customer toCustomer() {
+	public Customer toEntity() {
 		return Customer.builder(this.name)
 				.password(this.password)
 				.fullname(this.fullname)
