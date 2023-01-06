@@ -1,8 +1,10 @@
 package net.mwav.sala.common.constant;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum Currency {
 
 	KRW("KRW"),
@@ -12,7 +14,4 @@ public enum Currency {
 
 	private final String currency;
 
-	Currency(String currency) {
-		this.currency = currency;
-	}
 }

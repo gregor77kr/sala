@@ -9,10 +9,12 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.common.dto.ExceptionResponse;
 import net.mwav.sala.common.dto.ExceptionResponseBody;
 
 @RestControllerAdvice
+@Slf4j
 public class ExceptionAdvice {
 
 	@ExceptionHandler({ Exception.class })
@@ -22,6 +24,8 @@ public class ExceptionAdvice {
 				.type(HttpStatus.INTERNAL_SERVER_ERROR.series())
 				.detail(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
 				.build();
+		
+		log.error("exception", exception);
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ExceptionResponseBody.create(error));
 	}

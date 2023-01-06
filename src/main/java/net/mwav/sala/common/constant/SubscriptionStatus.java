@@ -1,5 +1,10 @@
 package net.mwav.sala.common.constant;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum SubscriptionStatus {
 
 	PENDING("PENDING"),
@@ -11,11 +16,4 @@ public enum SubscriptionStatus {
 
 	private final String status;
 
-	private SubscriptionStatus(String status) {
-		this.status = status;
-	}
-
-	public String getStatus() {
-		return this.status;
-	}
 }

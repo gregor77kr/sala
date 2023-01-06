@@ -2,7 +2,6 @@ package net.mwav.sala.customer.entity;
 
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.common.util.HashUtils;
 
 @Entity
@@ -30,7 +28,6 @@ import net.mwav.sala.common.util.HashUtils;
 @Getter
 @ToString
 @EqualsAndHashCode
-@Slf4j
 public class Customer implements Serializable {
 
 	private static final long serialVersionUID = -2326242046269826943L;
@@ -66,29 +63,6 @@ public class Customer implements Serializable {
 	public void digestPassword() throws NoSuchAlgorithmException {
 		this.salt = HashUtils.getSalt();
 		this.password = HashUtils.digest("SHA-256", this.password + this.salt);
-	}
-
-	public boolean matchPassword(String password) throws NoSuchAlgorithmException {
-		log.debug("actual : " + HashUtils.digest("SHA-256", password + this.salt) + ", salt : " + this.salt
-				+ ", expected : " + this.password);
-		return this.password.equals(HashUtils.digest("SHA-256", password + this.salt));
-	}
-
-	private String getSalt() {
-		SecureRandom secureRandom = new SecureRandom();
-		byte[] salt = new byte[16];
-		secureRandom.nextBytes(salt);
-		return toHexString(salt);
-	}
-
-	private String toHexString(byte[] bytes) {
-		StringBuffer sb = new StringBuffer();
-
-		for (byte b : bytes) {
-			sb.append(String.format("%02x", b));
-		}
-
-		return sb.toString();
 	}
 
 	public static CustomerBuilder builder(String name) {
