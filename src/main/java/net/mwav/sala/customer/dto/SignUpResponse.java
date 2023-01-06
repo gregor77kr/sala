@@ -14,12 +14,12 @@ public class SignUpResponse implements Serializable {
 
 	private final long customerId;
 
-	private final boolean isAuthenticated;
+	private final boolean isVerified;
 
 	public static SignUpResponse from(Customer customer) {
 		return SignUpResponse.builder()
 				.customerId(customer.getId())
-				.isAuthenticated(customer.isAuthenticated())
+				.isVerified(customer.isVerified())
 				.build();
 	}
 

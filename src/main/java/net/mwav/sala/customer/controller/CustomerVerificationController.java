@@ -16,29 +16,29 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.common.dto.StandardResponseBody;
 import net.mwav.sala.common.exception.ExpiryException;
-import net.mwav.sala.customer.dto.AuthenticationRequest;
-import net.mwav.sala.customer.service.CustomerAuthService;
+import net.mwav.sala.customer.dto.VerificationRequest;
+import net.mwav.sala.customer.service.CustomerVerificationService;
 
 @RestController
-@RequestMapping(value = "customer")
+@RequestMapping(value = "customers")
 @RequiredArgsConstructor
 @Slf4j
-public class CustomerAuthController {
+public class CustomerVerificationController {
 
-	private final CustomerAuthService customerAuthService;
+	private final CustomerVerificationService customerVerificationService;
 
-	@PostMapping(value = "/authentication/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> sendAuthentication(@PathVariable("customerId") long customerId) {
+	@PostMapping(value = "/verification/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> sendVerification(@PathVariable("customerId") long customerId) {
 		log.debug("customerId : " + customerId);
-		customerAuthService.sendAuthentication(customerId);
+		customerVerificationService.sendVerification(customerId);
 
 		StandardResponseBody<?> response = StandardResponseBody.success();
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
-	@PutMapping(value = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) throws ExpiryException {
-		customerAuthService.authenticate(authenticationRequest);
+	@PutMapping(value = "/verification", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> authenticate(@Valid @RequestBody VerificationRequest verificationRequest) throws ExpiryException {
+		customerVerificationService.verify(verificationRequest);
 
 		StandardResponseBody<?> response = StandardResponseBody.success();
 		return ResponseEntity.status(HttpStatus.OK).body(response);

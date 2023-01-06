@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.customer.entity.CustomerAuth;
+import net.mwav.sala.customer.entity.CustomerVerification;
 
 @DataJpaTest
-public class CustomerAuthRepositoryTest {
+public class CustomerVerificationRepositoryTest {
 
 	@Autowired
 	private CustomerRepository customerRepository;
 
 	@Autowired
-	private CustomerAuthRepository customerAuthRepository;
+	private CustomerVerificationRepository customerVerificationRepository;
 
 	@Test
 	void sendTest() {
@@ -28,13 +28,13 @@ public class CustomerAuthRepositoryTest {
 
 		customer = customerRepository.save(customer);
 
-		CustomerAuth customerAuth1 = CustomerAuth.create(customer);
-		customerAuth1 = customerAuthRepository.save(customerAuth1);
+		CustomerVerification customerVerification1 = CustomerVerification.create(customer);
+		customerVerification1 = customerVerificationRepository.save(customerVerification1);
 
-		CustomerAuth customerAuth2 = CustomerAuth.create(customer);
-		customerAuth2 = customerAuthRepository.save(customerAuth2);
+		CustomerVerification customerVerification2 = CustomerVerification.create(customer);
+		customerVerification2 = customerVerificationRepository.save(customerVerification2);
 
-		assertEquals(customer, customerAuth1.getCustomer());
+		assertEquals(customer, customerVerification1.getCustomer());
 	}
 
 }

@@ -57,9 +57,9 @@ public class Customer implements Serializable {
 	@Column(name = "is_enabled")
 	private boolean isEnabled = true;
 
-	@Column(name = "is_authenticated")
+	@Column(name = "is_verified")
 	@Setter
-	private boolean isAuthenticated;
+	private boolean isVerified;
 
 	public void digestPassword() throws NoSuchAlgorithmException {
 		this.salt = HashUtils.getSalt();

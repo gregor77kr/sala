@@ -22,31 +22,32 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import net.mwav.sala.common.exception.ExpiryException;
 import net.mwav.sala.common.util.RandomUtils;
 
 @Entity
-@Table(name = "customer_auth")
-@Builder(builderMethodName = "customerAuthBuilder")
+@Table(name = "customer_verification")
+@Builder(builderMethodName = "customerVerificationBuilder")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @ToString
 @EqualsAndHashCode
-public class CustomerAuth implements Serializable {
+public class CustomerVerification implements Serializable {
 
 	private static final long serialVersionUID = -2758293565542858708L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "customer_auth_id")
+	@Column(name = "customer_verification_id")
 	private long customerAuthId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	@Column(name = "authentication_code")
-	private String authenticationCode;
+	@Column(name = "verification_code")
+	private String verificationCode;
 
 	@Column(name = "creation_date")
 	private LocalDateTime creationDate;
@@ -54,15 +55,15 @@ public class CustomerAuth implements Serializable {
 	@Column(name = "expiry_date")
 	private LocalDateTime expiryDate;
 
-	public static CustomerAuth create(Customer customer) {
-		CustomerAuth customerAuth = CustomerAuth.builder(customer).build();
+	public static CustomerVerification create(Customer customer) {
+		CustomerVerification customerAuth = CustomerVerification.builder(customer).build();
 		customerAuth.setAuthenticationRequest();
 
 		return customerAuth;
 	}
 
 	public void setAuthenticationRequest() {
-		this.authenticationCode = RandomUtils.generateNumber(6);
+		this.verificationCode = RandomUtils.generateNumber(6);
 		this.creationDate = LocalDateTime.now();
 		this.expiryDate = LocalDateTime.now().plusDays(1);
 	}
@@ -79,7 +80,7 @@ public class CustomerAuth implements Serializable {
 		return true;
 	}
 
-	public CustomerAuth ifValid(Consumer<CustomerAuth> consumer) {
+	public CustomerVerification ifValid(Consumer<CustomerVerification> consumer) {
 		if (this.isValid()) {
 			consumer.accept(this);
 		}
@@ -93,12 +94,14 @@ public class CustomerAuth implements Serializable {
 		}
 	}
 
-	public void authenticate() {
-		this.expiryDate = LocalDateTime.now();
-		this.customer.setAuthenticated(true);
+	public void verify() throws ExpiryException {
+		this.ifValid(c -> {
+			c.expiryDate = LocalDateTime.now();
+			c.customer.setVerified(true);
+		}).orElseThrow(ExpiryException::new);
 	}
 
-	public static CustomerAuthBuilder builder(Customer customer) {
-		return customerAuthBuilder().customer(customer);
+	public static CustomerVerificationBuilder builder(Customer customer) {
+		return customerVerificationBuilder().customer(customer);
 	}
 }

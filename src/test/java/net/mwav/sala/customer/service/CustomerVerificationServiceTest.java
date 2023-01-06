@@ -11,21 +11,21 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.customer.entity.CustomerAuth;
-import net.mwav.sala.customer.repository.CustomerAuthRepository;
+import net.mwav.sala.customer.entity.CustomerVerification;
+import net.mwav.sala.customer.repository.CustomerVerificationRepository;
 import net.mwav.sala.customer.repository.CustomerRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class CustomerAuthServiceTest {
+public class CustomerVerificationServiceTest {
 
 	@InjectMocks
-	private CustomerAuthService customerAuthService;
+	private CustomerVerificationService customerVerificationService;
 
 	@Mock
 	private CustomerRepository customerRepository;
 
 	@Mock
-	private CustomerAuthRepository customerAuthRepository;
+	private CustomerVerificationRepository customerVerificationRepository;
 
 	@Test
 	public void sendTest() throws Exception {
@@ -34,9 +34,9 @@ public class CustomerAuthServiceTest {
 		when(customerRepository.findOneById((long) 1))
 				.thenReturn(customer);
 
-		when(customerAuthRepository.findByCustomerId(1))
-				.thenReturn(Optional.ofNullable(CustomerAuth.builder(customer).build()));
+		when(customerVerificationRepository.findByCustomerId(1))
+				.thenReturn(Optional.ofNullable(CustomerVerification.builder(customer).build()));
 
-		customerAuthService.sendAuthentication(1);
+		customerVerificationService.sendVerification(1);
 	}
 }

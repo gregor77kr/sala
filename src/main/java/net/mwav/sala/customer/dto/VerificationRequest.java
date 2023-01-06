@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AuthenticationRequest implements Serializable {
+public class VerificationRequest implements Serializable {
 
 	private static final long serialVersionUID = -8388551690394192571L;
 
@@ -18,6 +18,6 @@ public class AuthenticationRequest implements Serializable {
 	private final long customerId;
 
 	@NotBlank
-	private final String authenticationCode;
+	private final String verificationCode;
 
 }
