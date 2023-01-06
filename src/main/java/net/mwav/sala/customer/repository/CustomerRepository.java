@@ -17,6 +17,12 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
 		return this.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
+	Optional<Customer> findByName(String name);
+
+	default Customer findOneByName(String name) {
+		return this.findByName(name).orElseThrow(EntityNotFoundException::new);
+	}
+
 	Optional<Customer> findByNameOrEmail(String name, String email);
 
 	default <T extends SignUpRequest> boolean isSignedUp(T customer) {

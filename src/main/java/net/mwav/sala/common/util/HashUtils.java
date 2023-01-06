@@ -34,8 +34,4 @@ public class HashUtils {
 		return sb.toString();
 	}
 
-	public boolean compare(String algorithm, String text, String digested) throws NoSuchAlgorithmException {
-		return digested.equals(digest(algorithm, text));
-	}
-
 }

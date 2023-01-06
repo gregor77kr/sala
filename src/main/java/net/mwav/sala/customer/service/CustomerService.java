@@ -19,6 +19,10 @@ public class CustomerService {
 
 	private final CustomerRepository customerRepository;
 
+	public void signIn() {
+
+	}
+
 	@Transactional(rollbackFor = Exception.class)
 	public SignUpResponse signUp(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
 		if (customerRepository.isSignedUp(signUpRequest)) {

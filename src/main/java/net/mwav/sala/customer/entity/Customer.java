@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.common.util.HashUtils;
 
 @Entity
@@ -29,6 +30,7 @@ import net.mwav.sala.common.util.HashUtils;
 @Getter
 @ToString
 @EqualsAndHashCode
+@Slf4j
 public class Customer implements Serializable {
 
 	private static final long serialVersionUID = -2326242046269826943L;
@@ -64,6 +66,12 @@ public class Customer implements Serializable {
 	public void digestPassword() throws NoSuchAlgorithmException {
 		this.salt = HashUtils.getSalt();
 		this.password = HashUtils.digest("SHA-256", this.password + this.salt);
+	}
+
+	public boolean matchPassword(String password) throws NoSuchAlgorithmException {
+		log.debug("actual : " + HashUtils.digest("SHA-256", password + this.salt) + ", salt : " + this.salt
+				+ ", expected : " + this.password);
+		return this.password.equals(HashUtils.digest("SHA-256", password + this.salt));
 	}
 
 	private String getSalt() {
