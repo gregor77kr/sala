@@ -28,7 +28,7 @@ public class CustomerAuthController {
 	private final CustomerAuthService customerAuthService;
 
 	@PostMapping(value = "/authentication/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> sendAuthentication(@PathVariable("customerId") Long customerId) {
+	public ResponseEntity<?> sendAuthentication(@PathVariable("customerId") long customerId) {
 		log.debug("customerId : " + customerId);
 		customerAuthService.sendAuthentication(customerId);
 
