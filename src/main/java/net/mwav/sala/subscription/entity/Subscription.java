@@ -22,11 +22,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import net.mwav.sala.common.constant.PaymentMethod;
+import net.mwav.sala.common.constant.PaymentPeriod;
+import net.mwav.sala.common.constant.SubscriptionStatus;
 import net.mwav.sala.common.util.RandomUtils;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.subscription.constant.PaymentMethod;
-import net.mwav.sala.subscription.constant.PaymentPeriod;
-import net.mwav.sala.subscription.constant.SubscriptionStatus;
 
 @Entity
 @Table(name = "subscription")
@@ -100,4 +100,5 @@ public class Subscription implements Serializable {
 	public static SubscriptionBuilder builder(Customer customer) {
 		return subscriptionBuilder().customer(customer).no(RandomUtils.generateUUID());
 	}
+	
 }

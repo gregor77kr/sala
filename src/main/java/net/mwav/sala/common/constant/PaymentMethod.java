@@ -1,4 +1,4 @@
-package net.mwav.sala.subscription.constant;
+package net.mwav.sala.common.constant;
 
 public enum PaymentMethod {
 

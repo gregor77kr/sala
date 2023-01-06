@@ -1,4 +1,4 @@
-package net.mwav.sala.customer.constant;
+package net.mwav.sala.common.constant;
 
 import lombok.Getter;
 
