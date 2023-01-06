@@ -2,6 +2,8 @@ package net.mwav.sala.customer.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +21,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.common.util.RandomUtils;
 
@@ -51,7 +52,6 @@ public class CustomerAuth implements Serializable {
 	private LocalDateTime creationDate;
 
 	@Column(name = "expiry_date")
-	@Setter
 	private LocalDateTime expiryDate;
 
 	public static CustomerAuth create(Customer customer) {
@@ -65,6 +65,37 @@ public class CustomerAuth implements Serializable {
 		this.authenticationCode = RandomUtils.generateNumber(6);
 		this.creationDate = LocalDateTime.now();
 		this.expiryDate = LocalDateTime.now().plusDays(1);
+	}
+
+	public boolean isValid() {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime creationDate = this.creationDate;
+		LocalDateTime expiryDate = this.expiryDate;
+
+		if (now.isAfter(expiryDate) || now.isBefore(creationDate)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public CustomerAuth ifValid(Consumer<CustomerAuth> consumer) {
+		if (this.isValid()) {
+			consumer.accept(this);
+		}
+
+		return this;
+	}
+
+	public <X extends Throwable> void orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
+		if (!isValid()) {
+			exceptionSupplier.get();
+		}
+	}
+
+	public void authenticate() {
+		this.expiryDate = LocalDateTime.now();
+		this.customer.setAuthenticated(true);
 	}
 
 	public static CustomerAuthBuilder builder(Customer customer) {
