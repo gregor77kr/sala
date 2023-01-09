@@ -2,6 +2,8 @@ package net.mwav.sala.customer.service;
 
 import java.security.NoSuchAlgorithmException;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,10 @@ public class CustomerService {
 
 	@Transactional(rollbackFor = Exception.class)
 	public SignUpResponse signUp(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
-		if (customerRepository.isSignedUp(signUpRequest)) {
+		boolean isSignedUp = customerRepository.findByNameOrEmail(signUpRequest.getName(), signUpRequest.getEmail())
+				.isPresent();
+
+		if (isSignedUp) {
 			throw new DataIntegrityViolationException("이미 가입한 사용자입니다.");
 		}
 
@@ -38,7 +43,8 @@ public class CustomerService {
 	}
 
 	public ProfileResponse getProfile(long customerId) {
-		Customer customer = customerRepository.findOneById(customerId);
+		Customer customer = customerRepository.findById(customerId).orElseThrow(EntityNotFoundException::new);
+		
 		ProfileResponse response = ProfileResponse.from(customer);
 		return response;
 	}
