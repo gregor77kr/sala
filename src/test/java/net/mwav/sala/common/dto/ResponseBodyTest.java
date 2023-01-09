@@ -17,7 +17,7 @@ class ResponseBodyTest {
 
 	@Test
 	void exceptionResponseBodytest() {
-		ExceptionResponse error = ExceptionResponse.builder()
+		ExceptionDetail error = ExceptionDetail.builder()
 				.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
 				.type(HttpStatus.INTERNAL_SERVER_ERROR.series())
 				.detail(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())

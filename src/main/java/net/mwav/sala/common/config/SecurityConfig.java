@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import net.mwav.sala.authentication.jwt.JwtAccessDeniedHandler;
 import net.mwav.sala.authentication.jwt.JwtAuthenticationEntryPoint;
 import net.mwav.sala.authentication.jwt.JwtFilter;
-import net.mwav.sala.authentication.jwt.TokenProvider;
+import net.mwav.sala.authentication.jwt.JwtTokenProvider;
 import net.mwav.sala.authentication.service.NoPasswordEncoder;
 
 @EnableWebSecurity
@@ -23,7 +23,7 @@ import net.mwav.sala.authentication.service.NoPasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final TokenProvider tokenProvider;
+	private final JwtTokenProvider tokenProvider;
 
 	private final CorsFilter corsFilter;
 

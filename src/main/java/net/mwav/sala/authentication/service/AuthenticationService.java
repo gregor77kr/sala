@@ -11,14 +11,14 @@ import lombok.RequiredArgsConstructor;
 import net.mwav.sala.authentication.dto.AuthenticationRequest;
 import net.mwav.sala.authentication.dto.AuthenticationResponse;
 import net.mwav.sala.authentication.dto.CustomerDetails;
-import net.mwav.sala.authentication.jwt.TokenProvider;
+import net.mwav.sala.authentication.jwt.JwtTokenProvider;
 import net.mwav.sala.common.util.HashUtils;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-	private final TokenProvider tokenProvider;
+	private final JwtTokenProvider tokenProvider;
 
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 

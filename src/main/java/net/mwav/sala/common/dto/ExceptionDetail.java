@@ -13,7 +13,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class ExceptionResponse implements Serializable {
+public class ExceptionDetail implements Serializable {
 
 	private static final long serialVersionUID = 5623970806823149997L;
 
