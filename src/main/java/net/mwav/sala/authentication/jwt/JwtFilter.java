@@ -20,14 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtFilter extends GenericFilterBean {
 
-	private static final String header = "Authorization";
-
 	private final JwtTokenProvider jwtTokenProvider;
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-		String jwt = resolveToken(httpServletRequest);
+		String jwt = jwtTokenProvider.resolveToken(httpServletRequest);
 		String requestURI = httpServletRequest.getRequestURI();
 
 		if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
@@ -41,12 +39,4 @@ public class JwtFilter extends GenericFilterBean {
 		filterChain.doFilter(servletRequest, servletResponse);
 	}
 
-	private String resolveToken(HttpServletRequest request) {
-		String bearerToken = request.getHeader(header);
-
-		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-			return bearerToken.substring(7);
-		}
-		return null;
-	}
 }

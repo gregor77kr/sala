@@ -6,7 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.InitializingBean;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -27,9 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class JwtTokenProvider implements InitializingBean {
+public class JwtTokenProvider {
 
-	private static final String header = "Authorization";
+	private static final String AUTHORITIES_KEY = "Authorization";
 
 	private final String secret;
 
@@ -42,12 +44,24 @@ public class JwtTokenProvider implements InitializingBean {
 			@Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
 		this.secret = secret;
 		this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+		this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(this.secret));
 	}
 
-	@Override
-	public void afterPropertiesSet() {
-		byte[] keyBytes = Decoders.BASE64.decode(secret);
-		this.key = Keys.hmacShaKeyFor(keyBytes);
+	public String createToken(String subject, Collection<? extends GrantedAuthority> authorities) {
+		String claim = authorities
+				.stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.joining(","));
+
+		long now = (new Date()).getTime();
+		Date validity = new Date(now + this.tokenValidityInMilliseconds);
+
+		return Jwts.builder()
+				.setSubject(subject)
+				.claim(AUTHORITIES_KEY, claim)
+				.signWith(key, SignatureAlgorithm.HS512)
+				.setExpiration(validity)
+				.compact();
 	}
 
 	public String createToken(Authentication authentication) {
@@ -61,7 +75,7 @@ public class JwtTokenProvider implements InitializingBean {
 
 		return Jwts.builder()
 				.setSubject(authentication.getName())
-				.claim(header, authorities)
+				.claim(AUTHORITIES_KEY, authorities)
 				.signWith(key, SignatureAlgorithm.HS512)
 				.setExpiration(validity)
 				.compact();
@@ -76,10 +90,10 @@ public class JwtTokenProvider implements InitializingBean {
 				.getBody();
 
 		Collection<? extends GrantedAuthority> authorities = Arrays
-				.stream(claims.get(header).toString().split(","))
+				.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
-
+		
 		User principal = new User(claims.getSubject(), "", authorities);
 
 		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
@@ -99,5 +113,14 @@ public class JwtTokenProvider implements InitializingBean {
 			log.debug("JWT 토큰이 잘못되었습니다.");
 		}
 		return false;
+	}
+
+	public String resolveToken(HttpServletRequest request) {
+		String bearerToken = request.getHeader(AUTHORITIES_KEY);
+
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring(7);
+		}
+		return null;
 	}
 }
