@@ -2,8 +2,6 @@ package net.mwav.sala.customer.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,7 +66,21 @@ public class CustomerVerification implements Serializable {
 		this.expiryDate = LocalDateTime.now().plusDays(1);
 	}
 
-	public boolean isValid() {
+	public void verify(String verificationCode) throws ExpiryException {
+		if (!isValidInTime()) {
+			throw new ExpiryException();
+		}
+		
+		// TODO : need to replace RuntimeException to custom excpetion
+		if (!this.verificationCode.equals(verificationCode)) {
+			throw new RuntimeException();
+		}
+
+		this.expiryDate = LocalDateTime.now();
+		this.customer.setVerified(true);
+	}
+
+	private boolean isValidInTime() {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime creationDate = this.creationDate;
 		LocalDateTime expiryDate = this.expiryDate;
@@ -78,27 +90,6 @@ public class CustomerVerification implements Serializable {
 		}
 
 		return true;
-	}
-
-	public CustomerVerification ifValid(Consumer<CustomerVerification> consumer) {
-		if (this.isValid()) {
-			consumer.accept(this);
-		}
-
-		return this;
-	}
-
-	public <X extends Throwable> void orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
-		if (!isValid()) {
-			exceptionSupplier.get();
-		}
-	}
-
-	public void verify() throws ExpiryException {
-		this.ifValid(c -> {
-			c.expiryDate = LocalDateTime.now();
-			c.customer.setVerified(true);
-		}).orElseThrow(ExpiryException::new);
 	}
 
 	public static CustomerVerificationBuilder builder(Customer customer) {

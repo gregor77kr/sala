@@ -50,8 +50,9 @@ public class CustomerVerificationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void verify(VerificationRequest verfication) throws ExpiryException {
-		CustomerVerification customerVerification = customerVerificationRepository.verify(verfication);
-		customerVerification.verify();
+	public void verify(VerificationRequest verification) throws ExpiryException {
+		CustomerVerification customerVerification = customerVerificationRepository
+				.findOneByCustomerId(verification.getCustomerId());
+		customerVerification.verify(verification.getVerificationCode());
 	}
 }
