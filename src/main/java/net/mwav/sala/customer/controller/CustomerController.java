@@ -22,7 +22,7 @@ import net.mwav.sala.customer.dto.SignUpResponse;
 import net.mwav.sala.customer.service.CustomerService;
 
 @RestController
-@RequestMapping(value = "customers")
+@RequestMapping(value = "/api/customers")
 @RequiredArgsConstructor
 public class CustomerController {
 

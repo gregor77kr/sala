@@ -16,7 +16,7 @@ import net.mwav.sala.subscription.dto.SubscriptionRequest;
 import net.mwav.sala.subscription.service.SubscriptionService;
 
 @RestController
-@RequestMapping(value = "subscriptions")
+@RequestMapping(value = "/api/subscriptions")
 @RequiredArgsConstructor
 public class SubscriptionController {
 

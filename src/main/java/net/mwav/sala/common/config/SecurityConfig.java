@@ -61,7 +61,7 @@ public class SecurityConfig {
 
 			.and()
 			.authorizeHttpRequests()
-			.antMatchers("/customers", "/customers/authentication", "*.css", "*.gif", "/favicon.ico")
+			.antMatchers("/api/customers", "/api/customers/authentication")
 			.permitAll()
 			.requestMatchers(PathRequest.toH2Console())
 			.permitAll()

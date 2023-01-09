@@ -20,7 +20,7 @@ import net.mwav.sala.customer.dto.VerificationRequest;
 import net.mwav.sala.customer.service.CustomerVerificationService;
 
 @RestController
-@RequestMapping(value = "customers")
+@RequestMapping(value = "/api/customers")
 @RequiredArgsConstructor
 @Slf4j
 public class CustomerVerificationController {

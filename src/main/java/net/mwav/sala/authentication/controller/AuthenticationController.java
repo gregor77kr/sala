@@ -16,7 +16,7 @@ import net.mwav.sala.authentication.service.AuthenticationService;
 import net.mwav.sala.common.dto.StandardResponseBody;
 
 @RestController
-@RequestMapping(value = "customers")
+@RequestMapping(value = "/api/customers")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
