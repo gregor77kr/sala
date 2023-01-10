@@ -47,11 +47,11 @@ public class CustomerVerification implements Serializable {
 	@Column(name = "verification_code")
 	private String verificationCode;
 
-	@Column(name = "creation_date")
-	private LocalDateTime creationDate;
+	@Column(name = "creation_date_time")
+	private LocalDateTime creationDateTime;
 
-	@Column(name = "expiry_date")
-	private LocalDateTime expiryDate;
+	@Column(name = "expiry_date_time")
+	private LocalDateTime expiryDateTime;
 
 	public static CustomerVerification create(Customer customer) {
 		CustomerVerification customerAuth = CustomerVerification.builder(customer).build();
@@ -62,8 +62,8 @@ public class CustomerVerification implements Serializable {
 
 	public void setAuthenticationRequest() {
 		this.verificationCode = RandomUtils.generateNumber(6);
-		this.creationDate = LocalDateTime.now();
-		this.expiryDate = LocalDateTime.now().plusDays(1);
+		this.creationDateTime = LocalDateTime.now();
+		this.expiryDateTime = LocalDateTime.now().plusDays(1);
 	}
 
 	public void verify(String verificationCode) throws ExpiryException {
@@ -76,14 +76,14 @@ public class CustomerVerification implements Serializable {
 			throw new RuntimeException();
 		}
 
-		this.expiryDate = LocalDateTime.now();
+		this.expiryDateTime = LocalDateTime.now();
 		this.customer.setVerified(true);
 	}
 
 	private boolean isValidInTime() {
 		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime creationDate = this.creationDate;
-		LocalDateTime expiryDate = this.expiryDate;
+		LocalDateTime creationDate = this.creationDateTime;
+		LocalDateTime expiryDate = this.expiryDateTime;
 
 		if (now.isAfter(expiryDate) || now.isBefore(creationDate)) {
 			return false;

@@ -56,20 +56,20 @@ public class Subscription implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private SubscriptionStatus status;
 
-	@Column(name = "creation_date")
-	private LocalDateTime creationDate;
+	@Column(name = "creation_date_time")
+	private LocalDateTime creationDateTime;
 
-	@Column(name = "expiry_date")
-	private LocalDateTime expiryDate;
+	@Column(name = "expiry_date_time")
+	private LocalDateTime expiryDateTime;
 
-	@Column(name = "last_renewal_date")
-	private LocalDateTime lastRenewalDate;
+	@Column(name = "last_renewal_date_time")
+	private LocalDateTime lastRenewalDateTime;
 
-	@Column(name = "next_renewal_date")
-	private LocalDateTime nextRenewalDate;
+	@Column(name = "next_renewal_date_time")
+	private LocalDateTime nextRenewalDateTime;
 
-	@Column(name = "next_invoice_date")
-	private LocalDateTime nextInvoiceDate;
+	@Column(name = "next_invoice_date_time")
+	private LocalDateTime nextInvoiceDateTime;
 
 	@Column(name = "payment_period")
 	@Enumerated(EnumType.STRING)
