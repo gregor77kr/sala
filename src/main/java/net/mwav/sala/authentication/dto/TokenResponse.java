@@ -11,6 +11,8 @@ public class TokenResponse {
 
 	private final String refreshToken;
 
+	private final String tokenType = "Bearer";
+
 	public static TokenResponse from(String token) {
 		return TokenResponse.builder()
 				.accessToken(token)

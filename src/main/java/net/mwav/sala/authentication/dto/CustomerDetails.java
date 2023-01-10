@@ -19,10 +19,10 @@ public class CustomerDetails implements UserDetails {
 
 	private static final long serialVersionUID = 8011018974492519912L;
 
-	private final long customerId;
+	private final long id;
 
 	private final String password;
-	
+
 	private final String salt;
 
 	private final String fullname;
@@ -48,7 +48,7 @@ public class CustomerDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return this.name;
+		return String.valueOf(this.id);
 	}
 
 	@Override
@@ -73,14 +73,14 @@ public class CustomerDetails implements UserDetails {
 
 	public static CustomerDetails from(Customer customer) {
 		CustomerDetails customerDetails = CustomerDetails.builder()
-			.customerId(customer.getId())
-			.password(customer.getPassword())
-			.salt(customer.getSalt())
-			.name(customer.getName())
-			.fullname(customer.getFullname())
-			.email(customer.getEmail())
-			.isEnabled(customer.isEnabled())
-			.build();
+				.id(customer.getId())
+				.password(customer.getPassword())
+				.salt(customer.getSalt())
+				.name(customer.getName())
+				.fullname(customer.getFullname())
+				.email(customer.getEmail())
+				.isEnabled(customer.isEnabled())
+				.build();
 
 		// TODO : 권한 테이블 생성 및 사용자 권한 체계 부여
 		customerDetails.roles.add(new SimpleGrantedAuthority(Role.USER.getRole()));

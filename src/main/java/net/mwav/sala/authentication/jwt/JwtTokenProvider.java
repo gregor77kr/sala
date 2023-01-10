@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,10 +13,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -35,15 +33,19 @@ public class JwtTokenProvider {
 
 	private final String secret;
 
-	private final long tokenValidityInMilliseconds;
+	private final long accessTokenValidity;
+
+	private final long refreshTokenValidity;
 
 	private Key key;
 
 	public JwtTokenProvider(
 			@Value("${jwt.secret}") String secret,
-			@Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+			@Value("${jwt.access-token-validity}") long accessTokenValidity,
+			@Value("${jwt.refresh-token-validity}") long refreshTokenValidity) {
 		this.secret = secret;
-		this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+		this.accessTokenValidity = accessTokenValidity;
+		this.refreshTokenValidity = refreshTokenValidity;
 		this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(this.secret));
 	}
 
@@ -53,30 +55,15 @@ public class JwtTokenProvider {
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
 
-		long now = (new Date()).getTime();
-		Date validity = new Date(now + this.tokenValidityInMilliseconds);
+		Date now = new Date();
+		Date validity = new Date(now.getTime() + this.accessTokenValidity);
 
 		return Jwts.builder()
+				.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
 				.setSubject(subject)
 				.claim(AUTHORITIES_KEY, claim)
 				.signWith(key, SignatureAlgorithm.HS512)
-				.setExpiration(validity)
-				.compact();
-	}
-
-	public String createToken(Authentication authentication) {
-		String authorities = authentication.getAuthorities()
-				.stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.joining(","));
-
-		long now = (new Date()).getTime();
-		Date validity = new Date(now + this.tokenValidityInMilliseconds);
-
-		return Jwts.builder()
-				.setSubject(authentication.getName())
-				.claim(AUTHORITIES_KEY, authorities)
-				.signWith(key, SignatureAlgorithm.HS512)
+				.setIssuedAt(now)
 				.setExpiration(validity)
 				.compact();
 	}
@@ -93,7 +80,7 @@ public class JwtTokenProvider {
 				.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
-		
+
 		User principal = new User(claims.getSubject(), "", authorities);
 
 		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
@@ -115,12 +102,4 @@ public class JwtTokenProvider {
 		return false;
 	}
 
-	public String resolveToken(HttpServletRequest request) {
-		String bearerToken = request.getHeader(AUTHORITIES_KEY);
-
-		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-			return bearerToken.substring(7);
-		}
-		return null;
-	}
 }
