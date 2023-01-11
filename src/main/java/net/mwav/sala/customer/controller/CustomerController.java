@@ -30,18 +30,18 @@ public class CustomerController {
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
-		StandardResponseBody<SignUpResponse> response = StandardResponseBody
+		StandardResponseBody<SignUpResponse> standardResponseBody = StandardResponseBody
 				.success(customerService.signUp(signUpRequest));
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}
 
 	@GetMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getProfile(@PathVariable("customerId") long customerId) {
-		StandardResponseBody<ProfileResponse> response = StandardResponseBody
+		StandardResponseBody<ProfileResponse> standardResponseBody = StandardResponseBody
 				.success(customerService.getProfile(customerId));
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}
 
 }

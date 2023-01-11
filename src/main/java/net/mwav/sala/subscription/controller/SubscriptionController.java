@@ -24,9 +24,9 @@ public class SubscriptionController {
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> subscribe(@Valid @RequestBody SubscriptionRequest subscribeRequest) {
-		StandardResponseBody<?> response = StandardResponseBody
+		StandardResponseBody<?> standardResponseBody = StandardResponseBody
 				.success(subscriptionService.subscribe(subscribeRequest));
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}
 }

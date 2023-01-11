@@ -1,18 +1,21 @@
 package net.mwav.sala.authentication.service;
 
+import java.util.Collection;
+
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.authentication.dto.AuthenticationRequest;
-import net.mwav.sala.authentication.dto.TokenResponse;
 import net.mwav.sala.authentication.dto.CustomerDetails;
 import net.mwav.sala.authentication.dto.RefreshRequest;
+import net.mwav.sala.authentication.dto.TokenResponse;
 import net.mwav.sala.authentication.jwt.JwtTokenProvider;
 import net.mwav.sala.common.util.HashUtils;
 
@@ -21,7 +24,7 @@ import net.mwav.sala.common.util.HashUtils;
 @Slf4j
 public class AuthenticationService {
 
-	private final JwtTokenProvider tokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -50,14 +53,29 @@ public class AuthenticationService {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		// create jwt access token
-		//String accessToken = tokenProvider.createToken(authentication);
-		log.debug("id : {}, authorities : {}", authentication.getName(), authentication.getAuthorities());
-		String accessToken = tokenProvider.createToken(authentication.getName(), authentication.getAuthorities());
+		String subject = authentication.getName();
+		log.debug("id : {}, authorities : {}", subject, authentication.getAuthorities());
+
+		String accessToken = jwtTokenProvider.createAccessToken(subject, authentication.getAuthorities());
+		String refreshtoken = jwtTokenProvider.createRefreshToken(subject);
 
 		// return access token
 		return TokenResponse.builder()
 				.accessToken(accessToken)
+				.refreshToken(refreshtoken)
 				.build();
+	}
+
+	public String createAccessToken(String subject, Collection<? extends GrantedAuthority> authorities) {
+		//		String claim = authorities
+		//		.stream()
+		//		.map(GrantedAuthority::getAuthority)
+		//		.collect(Collectors.joining(","));
+		return jwtTokenProvider.createAccessToken(subject, authorities);
+	}
+
+	public String createRefreshToken(String subject) {
+		return jwtTokenProvider.createRefreshToken(subject);
 	}
 
 	public TokenResponse refresh(RefreshRequest refreshRequest) {

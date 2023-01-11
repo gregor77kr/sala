@@ -1,18 +1,14 @@
 package net.mwav.sala.authentication.jwt;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -29,61 +25,54 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtTokenProvider {
 
-	private static final String AUTHORITIES_KEY = "Authorization";
+	@Value("${jwt.secret}")
+	private String secret;
 
-	private final String secret;
+	@Value("${jwt.access-token-validity}")
+	private long accessTokenValidity;
 
-	private final long accessTokenValidity;
+	@Value("${jwt.access-token-name}")
+	private String accessTokenName;
 
-	private final long refreshTokenValidity;
+	@Value("${jwt.refresh-token-validity}")
+	private long refreshTokenValidity;
+
+	@Value("${jwt.refresh-token-name}")
+	private String refreshTokenName;
+
+	private static final String CLAIM_KEY = "data";
 
 	private Key key;
 
-	public JwtTokenProvider(
-			@Value("${jwt.secret}") String secret,
-			@Value("${jwt.access-token-validity}") long accessTokenValidity,
-			@Value("${jwt.refresh-token-validity}") long refreshTokenValidity) {
-		this.secret = secret;
-		this.accessTokenValidity = accessTokenValidity;
-		this.refreshTokenValidity = refreshTokenValidity;
+	@PostConstruct
+	public void init() {
 		this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(this.secret));
+		log.debug(key.toString());
 	}
 
-	public String createToken(String subject, Collection<? extends GrantedAuthority> authorities) {
-		String claim = authorities
-				.stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.joining(","));
+	public <T> String createAccessToken(String subject, T data) {
+		return this.createToken(subject, this.accessTokenValidity, data);
+	}
 
+	public String createRefreshToken(String subject) {
+		return this.createToken(subject, this.refreshTokenValidity, null);
+	}
+
+	private <T> String createToken(String subject, long validity, T data) {
 		Date now = new Date();
-		Date validity = new Date(now.getTime() + this.accessTokenValidity);
+		Date expiration = new Date(now.getTime() + validity);
+
+		Claims claims = Jwts.claims()
+				.setSubject(subject)
+				.setIssuedAt(now)
+				.setExpiration(expiration);
+		claims.put(CLAIM_KEY, data);
 
 		return Jwts.builder()
 				.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-				.setSubject(subject)
-				.claim(AUTHORITIES_KEY, claim)
+				.setClaims(claims)
 				.signWith(key, SignatureAlgorithm.HS512)
-				.setIssuedAt(now)
-				.setExpiration(validity)
 				.compact();
-	}
-
-	public Authentication getAuthentication(String token) {
-		Claims claims = Jwts
-				.parserBuilder()
-				.setSigningKey(key)
-				.build()
-				.parseClaimsJws(token)
-				.getBody();
-
-		Collection<? extends GrantedAuthority> authorities = Arrays
-				.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
-
-		User principal = new User(claims.getSubject(), "", authorities);
-
-		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}
 
 	public boolean validateToken(String token) {
@@ -100,6 +89,31 @@ public class JwtTokenProvider {
 			log.debug("JWT 토큰이 잘못되었습니다.");
 		}
 		return false;
+	}
+
+	public String getSubject(String token) {
+		return getClaims(token).getSubject();
+	}
+
+	public Object getData(String token) {
+		return getClaims(token).get(CLAIM_KEY);
+	}
+
+	private Claims getClaims(String token) {
+		return Jwts.parserBuilder()
+				.setSigningKey(key)
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
+	}
+
+	public String getAccessToken(HttpServletRequest request) {
+		String bearerToken = request.getHeader(accessTokenName);
+
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring(7);
+		}
+		return null;
 	}
 
 }

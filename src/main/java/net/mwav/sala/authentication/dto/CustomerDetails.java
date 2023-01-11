@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Builder;
@@ -83,7 +82,7 @@ public class CustomerDetails implements UserDetails {
 				.build();
 
 		// TODO : 권한 테이블 생성 및 사용자 권한 체계 부여
-		customerDetails.roles.add(new SimpleGrantedAuthority(Role.USER.getRole()));
+		customerDetails.roles.add(new Authority(Role.USER.getRole()));
 
 		return customerDetails;
 	}

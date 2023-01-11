@@ -32,15 +32,15 @@ public class CustomerVerificationController {
 		log.debug("customerId : " + customerId);
 		customerVerificationService.sendVerification(customerId);
 
-		StandardResponseBody<?> response = StandardResponseBody.success();
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
+		return ResponseEntity.status(HttpStatus.OK).body(standardResponseBody);
 	}
 
 	@PutMapping(value = "/verification", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> authenticate(@Valid @RequestBody VerificationRequest verificationRequest) throws ExpiryException {
 		customerVerificationService.verify(verificationRequest);
 
-		StandardResponseBody<?> response = StandardResponseBody.success();
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
+		return ResponseEntity.status(HttpStatus.OK).body(standardResponseBody);
 	}
 }

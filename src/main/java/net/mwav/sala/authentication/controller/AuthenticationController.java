@@ -1,5 +1,6 @@
 package net.mwav.sala.authentication.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import net.mwav.sala.authentication.dto.AuthenticationRequest;
 import net.mwav.sala.authentication.dto.RefreshRequest;
+import net.mwav.sala.authentication.dto.TokenResponse;
 import net.mwav.sala.authentication.service.AuthenticationService;
 import net.mwav.sala.common.dto.StandardResponseBody;
 
@@ -26,20 +28,21 @@ public class AuthenticationController {
 
 	// authenticate and get access token
 	@PostMapping(value = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-		StandardResponseBody<?> response = StandardResponseBody
-				.success(authenticationService.authenticate(authenticationRequest));
+	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		TokenResponse tokenResponse = authenticationService.authenticate(authenticationRequest);
+
+		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success(tokenResponse);
+		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}
 
 	// refresh token
 	@PutMapping(value = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> refresh(@Valid @RequestBody RefreshRequest refreshRequest) throws Exception {
-		StandardResponseBody<?> response = StandardResponseBody
+		StandardResponseBody<?> standardResponseBody = StandardResponseBody
 				.success(authenticationService.refresh(refreshRequest));
 
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+		return ResponseEntity.status(HttpStatus.OK).body(standardResponseBody);
 	}
 
 }

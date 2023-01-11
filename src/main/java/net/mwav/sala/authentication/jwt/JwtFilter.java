@@ -3,19 +3,23 @@ package net.mwav.sala.authentication.jwt;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.mwav.sala.authentication.dto.Authority;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -29,17 +33,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-		String requestURI = httpServletRequest.getRequestURI();
+		String accessToken = jwtTokenProvider.getAccessToken(request);
 
-		String jwt = resolveToken(httpServletRequest);
-
-		if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
-			Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
+		if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
+			Authentication authentication = getAuthentication(accessToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
-		} else {
-			log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
 		}
 
 		filterChain.doFilter(request, response);
@@ -50,12 +48,16 @@ public class JwtFilter extends OncePerRequestFilter {
 		return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
 	}
 
-	private String resolveToken(HttpServletRequest request) {
-		String bearerToken = request.getHeader("Authorization");
+	@SuppressWarnings("unchecked")
+	public Authentication getAuthentication(String token) {
+		String subject = jwtTokenProvider.getSubject(token);
+		List<Map<String, ?>> data = (List<Map<String, ?>>) jwtTokenProvider.getData(token);
+		List<Authority> authorities = Authority.map(data);
 
-		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-			return bearerToken.substring(7);
-		}
-		return null;
+		log.debug("subject : {}, authorities : {}", subject, authorities);
+
+		User principal = new User(subject, token, authorities);
+		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}
+
 }
