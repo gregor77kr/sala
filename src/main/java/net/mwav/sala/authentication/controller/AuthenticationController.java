@@ -1,8 +1,10 @@
 package net.mwav.sala.authentication.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +30,14 @@ public class AuthenticationController {
 
 	// authenticate and get access token
 	@PostMapping(value = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
+	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		TokenResponse tokenResponse = authenticationService.authenticate(authenticationRequest);
 
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success(tokenResponse);
-		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
+		return ResponseEntity.status(HttpStatus.OK)
+				.header(HttpHeaders.SET_COOKIE, tokenResponse.getCookieValue())
+				.body(standardResponseBody);
 	}
 
 	// refresh token

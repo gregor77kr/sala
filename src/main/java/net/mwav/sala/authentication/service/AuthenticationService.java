@@ -1,12 +1,9 @@
 package net.mwav.sala.authentication.service;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -58,24 +55,14 @@ public class AuthenticationService {
 
 		String accessToken = jwtTokenProvider.createAccessToken(subject, authentication.getAuthorities());
 		String refreshtoken = jwtTokenProvider.createRefreshToken(subject);
+		String cookieValue = jwtTokenProvider.createRefreshTokenCookie(refreshtoken);
 
 		// return access token
 		return TokenResponse.builder()
 				.accessToken(accessToken)
 				.refreshToken(refreshtoken)
+				.cookieValue(cookieValue)
 				.build();
-	}
-
-	public String createAccessToken(String subject, Collection<? extends GrantedAuthority> authorities) {
-		//		String claim = authorities
-		//		.stream()
-		//		.map(GrantedAuthority::getAuthority)
-		//		.collect(Collectors.joining(","));
-		return jwtTokenProvider.createAccessToken(subject, authorities);
-	}
-
-	public String createRefreshToken(String subject) {
-		return jwtTokenProvider.createRefreshToken(subject);
 	}
 
 	public TokenResponse refresh(RefreshRequest refreshRequest) {

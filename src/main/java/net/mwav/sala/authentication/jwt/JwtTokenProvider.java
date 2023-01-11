@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -39,6 +40,9 @@ public class JwtTokenProvider {
 
 	@Value("${jwt.refresh-token-name}")
 	private String refreshTokenName;
+
+	@Value("${jwt.domain}")
+	private String domain;
 
 	private static final String CLAIM_KEY = "data";
 
@@ -73,6 +77,17 @@ public class JwtTokenProvider {
 				.setClaims(claims)
 				.signWith(key, SignatureAlgorithm.HS512)
 				.compact();
+	}
+
+	public String createRefreshTokenCookie(String token) {
+		ResponseCookie responseCookie = ResponseCookie.from(refreshTokenName, token)
+				.httpOnly(true)
+				.sameSite("Lax")
+				.domain(domain)
+				.secure(false)
+				.maxAge(this.refreshTokenValidity / 1000)
+				.build();
+		return responseCookie.toString();
 	}
 
 	public boolean validateToken(String token) {
