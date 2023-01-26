@@ -3,9 +3,9 @@ package net.mwav.sala.authentication.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 @Builder
 public class TokenResponse {
 

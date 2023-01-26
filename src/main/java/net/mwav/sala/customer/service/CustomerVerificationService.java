@@ -26,29 +26,32 @@ public class CustomerVerificationService {
 	private final CustomerVerificationRepository customerVerificationRepository;
 
 	public void sendVerification(long customerId) {
-		CustomerVerification customerAuth = setVerification(customerId);
-
-		// TODO : 메일발송
-		log.debug(customerAuth.getCustomer().getEmail());
-		log.debug(customerAuth.getVerificationCode());
+		CustomerVerification customerVerification = setVerification(customerId);
+		sendEmail(customerVerification);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	private CustomerVerification setVerification(long customerId) {
+	public CustomerVerification setVerification(long customerId) {
 		Customer customer = customerRepository.findById(customerId).orElseThrow(EntityNotFoundException::new);
 
-		Optional<CustomerVerification> optionalCustomerAuth = customerVerificationRepository
+		Optional<CustomerVerification> optionalCustomerVerification = customerVerificationRepository
 				.findByCustomerId(customer.getId());
-		CustomerVerification customerAuth;
+		CustomerVerification customerVerification;
 
-		if (optionalCustomerAuth.isPresent()) {
-			customerAuth = optionalCustomerAuth.get();
-			customerAuth.setAuthenticationRequest();
+		if (optionalCustomerVerification.isPresent()) {
+			customerVerification = optionalCustomerVerification.get();
+			customerVerification.setAuthenticationRequest();
 		} else {
-			customerAuth = customerVerificationRepository.save(CustomerVerification.create(customer));
+			customerVerification = customerVerificationRepository.save(CustomerVerification.create(customer));
 		}
 
-		return customerAuth;
+		return customerVerification;
+	}
+
+	private void sendEmail(CustomerVerification customerVerification) {
+		// TODO : 메일발송
+		log.debug(customerVerification.getCustomer().getEmail());
+		log.debug(customerVerification.getVerificationCode());
 	}
 
 	@Transactional(rollbackFor = Exception.class)

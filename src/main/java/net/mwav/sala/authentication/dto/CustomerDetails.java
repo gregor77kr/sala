@@ -8,11 +8,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 import net.mwav.sala.common.constant.Role;
 import net.mwav.sala.customer.entity.Customer;
 
-@Data
+@Value
 @Builder
 public class CustomerDetails implements UserDetails {
 

@@ -9,10 +9,10 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 import net.mwav.sala.customer.entity.Customer;
 
-@Data
+@Value
 @Builder
 public class SignUpRequest implements Serializable {
 

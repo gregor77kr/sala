@@ -3,10 +3,10 @@ package net.mwav.sala.subscription.dto;
 import java.io.Serializable;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 import net.mwav.sala.subscription.entity.Subscription;
 
-@Data
+@Value
 @Builder
 public class SubscriptionRequest implements Serializable {
 
