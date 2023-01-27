@@ -1,4 +1,4 @@
-package net.mwav.sala.authentication.dto;
+package net.mwav.sala.security.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;

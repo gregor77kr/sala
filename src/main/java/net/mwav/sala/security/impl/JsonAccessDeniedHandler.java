@@ -1,4 +1,4 @@
-package net.mwav.sala.authentication.jwt;
+package net.mwav.sala.security.impl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +18,7 @@ import net.mwav.sala.common.dto.ExceptionResponseBody;
 import net.mwav.sala.common.util.JsonUtils;
 
 @Component
-public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+public class JsonAccessDeniedHandler implements AccessDeniedHandler {
 	
 	// occurs when request to unauthorized resource
 	@Override

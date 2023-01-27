@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.mwav.sala.authentication.dto.Authority;
+import net.mwav.sala.security.dto.Authority;
 
 @RequiredArgsConstructor
 @Slf4j

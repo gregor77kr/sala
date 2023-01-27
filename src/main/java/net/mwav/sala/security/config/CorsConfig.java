@@ -1,4 +1,4 @@
-package net.mwav.sala.common.config;
+package net.mwav.sala.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

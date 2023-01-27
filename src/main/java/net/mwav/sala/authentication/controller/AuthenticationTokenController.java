@@ -15,24 +15,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.authentication.dto.AuthenticationRequest;
+import net.mwav.sala.authentication.dto.TokenRequest;
 import net.mwav.sala.authentication.dto.RefreshRequest;
 import net.mwav.sala.authentication.dto.TokenResponse;
-import net.mwav.sala.authentication.service.AuthenticationService;
+import net.mwav.sala.authentication.service.AuthenticationTokenService;
 import net.mwav.sala.common.dto.StandardResponseBody;
 
 @RestController
-@RequestMapping(value = "/api/customers")
+@RequestMapping(value = "/api/authentication")
 @RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthenticationTokenController {
 
-	private final AuthenticationService authenticationService;
+	private final AuthenticationTokenService authenticationTokenService;
 
 	// authenticate and get access token
-	@PostMapping(value = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		TokenResponse tokenResponse = authenticationService.authenticate(authenticationRequest);
+	@PostMapping(value = "/token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> authenticate(@Valid @RequestBody TokenRequest authenticationRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		TokenResponse tokenResponse = authenticationTokenService.createToken(authenticationRequest);
 
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success(tokenResponse);
 		return ResponseEntity.status(HttpStatus.OK)
@@ -41,10 +40,10 @@ public class AuthenticationController {
 	}
 
 	// refresh token
-	@PutMapping(value = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> refresh(@Valid @RequestBody RefreshRequest refreshRequest) throws Exception {
+	@PutMapping(value = "/token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> reissue(@Valid @RequestBody RefreshRequest refreshRequest) throws Exception {
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody
-				.success(authenticationService.refresh(refreshRequest));
+				.success(authenticationTokenService.refreshToken(refreshRequest));
 
 		return ResponseEntity.status(HttpStatus.OK).body(standardResponseBody);
 	}

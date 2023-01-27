@@ -1,17 +1,17 @@
-package net.mwav.sala.authentication.service;
+package net.mwav.sala.security.impl;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.authentication.dto.CustomerDetails;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.customer.repository.CustomerRepository;
+import net.mwav.sala.security.dto.CustomerDetails;
 
 @RequiredArgsConstructor
 @Service
-public class CustomerDetailService implements UserDetailsService {
+public class BasicDetailService implements UserDetailsService {
 
 	private final CustomerRepository customerRepository;
 

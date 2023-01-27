@@ -10,7 +10,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class AuthenticationRequest {
+public class TokenRequest {
 
 	@NotBlank
 	@Size(min = 5, max = 25)

@@ -1,4 +1,4 @@
-package net.mwav.sala.authentication.jwt;
+package net.mwav.sala.security.impl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +18,7 @@ import net.mwav.sala.common.dto.ExceptionResponseBody;
 import net.mwav.sala.common.util.JsonUtils;
 
 @Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	// occurs when requested not providing valid authentication
 	@Override

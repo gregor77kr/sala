@@ -79,7 +79,7 @@ public class JwtTokenProvider {
 				.compact();
 	}
 
-	public String createRefreshTokenCookie(String token) {
+	public String createRefreshTokenInCookie(String token) {
 		ResponseCookie responseCookie = ResponseCookie.from(refreshTokenName, token)
 				.httpOnly(true)
 				.sameSite("Lax")

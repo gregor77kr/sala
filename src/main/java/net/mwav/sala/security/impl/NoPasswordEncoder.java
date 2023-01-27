@@ -1,4 +1,4 @@
-package net.mwav.sala.authentication.service;
+package net.mwav.sala.security.impl;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
