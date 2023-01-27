@@ -34,4 +34,5 @@ jwt:
   access-token-name: Authorization
   refresh-token-validity: 1209600000 # 14 days
   refresh-token-name: SFDD
+  refresh-token-url: /refresh
   domain: localhost

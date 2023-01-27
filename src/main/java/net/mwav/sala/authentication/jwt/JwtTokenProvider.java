@@ -41,6 +41,9 @@ public class JwtTokenProvider {
 	@Value("${jwt.refresh-token-name}")
 	private String refreshTokenName;
 
+	@Value("${jwt.refresh-token-url}")
+	private String refreshTokenUrl;
+
 	@Value("${jwt.domain}")
 	private String domain;
 
@@ -79,13 +82,17 @@ public class JwtTokenProvider {
 				.compact();
 	}
 
-	public String createRefreshTokenInCookie(String token) {
-		ResponseCookie responseCookie = ResponseCookie.from(refreshTokenName, token)
+	public String createRefreshCookie(String token) {
+		return createCookieString(this.refreshTokenName, token, this.refreshTokenValidity / 1000);
+	}
+
+	private String createCookieString(String name, String token, long validity) {
+		ResponseCookie responseCookie = ResponseCookie.from(name, token)
 				.httpOnly(true)
 				.sameSite("Lax")
 				.domain(domain)
 				.secure(false)
-				.maxAge(this.refreshTokenValidity / 1000)
+				.maxAge(validity)
 				.build();
 		return responseCookie.toString();
 	}

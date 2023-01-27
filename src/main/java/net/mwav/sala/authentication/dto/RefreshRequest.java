@@ -11,4 +11,5 @@ public class RefreshRequest {
 
 	@NotBlank
 	private final String accessToken;
+
 }

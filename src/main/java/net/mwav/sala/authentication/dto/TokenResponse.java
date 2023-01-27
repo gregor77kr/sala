@@ -14,7 +14,7 @@ public class TokenResponse {
 	private final String refreshToken;
 
 	@JsonIgnore
-	private final String cookieValue;
+	private final String cookieString;
 
 	private final String tokenType = "Bearer";
 

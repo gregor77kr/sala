@@ -35,7 +35,7 @@ public class AuthenticationTokenController {
 
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success(tokenResponse);
 		return ResponseEntity.status(HttpStatus.OK)
-				.header(HttpHeaders.SET_COOKIE, tokenResponse.getCookieValue())
+				.header(HttpHeaders.SET_COOKIE, tokenResponse.getCookieString())
 				.body(standardResponseBody);
 	}
 

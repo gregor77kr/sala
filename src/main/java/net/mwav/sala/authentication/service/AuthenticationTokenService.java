@@ -34,13 +34,13 @@ public class AuthenticationTokenService {
 
 		String accessToken = jwtTokenProvider.createAccessToken(subject, authorities);
 		String refreshtoken = jwtTokenProvider.createRefreshToken(subject);
-		String cookieValue = jwtTokenProvider.createRefreshTokenInCookie(refreshtoken);
+		String cookieValue = jwtTokenProvider.createRefreshCookie(refreshtoken);
 
 		// return access token
 		return TokenResponse.builder()
 				.accessToken(accessToken)
 				.refreshToken(refreshtoken)
-				.cookieValue(cookieValue)
+				.cookieString(cookieValue)
 				.build();
 	}
 
