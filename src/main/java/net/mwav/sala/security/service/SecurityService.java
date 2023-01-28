@@ -17,12 +17,12 @@ public class SecurityService {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public Authentication authenticate(String username, String password) throws Exception {
+    public Authentication authenticate(String customerId, String password) throws Exception {
 
         // create UsernamePasswordAuthenticationToken instance using
         // AuthenticationRequest(id and password)
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                username, password);
+        	customerId, password);
 
         // create Authentication instance using UsernamePasswordAuthenticationToken
         // during creating this instance, UserDetailSerivceImpl.loadUserByUsername is called
@@ -42,4 +42,5 @@ public class SecurityService {
 
         return authentication;
     }
+    
 }

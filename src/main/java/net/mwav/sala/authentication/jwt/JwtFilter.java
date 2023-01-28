@@ -29,11 +29,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	// 인증에서 제외할 url
 	private static final List<String> EXCLUDE_URL = Arrays
-			.asList("/api/customers", "/api/customers/authentication");
+		.asList("/api/customers", "/api/authentication");
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		String accessToken = jwtTokenProvider.getAccessToken(request);
+		String accessToken = jwtTokenProvider.getAccessTokenInHeader(request);
 
 		if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
 			Authentication authentication = getAuthentication(accessToken);

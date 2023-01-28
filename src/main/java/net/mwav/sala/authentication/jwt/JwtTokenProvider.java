@@ -70,16 +70,16 @@ public class JwtTokenProvider {
 		Date expiration = new Date(now.getTime() + validity);
 
 		Claims claims = Jwts.claims()
-				.setSubject(subject)
-				.setIssuedAt(now)
-				.setExpiration(expiration);
+			.setSubject(subject)
+			.setIssuedAt(now)
+			.setExpiration(expiration);
 		claims.put(CLAIM_KEY, data);
 
 		return Jwts.builder()
-				.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-				.setClaims(claims)
-				.signWith(key, SignatureAlgorithm.HS512)
-				.compact();
+			.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+			.setClaims(claims)
+			.signWith(key, SignatureAlgorithm.HS512)
+			.compact();
 	}
 
 	public String createRefreshCookie(String token) {
@@ -88,12 +88,12 @@ public class JwtTokenProvider {
 
 	private String createCookieString(String name, String token, long validity) {
 		ResponseCookie responseCookie = ResponseCookie.from(name, token)
-				.httpOnly(true)
-				.sameSite("Lax")
-				.domain(domain)
-				.secure(false)
-				.maxAge(validity)
-				.build();
+			.httpOnly(true)
+			.sameSite("Lax")
+			.domain(domain)
+			.secure(false)
+			.maxAge(validity)
+			.build();
 		return responseCookie.toString();
 	}
 
@@ -123,13 +123,13 @@ public class JwtTokenProvider {
 
 	private Claims getClaims(String token) {
 		return Jwts.parserBuilder()
-				.setSigningKey(key)
-				.build()
-				.parseClaimsJws(token)
-				.getBody();
+			.setSigningKey(key)
+			.build()
+			.parseClaimsJws(token)
+			.getBody();
 	}
 
-	public String getAccessToken(HttpServletRequest request) {
+	public String getAccessTokenInHeader(HttpServletRequest request) {
 		String bearerToken = request.getHeader(accessTokenName);
 
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {

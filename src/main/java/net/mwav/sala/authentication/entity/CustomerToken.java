@@ -1,7 +1,6 @@
 package net.mwav.sala.authentication.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +18,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
 
@@ -40,7 +40,7 @@ public class CustomerToken implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "customer_verification_id")
+	@Column(name = "customer_token_id")
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -48,12 +48,14 @@ public class CustomerToken implements Serializable {
 	private Customer customer;
 
 	@Column(name = "access_token")
+	@Setter
 	private String accessToken;
 
 	@Column(name = "refresh_token")
+	@Setter
 	private String refreshToken;
 
-	@Column(name = "expiry_date_time")
-	private LocalDateTime expiryDateTime;
-
+	public static CustomerTokenBuilder builder(Customer customer) {
+		return customerTokenBuilder().customer(customer);
+	}
 }

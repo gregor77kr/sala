@@ -5,19 +5,19 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
-@Builder
+@NoArgsConstructor
+@Data
 public class VerificationRequest implements Serializable {
 
 	private static final long serialVersionUID = -8388551690394192571L;
 
 	@NotNull
-	private final long customerId;
+	private long customerId;
 
 	@NotBlank
-	private final String verificationCode;
+	private String verificationCode;
 
 }

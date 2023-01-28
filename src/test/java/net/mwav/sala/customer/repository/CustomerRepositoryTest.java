@@ -16,13 +16,12 @@ class CustomerRepositoryTest {
 	private CustomerRepository customerRepository;
 
 	@Test
-	void signUpTest() {
-		SignUpRequest signUpRequest = SignUpRequest.builder()
-				.name("dummyuser")
-				.fullname("dummy user")
-				.email("admin@mwav.net")
-				.password("password")
-				.build();
+	void signUpTest() {		
+		SignUpRequest signUpRequest = new SignUpRequest();
+		signUpRequest.setName("dummyuser");
+		signUpRequest.setFullname("dummy user");
+		signUpRequest.setEmail("admin@mwav.net");
+		signUpRequest.setPassword("password");
 
 		Customer customer = signUpRequest.toEntity();
 		Customer savedCustomer = customerRepository.save(customer);
