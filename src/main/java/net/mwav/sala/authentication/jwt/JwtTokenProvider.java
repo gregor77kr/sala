@@ -58,16 +58,16 @@ public class JwtTokenProvider {
 		Date expiration = new Date(now.getTime() + validity);
 
 		Claims claims = Jwts.claims()
-			.setSubject(subject)
-			.setIssuedAt(now)
-			.setExpiration(expiration);
+				.setSubject(subject)
+				.setIssuedAt(now)
+				.setExpiration(expiration);
 		claims.put(CLAIM_KEY, data);
 
 		return Jwts.builder()
-			.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-			.setClaims(claims)
-			.signWith(key, SignatureAlgorithm.HS512)
-			.compact();
+				.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+				.setClaims(claims)
+				.signWith(key, SignatureAlgorithm.HS512)
+				.compact();
 	}
 
 	public boolean validateToken(String token) {
@@ -96,10 +96,10 @@ public class JwtTokenProvider {
 
 	private Claims getClaims(String token) {
 		return Jwts.parserBuilder()
-			.setSigningKey(key)
-			.build()
-			.parseClaimsJws(token)
-			.getBody();
+				.setSigningKey(key)
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
 	}
 
 }

@@ -10,11 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.common.exception.ExpiryException;
-import net.mwav.sala.customer.dto.VerificationRequest;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.customer.entity.CustomerVerification;
-import net.mwav.sala.customer.repository.CustomerVerificationRepository;
 import net.mwav.sala.customer.repository.CustomerRepository;
+import net.mwav.sala.customer.repository.CustomerVerificationRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -55,11 +54,11 @@ public class CustomerVerificationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void verify(VerificationRequest verification) throws ExpiryException {
+	public void verify(long customerId, String verificationCode) throws ExpiryException {
 		CustomerVerification customerVerification = customerVerificationRepository
-				.findByCustomerId(verification.getCustomerId())
+				.findByCustomerId(customerId)
 				.orElseThrow(EntityNotFoundException::new);
 
-		customerVerification.verify(verification.getVerificationCode());
+		customerVerification.verify(verificationCode);
 	}
 }

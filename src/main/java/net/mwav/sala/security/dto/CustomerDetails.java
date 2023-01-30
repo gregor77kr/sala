@@ -18,26 +18,20 @@ public class CustomerDetails implements UserDetails {
 
 	private static final long serialVersionUID = 8011018974492519912L;
 
-	private final long id;
+	private final String id;
 
 	private final String password;
 
 	private final String salt;
 
-	private final String fullname;
-
-	private final String name;
-
-	private final String email;
-
 	private final boolean isEnabled;
 
 	@Builder.Default
-	private final List<GrantedAuthority> roles = new ArrayList<>();
+	private final List<Authority> authorities = new ArrayList<Authority>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.roles;
+		return this.authorities;
 	}
 
 	@Override
@@ -47,7 +41,7 @@ public class CustomerDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return String.valueOf(this.id);
+		return this.id;
 	}
 
 	@Override
@@ -72,17 +66,14 @@ public class CustomerDetails implements UserDetails {
 
 	public static CustomerDetails from(Customer customer) {
 		CustomerDetails customerDetails = CustomerDetails.builder()
-				.id(customer.getId())
+				.id(String.valueOf(customer.getId()))
 				.password(customer.getPassword())
 				.salt(customer.getSalt())
-				.name(customer.getName())
-				.fullname(customer.getFullname())
-				.email(customer.getEmail())
 				.isEnabled(customer.isEnabled())
 				.build();
 
 		// TODO : 권한 테이블 생성 및 사용자 권한 체계 부여
-		customerDetails.roles.add(new Authority(Role.USER.getRole()));
+		customerDetails.authorities.add(new Authority(Role.USER.getRole()));
 
 		return customerDetails;
 	}

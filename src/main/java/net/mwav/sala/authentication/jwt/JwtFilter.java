@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.security.dto.Authority;
+import net.mwav.sala.security.dto.CustomerDetails;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -31,10 +31,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	// 인증에서 제외할 url
 	private static final List<String> EXCLUDE_URL = Arrays
-		.asList("/api/customers", "/api/authentication");
+			.asList("/api/customers", "/api/authentication");
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 		String accessToken = jwtWebResolver.getAccessTokenInHeader(request);
 
 		if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
@@ -58,7 +59,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		log.debug("subject : {}, authorities : {}", subject, authorities);
 
-		User principal = new User(subject, token, authorities);
+		// User principal = new User(subject, token, authorities);
+		CustomerDetails principal = CustomerDetails.builder()
+				.id(subject)
+				.password(token)
+				.authorities(authorities)
+				.build();
+
 		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}
 

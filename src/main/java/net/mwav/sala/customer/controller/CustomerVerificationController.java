@@ -18,6 +18,7 @@ import net.mwav.sala.common.dto.StandardResponseBody;
 import net.mwav.sala.common.exception.ExpiryException;
 import net.mwav.sala.customer.dto.VerificationRequest;
 import net.mwav.sala.customer.service.CustomerVerificationService;
+import net.mwav.sala.security.service.SecurityResolver;
 
 @RestController
 @RequestMapping(value = "/api/customers")
@@ -30,15 +31,18 @@ public class CustomerVerificationController {
 	@PostMapping(value = "/verification/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> sendVerification(@PathVariable("customerId") long customerId) {
 		log.debug("customerId : " + customerId);
+		SecurityResolver.matchesCustomer(customerId);
 		customerVerificationService.sendVerification(customerId);
 
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
 		return ResponseEntity.status(HttpStatus.OK).body(standardResponseBody);
 	}
 
-	@PutMapping(value = "/verification", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> authenticate(@Valid @RequestBody VerificationRequest verificationRequest) throws ExpiryException {
-		customerVerificationService.verify(verificationRequest);
+	@PutMapping(value = "/verification/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> authenticate(@PathVariable("customerId") long customerId,
+			@Valid @RequestBody VerificationRequest verificationRequest) throws ExpiryException {
+		SecurityResolver.matchesCustomer(customerId);
+		customerVerificationService.verify(customerId, verificationRequest.getVerificationCode());
 
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
 		return ResponseEntity.status(HttpStatus.OK).body(standardResponseBody);
