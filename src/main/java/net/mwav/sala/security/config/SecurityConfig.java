@@ -14,6 +14,7 @@ import org.springframework.web.filter.CorsFilter;
 import lombok.RequiredArgsConstructor;
 import net.mwav.sala.authentication.jwt.JwtFilter;
 import net.mwav.sala.authentication.jwt.JwtTokenProvider;
+import net.mwav.sala.authentication.jwt.JwtWebResolver;
 import net.mwav.sala.security.impl.JsonAccessDeniedHandler;
 import net.mwav.sala.security.impl.JsonAuthenticationEntryPoint;
 import net.mwav.sala.security.impl.NoPasswordEncoder;
@@ -24,6 +25,8 @@ import net.mwav.sala.security.impl.NoPasswordEncoder;
 public class SecurityConfig {
 
 	private final JwtTokenProvider jwtTokenService;
+
+	private final JwtWebResolver jwtWebResolver;
 
 	private final CorsFilter corsFilter;
 
@@ -69,7 +72,7 @@ public class SecurityConfig {
 			.authenticated()
 
 			.and()
-			.addFilterBefore(new JwtFilter(jwtTokenService), UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(new JwtFilter(jwtTokenService, jwtWebResolver), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

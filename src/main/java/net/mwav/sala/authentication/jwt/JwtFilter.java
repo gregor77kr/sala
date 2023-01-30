@@ -27,13 +27,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	private final JwtTokenProvider jwtTokenProvider;
 
+	private final JwtWebResolver jwtWebResolver;
+
 	// 인증에서 제외할 url
 	private static final List<String> EXCLUDE_URL = Arrays
 		.asList("/api/customers", "/api/authentication");
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		String accessToken = jwtTokenProvider.getAccessTokenInHeader(request);
+		String accessToken = jwtWebResolver.getAccessTokenInHeader(request);
 
 		if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
 			Authentication authentication = getAuthentication(accessToken);

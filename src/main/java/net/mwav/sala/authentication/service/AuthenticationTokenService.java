@@ -36,7 +36,7 @@ public class AuthenticationTokenService {
 	public TokenResponse createToken(TokenRequest tokenRequest) throws Exception {
 		// authenticate
 		Authentication authentication = securityService
-			.authenticate(tokenRequest.getName(), tokenRequest.getPassword());
+				.authenticate(tokenRequest.getName(), tokenRequest.getPassword());
 
 		// create jwt token
 		String subject = authentication.getName();
@@ -44,31 +44,29 @@ public class AuthenticationTokenService {
 
 		String accessToken = jwtTokenProvider.createAccessToken(subject, authorities);
 		String refreshtoken = jwtTokenProvider.createRefreshToken(subject);
-		String refreshCookie = jwtTokenProvider.createRefreshCookie(refreshtoken);
 
 		Customer customer = Customer.builder(null).id(Long.valueOf(subject)).build();
 		CustomerToken customerToken = CustomerToken.builder(customer)
-			.accessToken(accessToken)
-			.refreshToken(refreshtoken)
-			.build();
+				.accessToken(accessToken)
+				.refreshToken(refreshtoken)
+				.build();
 
 		customerTokenRepository.save(customerToken);
 
 		// return token
 		return TokenResponse.builder()
-			.accessToken(accessToken)
-			.refreshToken(refreshtoken)
-			.cookieString(refreshCookie)
-			.build();
+				.accessToken(accessToken)
+				.refreshToken(refreshtoken)
+				.build();
 	}
 
 	@Transactional
-	public TokenResponse reissue(String accessToken, String refreshToken) {
+	public TokenResponse reissue(String refreshToken) {
 		String subject = jwtTokenProvider.getSubject(refreshToken);
 
 		CustomerToken customerToken = customerTokenRepository
-			.findByCustomerIdAndRefreshToken(Long.valueOf(subject), refreshToken)
-			.orElseThrow(EntityNotFoundException::new);
+				.findByCustomerIdAndRefreshToken(Long.valueOf(subject), refreshToken)
+				.orElseThrow(EntityNotFoundException::new);
 
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new Authority(Role.USER.getRole()));
@@ -77,9 +75,8 @@ public class AuthenticationTokenService {
 		customerToken.setRefreshToken(jwtTokenProvider.createRefreshToken(subject));
 
 		return TokenResponse.builder()
-			.accessToken(customerToken.getAccessToken())
-			.refreshToken(customerToken.getRefreshToken())
-			.cookieString(jwtTokenProvider.createRefreshCookie(customerToken.getRefreshToken()))
-			.build();
+				.accessToken(customerToken.getAccessToken())
+				.refreshToken(customerToken.getRefreshToken())
+				.build();
 	}
 }
