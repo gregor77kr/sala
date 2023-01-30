@@ -5,19 +5,26 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@NoArgsConstructor
-@Data
+import lombok.Value;
+
+@Value
 public class VerificationRequest implements Serializable {
 
 	private static final long serialVersionUID = -8388551690394192571L;
 
 	@NotNull
-	private long customerId;
+	private final long customerId;
 
 	@NotBlank
-	private String verificationCode;
+	private final String verificationCode;
 
+	@JsonCreator
+	private VerificationRequest(@JsonProperty long customerId, @JsonProperty String verificationCode) {
+		this.customerId = customerId;
+		this.verificationCode = verificationCode;
+	}
+	
 }

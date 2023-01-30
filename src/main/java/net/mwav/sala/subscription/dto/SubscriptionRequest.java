@@ -2,12 +2,10 @@ package net.mwav.sala.subscription.dto;
 
 import java.io.Serializable;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 import net.mwav.sala.subscription.entity.Subscription;
 
-@NoArgsConstructor
-@Data
+@Value
 public class SubscriptionRequest implements Serializable {
 
 	private static final long serialVersionUID = -5276218624939209139L;
