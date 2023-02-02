@@ -1,5 +1,9 @@
 package net.mwav.sala.subscription.repository;
 
-public interface SubscriptionRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import net.mwav.sala.subscription.entity.Subscription;
+
+public interface SubscriptionRepository extends CrudRepository<Subscription, Long> {
 
 }

@@ -1,6 +1,7 @@
 package net.mwav.sala.subscription.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -15,18 +16,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.util.ObjectUtils;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.common.constant.PaymentMethod;
 import net.mwav.sala.common.constant.PaymentPeriod;
 import net.mwav.sala.common.constant.SubscriptionStatus;
 import net.mwav.sala.common.util.RandomUtils;
 import net.mwav.sala.customer.entity.Customer;
+import net.mwav.sala.subscription.state.SubscriptionState;
 
 @Entity
 @Table(name = "subscription")
@@ -54,22 +59,28 @@ public class Subscription implements Serializable {
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
+	@Setter
 	private SubscriptionStatus status;
 
 	@Column(name = "creation_date_time")
+	@Setter
 	private LocalDateTime creationDateTime;
 
 	@Column(name = "expiry_date_time")
+	@Setter
 	private LocalDateTime expiryDateTime;
 
 	@Column(name = "last_renewal_date_time")
+	@Setter
 	private LocalDateTime lastRenewalDateTime;
 
-	@Column(name = "next_renewal_date_time")
-	private LocalDateTime nextRenewalDateTime;
+	@Column(name = "next_renewal_date")
+	@Setter
+	private LocalDate nextRenewalDate;
 
-	@Column(name = "next_invoice_date_time")
-	private LocalDateTime nextInvoiceDateTime;
+	@Column(name = "next_invoice_date")
+	@Setter
+	private LocalDate nextInvoiceDate;
 
 	@Column(name = "payment_period")
 	@Enumerated(EnumType.STRING)
@@ -97,8 +108,20 @@ public class Subscription implements Serializable {
 	@Column(name = "billing_mobile_number")
 	private String billingMobileNumber;
 
-	public static SubscriptionBuilder builder(Customer customer) {
-		return subscriptionBuilder().customer(customer).no(RandomUtils.generateUUID());
+	// delegate data handling process to SubscriptionState
+	public void changeStatus(SubscriptionState s) {
+		s.set(this);
 	}
-	
+
+	// generate uuid when no data is null
+	public void setNo() {
+		if (ObjectUtils.isEmpty(this.no)) {
+			this.no = RandomUtils.generateUUID();
+		}
+	}
+
+	public static SubscriptionBuilder builder(Customer customer) {
+		return subscriptionBuilder().customer(customer);
+	}
+
 }

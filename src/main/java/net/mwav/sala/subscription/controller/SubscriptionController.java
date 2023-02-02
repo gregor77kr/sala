@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import net.mwav.sala.common.dto.StandardResponseBody;
+import net.mwav.sala.security.service.SecurityResolver;
 import net.mwav.sala.subscription.dto.SubscriptionRequest;
+import net.mwav.sala.subscription.entity.Subscription;
 import net.mwav.sala.subscription.service.SubscriptionService;
 
 @RestController
@@ -23,10 +25,14 @@ public class SubscriptionController {
 	private final SubscriptionService subscriptionService;
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> subscribe(@Valid @RequestBody SubscriptionRequest subscribeRequest) {
+	public ResponseEntity<?> subscribe(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
+		SecurityResolver.authorize(subscriptionRequest.getCustomerId());
+		Subscription subscription = subscriptionRequest.toEntity();
+
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody
-				.success(subscriptionService.subscribe(subscribeRequest));
+				.success(subscriptionService.subscribe(subscription));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}
+
 }

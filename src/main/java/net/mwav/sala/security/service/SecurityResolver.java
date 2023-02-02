@@ -14,7 +14,7 @@ public class SecurityResolver {
         return (authentication == null) ? -1 : Long.valueOf(authentication.getName());
     }
 
-    public boolean matchesCustomer(long customerId) {
+    public boolean authorize(long customerId) {
         if (getCustomerId() != customerId) {
             throw new AccessDeniedException(null);
         }

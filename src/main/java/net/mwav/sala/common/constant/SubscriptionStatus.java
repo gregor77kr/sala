@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SubscriptionStatus {
 
+	CREATED("CREATED"),
 	PENDING("PENDING"),
 	FAILED("FAILED"),
 	COMPLETED("COMPLETED"),
-	HOLD("HOLD"),
 	CANCELED("CANCELED"),
 	REFUNDED("REFUNDED");
 
