@@ -36,7 +36,7 @@ public class CustomerService {
 
 		Customer customer = signUpRequest.toEntity();
 		customer.digestPassword();
-		customerRepository.save(customer);
+		customer = customerRepository.save(customer);
 
 		SignUpResponse response = SignUpResponse.from(customer);
 		return response;

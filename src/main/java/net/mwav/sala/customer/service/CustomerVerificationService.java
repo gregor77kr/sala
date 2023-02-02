@@ -30,7 +30,7 @@ public class CustomerVerificationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public CustomerVerification setVerification(long customerId) {
+	private CustomerVerification setVerification(long customerId) {
 		Customer customer = customerRepository.findById(customerId).orElseThrow(EntityNotFoundException::new);
 
 		Optional<CustomerVerification> optionalCustomerVerification = customerVerificationRepository
@@ -54,11 +54,11 @@ public class CustomerVerificationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void verify(long customerId, String verificationCode) throws ExpiryException {
+	public void verify(CustomerVerification verificationRequest) throws ExpiryException {
 		CustomerVerification customerVerification = customerVerificationRepository
-				.findByCustomerId(customerId)
+				.findByCustomer(verificationRequest.getCustomer())
 				.orElseThrow(EntityNotFoundException::new);
 
-		customerVerification.verify(verificationCode);
+		customerVerification.verify(verificationRequest.getVerificationCode());
 	}
 }
