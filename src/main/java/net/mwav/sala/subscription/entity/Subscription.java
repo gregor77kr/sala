@@ -3,7 +3,9 @@ package net.mwav.sala.subscription.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.util.ObjectUtils;
@@ -39,7 +42,7 @@ import net.mwav.sala.subscription.state.SubscriptionState;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@ToString
+@ToString(exclude = "items")
 @EqualsAndHashCode
 public class Subscription implements Serializable {
 
@@ -91,7 +94,8 @@ public class Subscription implements Serializable {
 	private PaymentMethod paymentMethod;
 
 	@Column(name = "subtotal_price")
-	private int subtotalPrice;
+	@Builder.Default
+	private double subtotalPrice = 0;
 
 	@Column(name = "billing_name")
 	private String billingName;
@@ -108,8 +112,11 @@ public class Subscription implements Serializable {
 	@Column(name = "billing_mobile_number")
 	private String billingMobileNumber;
 
+	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<SubscriptionItem> items;
+
 	// delegate data handling process to SubscriptionState
-	public void changeStatus(SubscriptionState s) {
+	public void setState(SubscriptionState s) {
 		s.set(this);
 	}
 
@@ -118,6 +125,33 @@ public class Subscription implements Serializable {
 		if (ObjectUtils.isEmpty(this.no)) {
 			this.no = RandomUtils.generateUUID();
 		}
+	}
+
+	public void setItems(List<SubscriptionItem> items) {
+		this.items = items;
+		calculateTotalPrice();
+		calculateSubtotalPrice();
+	}
+
+	public void calculatePrice() {
+		calculateTotalPrice();
+		calculateSubtotalPrice();
+	}
+
+	private void calculateTotalPrice() {
+		if (!ObjectUtils.isEmpty(this.items)) {
+			this.items.stream().forEach(i -> i.calculateItemPrice());
+		}
+	}
+
+	private void calculateSubtotalPrice() {
+		double subTotal = 0;
+		if (ObjectUtils.isEmpty(this.items)) {
+			subTotal = 0;
+		}
+		subTotal = this.items.stream().mapToDouble(i -> i.getItemPrice()).sum();
+
+		this.subtotalPrice = subTotal;
 	}
 
 	public static SubscriptionBuilder builder(Customer customer) {

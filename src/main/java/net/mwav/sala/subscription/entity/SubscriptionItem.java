@@ -29,7 +29,7 @@ import net.mwav.sala.common.constant.Currency;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@ToString
+@ToString(exclude = "subscription")
 @EqualsAndHashCode
 public class SubscriptionItem implements Serializable {
 
@@ -54,8 +54,12 @@ public class SubscriptionItem implements Serializable {
 	@Column(name = "quantity")
 	private int quantity;
 
-	@Column(name = "total_price")
-	private double totalPrice;
+	@Column(name = "item_price")
+	private double itemPrice;
+
+	public void calculateItemPrice() {
+		this.itemPrice = this.price * this.quantity;
+	}
 
 	public static SubscriptionItemBuilder builder(Subscription subscription) {
 		return subscriptionItemBuilder().subscription(subscription);

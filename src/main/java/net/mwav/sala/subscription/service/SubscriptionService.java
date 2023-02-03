@@ -1,5 +1,7 @@
 package net.mwav.sala.subscription.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -16,18 +18,11 @@ public class SubscriptionService {
 	private final SubscriptionRepository subscriptionRepository;
 
 	// subscribe
-	public Object subscribe(Subscription subscription) {
-		log.debug(subscription.toString());
-		subscription = createSubscription(subscription);
-
-		return null;
-	}
-
-	// create subscription routine
-	private Subscription createSubscription(Subscription subscription) {
-		subscription.changeStatus(new CreatedState());
-
-		return subscriptionRepository.save(subscription);
+	@Transactional
+	public void subscribe(Subscription subscription) {
+		subscription.setState(new CreatedState());
+		subscription = subscriptionRepository.save(subscription);
+		log.debug(subscription.getItems().toString());
 	}
 
 	// 취소

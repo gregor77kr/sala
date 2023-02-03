@@ -22,6 +22,7 @@ public class CreatedState implements SubscriptionState {
         subscription.setLastRenewalDateTime(now);
         subscription.setNextInvoiceDate(nextInvoiceDate);
         subscription.setNextRenewalDate(nextRenewalDate);
+        subscription.calculatePrice();
     }
 
 }
