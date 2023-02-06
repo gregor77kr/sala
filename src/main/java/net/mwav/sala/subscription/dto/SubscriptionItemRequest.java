@@ -28,7 +28,7 @@ public class SubscriptionItemRequest implements Serializable {
     }
 
     public SubscriptionItem toEntity() {
-        return SubscriptionItem.builder(null)
+        return SubscriptionItem.builder()
                 .currency(Currency.valueOf(currency))
                 .price(price)
                 .quantity(quantity)

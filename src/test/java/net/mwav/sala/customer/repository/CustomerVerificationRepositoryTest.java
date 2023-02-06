@@ -20,7 +20,8 @@ public class CustomerVerificationRepositoryTest {
 
 	@Test
 	void sendTest() {
-		Customer customer = Customer.builder("dummyuser")
+		Customer customer = Customer.builder()
+				.name("dummyuser")
 				.fullname("dummy user")
 				.email("admin@mwav.net")
 				.password("password")

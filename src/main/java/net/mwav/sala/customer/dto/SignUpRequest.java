@@ -46,7 +46,8 @@ public class SignUpRequest implements Serializable {
 	}
 
 	public Customer toEntity() {
-		return Customer.builder(this.name)
+		return Customer.builder()
+			.name(this.name)
 			.password(this.password)
 			.fullname(this.fullname)
 			.email(this.email)

@@ -22,7 +22,7 @@ import net.mwav.sala.common.util.HashUtils;
 
 @Entity
 @Table(name = "customer")
-@Builder(builderMethodName = "customerBuilder")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -65,7 +65,4 @@ public class Customer implements Serializable {
 		this.password = HashUtils.digest("SHA-256", this.password + this.salt);
 	}
 
-	public static CustomerBuilder builder(String name) {
-		return customerBuilder().name(name);
-	}
 }

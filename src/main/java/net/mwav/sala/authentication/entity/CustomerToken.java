@@ -28,7 +28,7 @@ import net.mwav.sala.customer.entity.Customer;
  */
 @Entity
 @Table(name = "customerToken")
-@Builder(builderMethodName = "customerTokenBuilder")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -55,7 +55,4 @@ public class CustomerToken implements Serializable {
 	@Setter
 	private String refreshToken;
 
-	public static CustomerTokenBuilder builder(Customer customer) {
-		return customerTokenBuilder().customer(customer);
-	}
 }

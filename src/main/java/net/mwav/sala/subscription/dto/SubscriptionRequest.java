@@ -76,11 +76,12 @@ public class SubscriptionRequest implements Serializable {
 	}
 
 	public Subscription toEntity() {
-		Customer customer = Customer.builder(null).id(customerId).build();
+		Customer customer = Customer.builder().id(customerId).build();
 
 		List<SubscriptionItem> subscriptionItems = items.stream().map(i -> i.toEntity()).collect(Collectors.toList());
 
-		return Subscription.builder(customer)
+		Subscription subscription = Subscription.builder()
+				.customer(customer)
 				.paymentPeriod(PaymentPeriod.valueOf(paymentPeriod))
 				.paymentMethod(PaymentMethod.valueOf(paymentMethod))
 				.billingName(billingName)
@@ -88,8 +89,10 @@ public class SubscriptionRequest implements Serializable {
 				.billingEmail(billingEmail)
 				.billingCompanyName(billingCompanyName)
 				.billingMobileNumber(billingMobileNumber)
-				.items(subscriptionItems)
 				.build();
+
+		subscription.setItems(subscriptionItems);
+		return subscription;
 	}
 
 }

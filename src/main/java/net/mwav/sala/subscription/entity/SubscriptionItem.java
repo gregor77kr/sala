@@ -25,7 +25,7 @@ import net.mwav.sala.common.constant.Currency;
 
 @Entity
 @Table(name = "subscription_item")
-@Builder(builderMethodName = "subscriptionItemBuilder")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -57,12 +57,11 @@ public class SubscriptionItem implements Serializable {
 	@Column(name = "item_price")
 	private double itemPrice;
 
+	public void setSubscription(Subscription subscription) {
+		this.subscription = (this.subscription == null) ? subscription : this.subscription;
+	}
+
 	public void calculateItemPrice() {
 		this.itemPrice = this.price * this.quantity;
 	}
-
-	public static SubscriptionItemBuilder builder(Subscription subscription) {
-		return subscriptionItemBuilder().subscription(subscription);
-	}
-
 }

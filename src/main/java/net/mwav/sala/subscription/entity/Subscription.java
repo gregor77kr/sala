@@ -19,8 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.util.ObjectUtils;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,7 +36,7 @@ import net.mwav.sala.subscription.state.SubscriptionState;
 
 @Entity
 @Table(name = "subscription")
-@Builder(builderMethodName = "subscriptionBuilder")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -121,16 +119,15 @@ public class Subscription implements Serializable {
 	}
 
 	// generate uuid when no data is null
-	public void setNo() {
-		if (ObjectUtils.isEmpty(this.no)) {
-			this.no = RandomUtils.generateUUID();
-		}
+	public void generateNo() {
+		this.no = (this.no == null) ? RandomUtils.generateUUID() : this.no;
 	}
 
 	public void setItems(List<SubscriptionItem> items) {
 		this.items = items;
-		calculateTotalPrice();
-		calculateSubtotalPrice();
+		this.items.forEach(i -> {
+			i.setSubscription(this);
+		});
 	}
 
 	public void calculatePrice() {
@@ -139,23 +136,19 @@ public class Subscription implements Serializable {
 	}
 
 	private void calculateTotalPrice() {
-		if (!ObjectUtils.isEmpty(this.items)) {
+		if (this.items != null) {
 			this.items.stream().forEach(i -> i.calculateItemPrice());
 		}
 	}
 
 	private void calculateSubtotalPrice() {
 		double subTotal = 0;
-		if (ObjectUtils.isEmpty(this.items)) {
+		if (this.items == null) {
 			subTotal = 0;
 		}
 		subTotal = this.items.stream().mapToDouble(i -> i.getItemPrice()).sum();
 
 		this.subtotalPrice = subTotal;
-	}
-
-	public static SubscriptionBuilder builder(Customer customer) {
-		return subscriptionBuilder().customer(customer);
 	}
 
 }

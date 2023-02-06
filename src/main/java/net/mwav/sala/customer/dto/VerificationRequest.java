@@ -30,9 +30,10 @@ public class VerificationRequest implements Serializable {
 	}
 
 	public CustomerVerification toEntity() {
-		Customer customer = Customer.builder(null).id(this.customerId).build();
+		Customer customer = Customer.builder().id(this.customerId).build();
 
-		return CustomerVerification.builder(customer)
+		return CustomerVerification.builder()
+				.customer(customer)
 				.verificationCode(this.verificationCode)
 				.build();
 	}

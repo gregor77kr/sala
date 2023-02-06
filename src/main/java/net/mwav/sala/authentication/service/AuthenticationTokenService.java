@@ -45,8 +45,9 @@ public class AuthenticationTokenService {
 		String accessToken = jwtTokenProvider.createAccessToken(subject, authorities);
 		String refreshtoken = jwtTokenProvider.createRefreshToken(subject);
 
-		Customer customer = Customer.builder(null).id(Long.valueOf(subject)).build();
-		CustomerToken customerToken = CustomerToken.builder(customer)
+		Customer customer = Customer.builder().id(Long.valueOf(subject)).build();
+		CustomerToken customerToken = CustomerToken.builder()
+				.customer(customer)
 				.accessToken(accessToken)
 				.refreshToken(refreshtoken)
 				.build();

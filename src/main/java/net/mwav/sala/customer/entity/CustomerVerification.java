@@ -25,7 +25,7 @@ import net.mwav.sala.common.util.RandomUtils;
 
 @Entity
 @Table(name = "customer_verification")
-@Builder(builderMethodName = "customerVerificationBuilder")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -54,10 +54,10 @@ public class CustomerVerification implements Serializable {
 	private LocalDateTime expiryDateTime;
 
 	public static CustomerVerification create(Customer customer) {
-		CustomerVerification customerAuth = CustomerVerification.builder(customer).build();
-		customerAuth.setAuthenticationRequest();
+		CustomerVerification customerVerification = CustomerVerification.builder().customer(customer).build();
+		customerVerification.setAuthenticationRequest();
 
-		return customerAuth;
+		return customerVerification;
 	}
 
 	public void setAuthenticationRequest() {
@@ -70,7 +70,7 @@ public class CustomerVerification implements Serializable {
 		if (!isValidInTime()) {
 			throw new ExpiryException();
 		}
-		
+
 		// TODO : need to replace RuntimeException to custom excpetion
 		if (!this.verificationCode.equals(verificationCode)) {
 			throw new RuntimeException();
@@ -92,7 +92,4 @@ public class CustomerVerification implements Serializable {
 		return true;
 	}
 
-	public static CustomerVerificationBuilder builder(Customer customer) {
-		return customerVerificationBuilder().customer(customer);
-	}
 }
