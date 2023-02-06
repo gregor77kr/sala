@@ -1,5 +1,6 @@
 package net.mwav.sala.subscription.service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ import net.mwav.sala.subscription.state.CreatedState;
 public class SubscriptionService {
 
 	private final SubscriptionRepository subscriptionRepository;
+
+	public Subscription getSubscription(long subscriptionId) {
+		return subscriptionRepository.findById(subscriptionId).orElseThrow(EntityNotFoundException::new);
+	}
 
 	// subscribe
 	@Transactional

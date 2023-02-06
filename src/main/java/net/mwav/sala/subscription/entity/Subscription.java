@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +42,7 @@ import net.mwav.sala.subscription.state.SubscriptionState;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@ToString(exclude = "items")
+@ToString
 @EqualsAndHashCode
 public class Subscription implements Serializable {
 
@@ -58,10 +60,10 @@ public class Subscription implements Serializable {
 	@Column(name = "subscription_no")
 	private String no;
 
-	@Column(name = "status")
+	@Column(name = "subscription_status")
 	@Enumerated(EnumType.STRING)
 	@Setter
-	private SubscriptionStatus status;
+	private SubscriptionStatus subscriptionStatus;
 
 	@Column(name = "creation_date_time")
 	@Setter
@@ -110,7 +112,8 @@ public class Subscription implements Serializable {
 	@Column(name = "billing_mobile_number")
 	private String billingMobileNumber;
 
-	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "subscription", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<SubscriptionItem> items;
 
 	// delegate data handling process to SubscriptionState
