@@ -28,9 +28,9 @@ public class SubscriptionController {
 	public ResponseEntity<?> subscribe(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
 		SecurityResolver.authorize(subscriptionRequest.getCustomerId());
 		Subscription subscription = subscriptionRequest.toEntity();
-
 		subscriptionService.subscribe(subscription);
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
+		
 		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}
 

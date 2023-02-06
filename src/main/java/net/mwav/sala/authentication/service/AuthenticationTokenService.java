@@ -12,8 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.authentication.dto.TokenRequest;
-import net.mwav.sala.authentication.dto.TokenResponse;
 import net.mwav.sala.authentication.entity.CustomerToken;
 import net.mwav.sala.authentication.jwt.JwtTokenProvider;
 import net.mwav.sala.authentication.repository.CustomerTokenRepository;
@@ -33,10 +31,9 @@ public class AuthenticationTokenService {
 	private final CustomerTokenRepository customerTokenRepository;
 
 	@Transactional
-	public TokenResponse createToken(TokenRequest tokenRequest) throws Exception {
+	public CustomerToken createToken(String name, String password) throws Exception {
 		// authenticate
-		Authentication authentication = securityService
-				.authenticate(tokenRequest.getName(), tokenRequest.getPassword());
+		Authentication authentication = securityService.authenticate(name, password);
 
 		// create jwt token
 		String subject = authentication.getName();
@@ -52,19 +49,15 @@ public class AuthenticationTokenService {
 				.refreshToken(refreshtoken)
 				.build();
 
-		customerTokenRepository.save(customerToken);
+		customerToken = customerTokenRepository.save(customerToken);
 
 		// return token
-		return TokenResponse.builder()
-				.accessToken(accessToken)
-				.refreshToken(refreshtoken)
-				.build();
+		return customerToken;
 	}
 
 	@Transactional
-	public TokenResponse reissue(String refreshToken) {
+	public CustomerToken reissue(String refreshToken) {
 		String subject = jwtTokenProvider.getSubject(refreshToken);
-
 		CustomerToken customerToken = customerTokenRepository
 				.findByCustomerIdAndRefreshToken(Long.valueOf(subject), refreshToken)
 				.orElseThrow(EntityNotFoundException::new);
@@ -75,9 +68,6 @@ public class AuthenticationTokenService {
 		customerToken.setAccessToken(jwtTokenProvider.createAccessToken(subject, authorities));
 		customerToken.setRefreshToken(jwtTokenProvider.createRefreshToken(subject));
 
-		return TokenResponse.builder()
-				.accessToken(customerToken.getAccessToken())
-				.refreshToken(customerToken.getRefreshToken())
-				.build();
+		return customerToken;
 	}
 }

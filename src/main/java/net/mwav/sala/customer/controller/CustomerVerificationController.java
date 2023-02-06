@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.common.dto.StandardResponseBody;
 import net.mwav.sala.common.exception.ExpiryException;
 import net.mwav.sala.customer.dto.VerificationRequest;
@@ -24,18 +23,16 @@ import net.mwav.sala.security.service.SecurityResolver;
 @RestController
 @RequestMapping(value = "/api/customers")
 @RequiredArgsConstructor
-@Slf4j
 public class CustomerVerificationController {
 
 	private final CustomerVerificationService customerVerificationService;
 
 	@PostMapping(value = "/verification/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> sendVerification(@PathVariable("customerId") long customerId) {
-		log.debug("customerId : " + customerId);
 		SecurityResolver.authorize(customerId);
 		customerVerificationService.sendVerification(customerId);
-
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
+
 		return ResponseEntity.status(HttpStatus.OK).body(standardResponseBody);
 	}
 
@@ -48,7 +45,6 @@ public class CustomerVerificationController {
 		}
 
 		SecurityResolver.authorize(customerId);
-
 		CustomerVerification customerVerification = verificationRequest.toEntity();
 		customerVerificationService.verify(customerVerification);
 

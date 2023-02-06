@@ -54,11 +54,11 @@ public class CustomerVerificationService {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public void verify(CustomerVerification verificationRequest) throws ExpiryException {
-		CustomerVerification customerVerification = customerVerificationRepository
-				.findByCustomer(verificationRequest.getCustomer())
+	public void verify(CustomerVerification customerVerification) throws ExpiryException {
+		CustomerVerification foundCustomerVerification = customerVerificationRepository
+				.findByCustomer(customerVerification.getCustomer())
 				.orElseThrow(EntityNotFoundException::new);
 
-		customerVerification.verify(verificationRequest.getVerificationCode());
+		foundCustomerVerification.verify(customerVerification.getVerificationCode());
 	}
 }

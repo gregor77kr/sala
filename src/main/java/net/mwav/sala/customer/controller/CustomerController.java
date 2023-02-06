@@ -19,6 +19,7 @@ import net.mwav.sala.common.dto.StandardResponseBody;
 import net.mwav.sala.customer.dto.ProfileResponse;
 import net.mwav.sala.customer.dto.SignUpRequest;
 import net.mwav.sala.customer.dto.SignUpResponse;
+import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.customer.service.CustomerService;
 
 @RestController
@@ -30,16 +31,20 @@ public class CustomerController {
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
+		Customer customer = signUpRequest.toEntity();
+		SignUpResponse signUpResponse = SignUpResponse.from(customerService.signUp(customer));
 		StandardResponseBody<SignUpResponse> standardResponseBody = StandardResponseBody
-				.success(customerService.signUp(signUpRequest));
+				.success(signUpResponse);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}
 
 	@GetMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getProfile(@PathVariable("customerId") long customerId) {
+		Customer customer = customerService.getProfile(customerId);
+		ProfileResponse profileResponse = ProfileResponse.from(customer);
 		StandardResponseBody<ProfileResponse> standardResponseBody = StandardResponseBody
-				.success(customerService.getProfile(customerId));
+				.success(profileResponse);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}

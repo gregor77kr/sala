@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.customer.dto.ProfileResponse;
-import net.mwav.sala.customer.dto.SignUpRequest;
-import net.mwav.sala.customer.dto.SignUpResponse;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.customer.repository.CustomerRepository;
 
@@ -21,32 +18,24 @@ public class CustomerService {
 
 	private final CustomerRepository customerRepository;
 
-	public void signIn() {
-
-	}
-
 	@Transactional(rollbackFor = Exception.class)
-	public SignUpResponse signUp(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
-		boolean isSignedUp = customerRepository.findByNameOrEmail(signUpRequest.getName(), signUpRequest.getEmail())
+	public Customer signUp(Customer customer) throws NoSuchAlgorithmException {
+		boolean isSignedUp = customerRepository.findByNameOrEmail(customer.getName(), customer.getEmail())
 				.isPresent();
 
 		if (isSignedUp) {
 			throw new DataIntegrityViolationException("이미 가입한 사용자입니다.");
 		}
 
-		Customer customer = signUpRequest.toEntity();
 		customer.digestPassword();
 		customer = customerRepository.save(customer);
 
-		SignUpResponse response = SignUpResponse.from(customer);
-		return response;
+		return customer;
 	}
 
-	public ProfileResponse getProfile(long customerId) {
+	public Customer getProfile(long customerId) {
 		Customer customer = customerRepository.findById(customerId).orElseThrow(EntityNotFoundException::new);
-		
-		ProfileResponse response = ProfileResponse.from(customer);
-		return response;
+		return customer;
 	}
 
 }
