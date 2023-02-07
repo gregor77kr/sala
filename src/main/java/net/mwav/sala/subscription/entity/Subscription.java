@@ -3,6 +3,7 @@ package net.mwav.sala.subscription.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -117,8 +118,8 @@ public class Subscription implements Serializable {
 	private List<SubscriptionItem> items;
 
 	// delegate data handling process to SubscriptionState
-	public void setState(SubscriptionState s) {
-		s.set(this);
+	public void changeState(SubscriptionState s) {
+		s.change(this);
 	}
 
 	// generate uuid when no data is null
@@ -126,32 +127,40 @@ public class Subscription implements Serializable {
 		this.no = (this.no == null) ? RandomUtils.generateUUID() : this.no;
 	}
 
-	public void setItems(List<SubscriptionItem> items) {
-		this.items = items;
+	public void addItems(List<SubscriptionItem> items) {
+		if (this.items == null) {
+			this.items = new ArrayList<>();
+		}
+
+		this.items.addAll(items);
 		this.items.forEach(i -> {
 			i.setSubscription(this);
 		});
 	}
-
+	
+	// calculate subtotal and total price of each items
 	public void calculatePrice() {
-		calculateTotalPrice();
+		calculateTotalItemPrice();
 		calculateSubtotalPrice();
 	}
-
-	private void calculateTotalPrice() {
+	
+	// synchronize price 
+	public void synchronizePrice() {
 		if (this.items != null) {
-			this.items.stream().forEach(i -> i.calculateItemPrice());
+			this.items.stream().forEach(i -> i.synchronizePrice());
 		}
 	}
 
-	private void calculateSubtotalPrice() {
-		double subTotal = 0;
-		if (this.items == null) {
-			subTotal = 0;
+	// calculate an item price of each item
+	private void calculateTotalItemPrice() {
+		if (this.items != null) {
+			this.items.stream().forEach(i -> i.calculateTotalItemPrice());
 		}
-		subTotal = this.items.stream().mapToDouble(i -> i.getItemPrice()).sum();
+	}
 
-		this.subtotalPrice = subTotal;
+	// calculate a subtotal
+	private void calculateSubtotalPrice() {
+		this.subtotalPrice = (this.items == null) ? 0 : this.items.stream().mapToDouble(i -> i.getTotalItemPrice()).sum();
 	}
 
 }

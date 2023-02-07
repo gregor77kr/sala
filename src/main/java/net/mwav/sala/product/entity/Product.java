@@ -1,13 +1,19 @@
 package net.mwav.sala.product.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,6 +22,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import net.mwav.sala.common.constant.Currency;
 
 @Entity
 @Table(name = "product")
@@ -27,19 +34,34 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class Product implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private long id;
+	private static final long serialVersionUID = 7704943995042716440L;
 
-    @Column(name = "name")
-    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "product_id")
+	private long id;
 
-    @Column(name = "description")
-    private String description;
+	@Column(name = "name")
+	private String name;
 
-    @Column(name = "is_active")
-    @Builder.Default
-    private boolean isActive = true;
+	@Column(name = "description")
+	private String description;
 
+	@Column(name = "is_active")
+	@Builder.Default
+	private boolean isActive = true;
+
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<ProductPrice> prices;
+
+	public double getPrice(Currency currency) {
+		if (this.prices == null) {
+			return 0;
+		}
+
+		return this.prices.stream().filter(p -> {
+			return p.matches(currency);
+		}).findFirst().get().getPrice();
+	}
 }

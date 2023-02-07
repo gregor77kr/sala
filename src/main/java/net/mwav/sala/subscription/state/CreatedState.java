@@ -10,7 +10,7 @@ import net.mwav.sala.subscription.entity.Subscription;
 public class CreatedState implements SubscriptionState {
 
     @Override
-    public void set(Subscription subscription) {
+    public void change(Subscription subscription) {
         LocalDateTime now = LocalDateTime.now();
         LocalDate nextRenewalDate = LocalDate.now().plusMonths((subscription.getPaymentPeriod() == PaymentPeriod.MONTHLY) ? 1 : 12);
         LocalDate nextInvoiceDate = nextRenewalDate.plusDays(-5);
@@ -23,6 +23,7 @@ public class CreatedState implements SubscriptionState {
         subscription.setNextRenewalDate(nextRenewalDate);
         
         subscription.generateNo();
+        subscription.synchronizePrice();
         subscription.calculatePrice();
     }
 

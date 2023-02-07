@@ -7,6 +7,6 @@ import net.mwav.sala.subscription.entity.Subscription;
  */
 public interface SubscriptionState {
     
-    public void set(Subscription t);
+    public void change(Subscription t);
 
 }

@@ -53,7 +53,7 @@ public class CustomerVerification implements Serializable {
 	@Column(name = "expiry_date_time")
 	private LocalDateTime expiryDateTime;
 
-	public static CustomerVerification create(Customer customer) {
+	public static CustomerVerification generate(Customer customer) {
 		CustomerVerification customerVerification = CustomerVerification.builder().customer(customer).build();
 		customerVerification.setAuthenticationRequest();
 

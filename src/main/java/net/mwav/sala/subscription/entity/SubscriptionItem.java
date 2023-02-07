@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import net.mwav.sala.common.constant.Currency;
+import net.mwav.sala.product.entity.Product;
 
 @Entity
 @Table(name = "subscription_item")
@@ -31,7 +32,7 @@ import net.mwav.sala.common.constant.Currency;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@ToString(exclude = "subscription")
+@ToString(exclude = {"subscription", "product"})
 @EqualsAndHashCode
 public class SubscriptionItem implements Serializable {
 
@@ -42,10 +43,15 @@ public class SubscriptionItem implements Serializable {
 	@Column(name = "subscription_item_id")
 	private long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "subscription_id")
 	@JsonBackReference
 	private Subscription subscription;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "product_id")
+	@JsonBackReference
+	private Product product;
 
 	@Column(name = "currency")
 	@Enumerated(EnumType.STRING)
@@ -57,14 +63,22 @@ public class SubscriptionItem implements Serializable {
 	@Column(name = "quantity")
 	private int quantity;
 
-	@Column(name = "item_price")
-	private double itemPrice;
-
+	@Column(name = "total_item_price")
+	private double totalItemPrice;
+	
+	// override setter for subscription field(only set when subsription is null)
 	public void setSubscription(Subscription subscription) {
 		this.subscription = (this.subscription == null) ? subscription : this.subscription;
 	}
-
-	public void calculateItemPrice() {
-		this.itemPrice = this.price * this.quantity;
+	
+	// calculate item price
+	public void calculateTotalItemPrice() {
+		this.totalItemPrice = this.price * this.quantity;
 	}
+	
+	// synchronize price in Product and Item
+	public void synchronizePrice() {
+		this.price = (this.product == null) ? 0 : this.product.getPrice(this.currency);
+	}
+	
 }

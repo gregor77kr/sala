@@ -41,7 +41,7 @@ public class CustomerVerificationService {
 			customerVerification = optionalCustomerVerification.get();
 			customerVerification.setAuthenticationRequest();
 		} else {
-			customerVerification = customerVerificationRepository.save(CustomerVerification.create(customer));
+			customerVerification = customerVerificationRepository.save(CustomerVerification.generate(customer));
 		}
 
 		return customerVerification;

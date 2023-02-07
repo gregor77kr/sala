@@ -91,7 +91,7 @@ public class SubscriptionRequest implements Serializable {
 				.billingMobileNumber(billingMobileNumber)
 				.build();
 
-		subscription.setItems(subscriptionItems);
+		subscription.addItems(subscriptionItems);
 		return subscription;
 	}
 

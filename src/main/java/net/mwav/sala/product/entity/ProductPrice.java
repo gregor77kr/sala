@@ -1,5 +1,6 @@
 package net.mwav.sala.product.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -29,11 +30,13 @@ import net.mwav.sala.common.constant.Currency;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@ToString
+@ToString(exclude = "product")
 @EqualsAndHashCode
-public class ProductPrice {
-    
-    @Id
+public class ProductPrice implements Serializable {
+	
+	private static final long serialVersionUID = -7212449753810341145L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_price_id")
     private long id;
@@ -42,21 +45,33 @@ public class ProductPrice {
     @JoinColumn(name = "product_id")
     private Product product;
 
-	@Column(name = "currency")
-	@Enumerated(EnumType.STRING)
-	private Currency currency;
+    @Column(name = "currency")
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @Column(name = "price")
-	private double price;
+    private double price;
 
     @Column(name = "is_active")
     @Builder.Default
     private boolean isActive = true;
 
     @Column(name = "creation_date_time")
-	private LocalDateTime creationDateTime;
+    private LocalDateTime creationDateTime;
 
-	@Column(name = "expiry_date_time")
-	private LocalDateTime expiryDateTime;
+    @Column(name = "expiry_date_time")
+    private LocalDateTime expiryDateTime;
+    
+    public boolean matches(Currency currency) {
+    	return (this.currency == currency) & isValidInTime();
+    }
 
+    public boolean isValidInTime() {
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isAfter(this.expiryDateTime) || now.isBefore(creationDateTime)) {
+            return false;
+        }
+
+        return (this.isActive == true);
+    }
 }

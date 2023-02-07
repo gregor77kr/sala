@@ -29,10 +29,10 @@ public class CustomerVerificationRepositoryTest {
 
 		customer = customerRepository.save(customer);
 
-		CustomerVerification customerVerification1 = CustomerVerification.create(customer);
+		CustomerVerification customerVerification1 = CustomerVerification.generate(customer);
 		customerVerification1 = customerVerificationRepository.save(customerVerification1);
 
-		CustomerVerification customerVerification2 = CustomerVerification.create(customer);
+		CustomerVerification customerVerification2 = CustomerVerification.generate(customer);
 		customerVerification2 = customerVerificationRepository.save(customerVerification2);
 
 		assertEquals(customer, customerVerification1.getCustomer());
