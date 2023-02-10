@@ -2,8 +2,6 @@ package net.mwav.sala.customer.service;
 
 import java.security.NoSuchAlgorithmException;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +31,8 @@ public class CustomerService {
 		return customer;
 	}
 
-	public Customer getProfile(long customerId) {
-		Customer customer = customerRepository.findById(customerId).orElseThrow(EntityNotFoundException::new);
+	public Customer findCustomer(long customerId) {
+		Customer customer = customerRepository.findById(customerId).orElse(null);
 		return customer;
 	}
 
