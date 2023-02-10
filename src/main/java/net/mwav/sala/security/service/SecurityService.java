@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.common.util.HashUtils;
+import net.mwav.sala.global.util.HashUtils;
 import net.mwav.sala.security.dto.CustomerDetails;
 
 @Service

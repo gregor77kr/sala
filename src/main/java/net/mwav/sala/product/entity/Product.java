@@ -23,8 +23,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import net.mwav.sala.common.constant.Currency;
-import net.mwav.sala.common.constant.PaymentPeriod;
+import net.mwav.sala.global.constant.Currency;
+import net.mwav.sala.global.constant.PaymentPeriod;
 
 @Entity
 @Table(name = "product")

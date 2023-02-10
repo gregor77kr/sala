@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import net.mwav.sala.common.constant.Currency;
+import net.mwav.sala.global.constant.Currency;
 import net.mwav.sala.product.entity.Product;
 
 @Entity

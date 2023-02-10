@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.mwav.sala.common.exception.ExpiryException;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.customer.entity.CustomerVerification;
 import net.mwav.sala.customer.repository.CustomerRepository;
 import net.mwav.sala.customer.repository.CustomerVerificationRepository;
+import net.mwav.sala.global.exception.ExpiryException;
 
 @Service
 @RequiredArgsConstructor

@@ -20,7 +20,7 @@ import net.mwav.sala.authentication.dto.TokenResponse;
 import net.mwav.sala.authentication.entity.CustomerToken;
 import net.mwav.sala.authentication.jwt.JwtWebResolver;
 import net.mwav.sala.authentication.service.AuthenticationTokenService;
-import net.mwav.sala.common.dto.StandardResponseBody;
+import net.mwav.sala.global.dto.StandardResponseBody;
 
 @RestController
 @RequestMapping(value = "/api/authentication")

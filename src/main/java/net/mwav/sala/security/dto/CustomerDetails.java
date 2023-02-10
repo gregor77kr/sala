@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Builder;
 import lombok.Value;
-import net.mwav.sala.common.constant.Role;
 import net.mwav.sala.customer.entity.Customer;
+import net.mwav.sala.global.constant.Role;
 
 @Value
 @Builder

@@ -20,8 +20,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import net.mwav.sala.common.exception.ExpiryException;
-import net.mwav.sala.common.util.RandomUtils;
+import net.mwav.sala.global.exception.ExpiryException;
+import net.mwav.sala.global.util.RandomUtils;
 
 @Entity
 @Table(name = "customer_verification")

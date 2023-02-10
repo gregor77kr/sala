@@ -3,8 +3,8 @@ package net.mwav.sala.subscription.state;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import net.mwav.sala.common.constant.PaymentPeriod;
-import net.mwav.sala.common.constant.SubscriptionStatus;
+import net.mwav.sala.global.constant.PaymentPeriod;
+import net.mwav.sala.global.constant.SubscriptionStatus;
 import net.mwav.sala.subscription.entity.Subscription;
 
 public class CreatedState implements SubscriptionState {

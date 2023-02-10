@@ -15,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 import net.mwav.sala.authentication.entity.CustomerToken;
 import net.mwav.sala.authentication.jwt.JwtTokenProvider;
 import net.mwav.sala.authentication.repository.CustomerTokenRepository;
-import net.mwav.sala.common.constant.Role;
 import net.mwav.sala.customer.entity.Customer;
+import net.mwav.sala.global.constant.Role;
 import net.mwav.sala.security.dto.Authority;
 import net.mwav.sala.security.service.SecurityService;
 

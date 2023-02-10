@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
-import net.mwav.sala.common.constant.PaymentMethod;
-import net.mwav.sala.common.constant.PaymentPeriod;
 import net.mwav.sala.customer.entity.Customer;
+import net.mwav.sala.global.constant.PaymentMethod;
+import net.mwav.sala.global.constant.PaymentPeriod;
 import net.mwav.sala.subscription.entity.Subscription;
 import net.mwav.sala.subscription.entity.SubscriptionItem;
 

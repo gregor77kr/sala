@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.common.dto.StandardResponseBody;
+import net.mwav.sala.global.dto.StandardResponseBody;
 import net.mwav.sala.security.service.SecurityResolver;
 import net.mwav.sala.subscription.dto.SubscriptionRequest;
 import net.mwav.sala.subscription.dto.SubscriptionResponse;

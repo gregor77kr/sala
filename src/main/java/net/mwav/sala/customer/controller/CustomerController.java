@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.common.dto.StandardResponseBody;
 import net.mwav.sala.customer.dto.ProfileResponse;
 import net.mwav.sala.customer.dto.SignUpRequest;
 import net.mwav.sala.customer.dto.SignUpResponse;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.customer.service.CustomerService;
+import net.mwav.sala.global.dto.StandardResponseBody;
 
 @RestController
 @RequestMapping(value = "/api/customers")

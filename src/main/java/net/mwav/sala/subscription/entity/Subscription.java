@@ -30,11 +30,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import net.mwav.sala.common.constant.PaymentMethod;
-import net.mwav.sala.common.constant.PaymentPeriod;
-import net.mwav.sala.common.constant.SubscriptionStatus;
-import net.mwav.sala.common.util.RandomUtils;
 import net.mwav.sala.customer.entity.Customer;
+import net.mwav.sala.global.constant.PaymentMethod;
+import net.mwav.sala.global.constant.PaymentPeriod;
+import net.mwav.sala.global.constant.SubscriptionStatus;
+import net.mwav.sala.global.util.RandomUtils;
 import net.mwav.sala.subscription.state.SubscriptionState;
 
 @Entity

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
-import net.mwav.sala.common.constant.Currency;
+import net.mwav.sala.global.constant.Currency;
 import net.mwav.sala.product.entity.Product;
 import net.mwav.sala.subscription.entity.SubscriptionItem;
 

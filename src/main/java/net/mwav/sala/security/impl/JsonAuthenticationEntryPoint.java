@@ -13,9 +13,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import net.mwav.sala.common.dto.ExceptionDetail;
-import net.mwav.sala.common.dto.ExceptionResponseBody;
-import net.mwav.sala.common.util.JsonUtils;
+import net.mwav.sala.global.dto.ExceptionDetail;
+import net.mwav.sala.global.dto.ExceptionResponseBody;
+import net.mwav.sala.global.util.JsonUtils;
 
 @Component
 public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {

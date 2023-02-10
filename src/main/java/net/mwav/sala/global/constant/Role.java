@@ -1,4 +1,4 @@
-package net.mwav.sala.common.constant;
+package net.mwav.sala.global.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

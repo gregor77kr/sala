@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.mwav.sala.common.dto.StandardResponseBody;
+import net.mwav.sala.global.dto.StandardResponseBody;
 import net.mwav.sala.product.dto.CategoryResponse;
 import net.mwav.sala.product.entity.Category;
 import net.mwav.sala.product.service.CategoryService;
