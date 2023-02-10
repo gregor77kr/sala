@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
 import net.mwav.sala.customer.entity.Customer;
+import net.mwav.sala.global.constant.Currency;
 import net.mwav.sala.global.constant.PaymentMethod;
 import net.mwav.sala.global.constant.PaymentPeriod;
 import net.mwav.sala.subscription.entity.Subscription;
@@ -32,6 +33,9 @@ public class SubscriptionRequest implements Serializable {
 
 	@NotBlank
 	private String paymentMethod;
+	
+	@NotBlank
+	private String currency;
 
 	@NotBlank
 	private String billingName;
@@ -57,6 +61,7 @@ public class SubscriptionRequest implements Serializable {
 	private SubscriptionRequest(@JsonProperty long customerId,
 			@JsonProperty String paymentPeriod,
 			@JsonProperty String paymentMethod,
+			@JsonProperty String currency,
 			@JsonProperty String billingName,
 			@JsonProperty String billingAddress,
 			@JsonProperty String billingEmail,
@@ -67,6 +72,7 @@ public class SubscriptionRequest implements Serializable {
 		this.customerId = customerId;
 		this.paymentPeriod = paymentPeriod;
 		this.paymentMethod = paymentMethod;
+		this.currency= currency;
 		this.billingName = billingName;
 		this.billingAddress = billingAddress;
 		this.billingEmail = billingEmail;
@@ -82,13 +88,14 @@ public class SubscriptionRequest implements Serializable {
 
 		Subscription subscription = Subscription.builder()
 				.customer(customer)
-				.paymentPeriod(PaymentPeriod.valueOf(paymentPeriod))
-				.paymentMethod(PaymentMethod.valueOf(paymentMethod))
-				.billingName(billingName)
-				.billingAddress(billingAddress)
-				.billingEmail(billingEmail)
-				.billingCompanyName(billingCompanyName)
-				.billingMobileNumber(billingMobileNumber)
+				.paymentPeriod(PaymentPeriod.valueOf(this.paymentPeriod))
+				.paymentMethod(PaymentMethod.valueOf(this.paymentMethod))
+				.currency(Currency.valueOf(this.currency))
+				.billingName(this.billingName)
+				.billingAddress(this.billingAddress)
+				.billingEmail(this.billingEmail)
+				.billingCompanyName(this.billingCompanyName)
+				.billingMobileNumber(this.billingMobileNumber)
 				.build();
 
 		subscription.addItems(subscriptionItems);

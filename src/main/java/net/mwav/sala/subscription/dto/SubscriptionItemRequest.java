@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
-import net.mwav.sala.global.constant.Currency;
 import net.mwav.sala.product.entity.Product;
 import net.mwav.sala.subscription.entity.SubscriptionItem;
 
@@ -17,8 +16,6 @@ public class SubscriptionItemRequest implements Serializable {
 
 	private long productId;
 
-	private String currency;
-
 	private double price;
 
 	private int quantity;
@@ -26,11 +23,9 @@ public class SubscriptionItemRequest implements Serializable {
 	@JsonCreator
 	private SubscriptionItemRequest(
 			@JsonProperty long productId,
-			@JsonProperty String currency,
 			@JsonProperty double price,
 			@JsonProperty int quantity) {
 		this.productId = productId;
-		this.currency = currency;
 		this.price = price;
 		this.quantity = quantity;
 	}
@@ -40,9 +35,8 @@ public class SubscriptionItemRequest implements Serializable {
 
 		return SubscriptionItem.builder()
 				.product(product)
-				.currency(Currency.valueOf(currency))
-				.price(price)
-				.quantity(quantity)
+				.price(this.price)
+				.quantity(this.quantity)
 				.build();
 	}
 }

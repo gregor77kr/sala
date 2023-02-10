@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import net.mwav.sala.global.constant.Currency;
 import net.mwav.sala.product.entity.Product;
 
 @Entity
@@ -55,10 +52,6 @@ public class SubscriptionItem implements Serializable {
 	@JsonBackReference
 	private Product product;
 
-	@Column(name = "currency")
-	@Enumerated(EnumType.STRING)
-	private Currency currency;
-
 	@Column(name = "price")
 	private double price;
 
@@ -80,7 +73,7 @@ public class SubscriptionItem implements Serializable {
 	
 	// synchronize price in Product and Item
 	public void synchronizePrice() {
-		this.price = (this.product == null) ? 0 : this.product.getPrice(this.getSubscription().getPaymentPeriod(), this.currency);
+		this.price = (this.product == null) ? 0 : this.product.getPrice(this.getSubscription().getPaymentPeriod(), this.getSubscription().getCurrency());
 	}
 	
 }

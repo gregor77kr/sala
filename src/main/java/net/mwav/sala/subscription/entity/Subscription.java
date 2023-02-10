@@ -31,6 +31,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
+import net.mwav.sala.global.constant.Currency;
 import net.mwav.sala.global.constant.PaymentMethod;
 import net.mwav.sala.global.constant.PaymentPeriod;
 import net.mwav.sala.global.constant.SubscriptionStatus;
@@ -88,11 +89,18 @@ public class Subscription implements Serializable {
 
 	@Column(name = "payment_period")
 	@Enumerated(EnumType.STRING)
+	@Setter
 	private PaymentPeriod paymentPeriod;
 
 	@Column(name = "payment_method")
 	@Enumerated(EnumType.STRING)
+	@Setter
 	private PaymentMethod paymentMethod;
+	
+	@Column(name = "currency")
+	@Enumerated(EnumType.STRING)
+	@Setter
+	private Currency currency;
 
 	@Column(name = "subtotal_price")
 	@Builder.Default
