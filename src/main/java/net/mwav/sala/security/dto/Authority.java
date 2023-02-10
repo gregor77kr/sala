@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.ObjectUtils;
 
+import lombok.ToString;
+
+@ToString
 public class Authority implements GrantedAuthority {
 
 	private static final long serialVersionUID = 8384627639568468060L;

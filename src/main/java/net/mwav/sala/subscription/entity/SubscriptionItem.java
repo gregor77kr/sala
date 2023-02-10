@@ -22,6 +22,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.common.constant.Currency;
 import net.mwav.sala.product.entity.Product;
@@ -43,13 +44,14 @@ public class SubscriptionItem implements Serializable {
 	@Column(name = "subscription_item_id")
 	private long id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "subscription_id")
 	@JsonBackReference
 	private Subscription subscription;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
+	@Setter
 	@JsonBackReference
 	private Product product;
 
@@ -78,7 +80,7 @@ public class SubscriptionItem implements Serializable {
 	
 	// synchronize price in Product and Item
 	public void synchronizePrice() {
-		this.price = (this.product == null) ? 0 : this.product.getPrice(this.currency);
+		this.price = (this.product == null) ? 0 : this.product.getPrice(this.getSubscription().getPaymentPeriod(), this.currency);
 	}
 	
 }

@@ -137,18 +137,21 @@ public class Subscription implements Serializable {
 			i.setSubscription(this);
 		});
 	}
-	
-	// calculate subtotal and total price of each items
+
+	// calculate a subtotal and total price of each items
 	public void calculatePrice() {
 		calculateTotalItemPrice();
 		calculateSubtotalPrice();
 	}
-	
+
 	// synchronize price 
 	public void synchronizePrice() {
 		if (this.items != null) {
 			this.items.stream().forEach(i -> i.synchronizePrice());
 		}
+		
+		// recalculate a price after synchronizing
+		calculatePrice();
 	}
 
 	// calculate an item price of each item
@@ -160,7 +163,8 @@ public class Subscription implements Serializable {
 
 	// calculate a subtotal
 	private void calculateSubtotalPrice() {
-		this.subtotalPrice = (this.items == null) ? 0 : this.items.stream().mapToDouble(i -> i.getTotalItemPrice()).sum();
+		this.subtotalPrice = (this.items == null) ? 0
+				: this.items.stream().mapToDouble(i -> i.getTotalItemPrice()).sum();
 	}
 
 }

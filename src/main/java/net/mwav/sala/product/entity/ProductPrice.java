@@ -49,8 +49,11 @@ public class ProductPrice implements Serializable {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    @Column(name = "price")
-    private double price;
+    @Column(name = "monthly_price")
+    private double montlyPrice;
+    
+    @Column(name = "annual_price")
+    private double annualPrice;
 
     @Column(name = "is_active")
     @Builder.Default

@@ -10,20 +10,22 @@ import net.mwav.sala.product.entity.Product;
 @Builder
 public class ProductResponse implements Serializable {
 
-    private long id;
+	private static final long serialVersionUID = -4614209846156206562L;
 
-    private String name;
+	private long id;
 
-    private String description;
+	private String name;
 
-    private boolean isActive;
+	private String description;
 
-    public static ProductResponse from(Product product) {
-        return ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .isActive(product.isActive())
-                .build();
-    }
+	private boolean isActive;
+
+	public static ProductResponse from(Product product) {
+		return ProductResponse.builder()
+				.id(product.getId())
+				.name(product.getName())
+				.description(product.getDescription())
+				.isActive(product.isActive())
+				.build();
+	}
 }

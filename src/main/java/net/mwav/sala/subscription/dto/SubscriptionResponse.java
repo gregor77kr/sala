@@ -14,59 +14,61 @@ import net.mwav.sala.subscription.entity.SubscriptionItem;
 @Builder
 public class SubscriptionResponse implements Serializable {
 
-    private long id;
+	private static final long serialVersionUID = 1032769317320994617L;
 
-    private String no;
+	private long id;
 
-    private String status;
+	private String no;
 
-    private LocalDateTime creationDateTime;
+	private String status;
 
-    private LocalDateTime expiryDateTime;
+	private LocalDateTime creationDateTime;
 
-    private LocalDateTime lastRenewalDateTime;
+	private LocalDateTime expiryDateTime;
 
-    private LocalDate nextRenewalDate;
+	private LocalDateTime lastRenewalDateTime;
 
-    private LocalDate nextInvoiceDate;
+	private LocalDate nextRenewalDate;
 
-    private String paymentPeriod;
+	private LocalDate nextInvoiceDate;
 
-    private String paymentMethod;
+	private String paymentPeriod;
 
-    private double subtotalPrice;
+	private String paymentMethod;
 
-    private String billingName;
+	private double subtotalPrice;
 
-    private String billingAddress;
+	private String billingName;
 
-    private String billingEmail;
+	private String billingAddress;
 
-    private String billingCompanyName;
+	private String billingEmail;
 
-    private String billingMobileNumber;
+	private String billingCompanyName;
 
-    private List<SubscriptionItem> items;
+	private String billingMobileNumber;
 
-    public static SubscriptionResponse from(Subscription subscription) {
-        return SubscriptionResponse.builder()
-                .id(subscription.getId())
-                .no(subscription.getNo())
-                .status(subscription.getSubscriptionStatus().getStatus())
-                .creationDateTime(subscription.getCreationDateTime())
-                .expiryDateTime(subscription.getExpiryDateTime())
-                .lastRenewalDateTime(subscription.getLastRenewalDateTime())
-                .nextRenewalDate(subscription.getNextRenewalDate())
-                .nextInvoiceDate(subscription.getNextInvoiceDate())
-                .paymentMethod(subscription.getPaymentMethod().getMethod())
-                .subtotalPrice(subscription.getSubtotalPrice())
-                .billingName(subscription.getBillingName())
-                .billingAddress(subscription.getBillingAddress())
-                .billingEmail(subscription.getBillingEmail())
-                .billingCompanyName(subscription.getBillingCompanyName())
-                .billingMobileNumber(subscription.getBillingMobileNumber())
-                .items(subscription.getItems())
-                .build();
-    }
-    
+	private List<SubscriptionItem> items;
+
+	public static SubscriptionResponse from(Subscription subscription) {
+		return SubscriptionResponse.builder()
+				.id(subscription.getId())
+				.no(subscription.getNo())
+				.status(subscription.getSubscriptionStatus().getStatus())
+				.creationDateTime(subscription.getCreationDateTime())
+				.expiryDateTime(subscription.getExpiryDateTime())
+				.lastRenewalDateTime(subscription.getLastRenewalDateTime())
+				.nextRenewalDate(subscription.getNextRenewalDate())
+				.nextInvoiceDate(subscription.getNextInvoiceDate())
+				.paymentMethod(subscription.getPaymentMethod().getMethod())
+				.subtotalPrice(subscription.getSubtotalPrice())
+				.billingName(subscription.getBillingName())
+				.billingAddress(subscription.getBillingAddress())
+				.billingEmail(subscription.getBillingEmail())
+				.billingCompanyName(subscription.getBillingCompanyName())
+				.billingMobileNumber(subscription.getBillingMobileNumber())
+				.items(subscription.getItems())
+				.build();
+	}
+
 }

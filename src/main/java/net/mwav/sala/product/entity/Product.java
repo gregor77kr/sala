@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import net.mwav.sala.common.constant.Currency;
+import net.mwav.sala.common.constant.PaymentPeriod;
 
 @Entity
 @Table(name = "product")
@@ -55,13 +57,15 @@ public class Product implements Serializable {
 	@JsonManagedReference
 	private List<ProductPrice> prices;
 
-	public double getPrice(Currency currency) {
+	public double getPrice(PaymentPeriod paymentPeriod, Currency currency) {
 		if (this.prices == null) {
 			return 0;
 		}
 
-		return this.prices.stream().filter(p -> {
+		 ProductPrice productPrice = this.prices.stream().filter(p -> {
 			return p.matches(currency);
-		}).findFirst().get().getPrice();
+		}).findFirst().orElseThrow(EntityNotFoundException::new);
+		
+		 return (paymentPeriod == PaymentPeriod.MONTHLY) ? productPrice.getMontlyPrice() : productPrice.getAnnualPrice();
 	}
 }

@@ -12,26 +12,28 @@ import net.mwav.sala.product.entity.Category;
 @Builder
 public class CategoryResponse implements Serializable {
 
-    private long id;
+	private static final long serialVersionUID = 2410910595924094028L;
 
-    private String name;
+	private long id;
 
-    private String description;
+	private String name;
 
-    private boolean isActive = true;
+	private String description;
 
-    private List<ProductResponse> products;
+	private boolean isActive = true;
 
-    public static CategoryResponse from(Category category) {
-        List<ProductResponse> productResponses = category.getProducts().stream().map(p -> {
-            return ProductResponse.from(p.getProduct());
-        }).collect(Collectors.toList());
+	private List<ProductResponse> products;
 
-        return CategoryResponse.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .description(category.getDescription())
-                .products(productResponses)
-                .build();
-    }
+	public static CategoryResponse from(Category category) {
+		List<ProductResponse> productResponses = category.getProducts().stream().map(p -> {
+			return ProductResponse.from(p.getProduct());
+		}).collect(Collectors.toList());
+
+		return CategoryResponse.builder()
+				.id(category.getId())
+				.name(category.getName())
+				.description(category.getDescription())
+				.products(productResponses)
+				.build();
+	}
 }
