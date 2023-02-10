@@ -1,0 +1,62 @@
+package net.mwav.sala.order.entity;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import net.mwav.sala.product.entity.Product;
+
+@Entity
+@Table(name = "order_item")
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
+@ToString(exclude = { "order", "product" })
+@EqualsAndHashCode
+public class OrderItem implements Serializable {
+
+	private static final long serialVersionUID = 4547890474116915296L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "order_item_id")
+	private long id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id")
+	@JsonBackReference
+	private Order order;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
+	@JsonBackReference
+	private Product product;
+
+	@Column(name = "price")
+	private double price;
+
+	@Column(name = "quantity")
+	private int quantity;
+
+	@Column(name = "total_item_price")
+	private double totalItemPrice;
+
+}

@@ -1,0 +1,106 @@
+package net.mwav.sala.order.entity;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import net.mwav.sala.customer.entity.Customer;
+import net.mwav.sala.global.constant.Currency;
+import net.mwav.sala.global.constant.OrderStatus;
+import net.mwav.sala.subscription.entity.Subscription;
+
+@Entity
+@Table(name = "order")
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
+@ToString
+@EqualsAndHashCode
+public class Order implements Serializable {
+
+	private static final long serialVersionUID = 3398934038310655259L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "order_id")
+	private long id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "subscription_id")
+	private Subscription subscription;
+
+	@Column(name = "order_no")
+	private String no;
+
+	@Column(name = "order_status")
+	private OrderStatus orderStatus;
+
+	@Column(name = "order_date")
+	@Setter
+	private LocalDateTime orderDate;
+
+	@Column(name = "period_start_date")
+	@Setter
+	private LocalDateTime periodStartDate;
+
+	@Column(name = "period_end_date")
+	@Setter
+	private LocalDateTime periodEndDate;
+
+	@Column(name = "currency")
+	@Enumerated(EnumType.STRING)
+	private Currency currency;
+
+	@Column(name = "subtotal_price")
+	@Builder.Default
+	private double subtotalPrice = 0;
+
+	@Column(name = "billing_name")
+	private String billingName;
+
+	@Column(name = "billing_address")
+	private String billingAddress;
+
+	@Column(name = "billing_email")
+	private String billingEmail;
+
+	@Column(name = "billing_company_name")
+	private String billingCompanyName;
+
+	@Column(name = "billing_mobile_number")
+	private String billingMobileNumber;
+
+	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<OrderItem> items;
+	
+}
