@@ -9,30 +9,25 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.mwav.sala.order.entity.Order;
-import net.mwav.sala.order.service.OrderService;
 import net.mwav.sala.product.entity.Product;
 import net.mwav.sala.product.service.ProductService;
 import net.mwav.sala.subscription.entity.Subscription;
 import net.mwav.sala.subscription.entity.SubscriptionItem;
+import net.mwav.sala.subscription.entity.SubscriptionOrder;
+import net.mwav.sala.subscription.entity.SubscriptionTransaction;
 import net.mwav.sala.subscription.repository.SubscriptionRepository;
-import net.mwav.sala.subscription.state.CreatedSubscription;
-import net.mwav.sala.transaction.entity.Transaction;
-import net.mwav.sala.transaction.service.TransactionService;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class SubscriptionService {
 
 	private final SubscriptionRepository subscriptionRepository;
 
 	private final ProductService productService;
 
-	private final OrderService orderService;
+	private final SubscriptionOrderService subscriptionOrderService;
 
-	private final TransactionService transactionService;
+	private final SubscriptionTransactionService subscriptionTransactionService;
 
 	// subscribe
 	@Transactional
@@ -42,9 +37,8 @@ public class SubscriptionService {
 		mapItemToProduct(items);
 
 		subscription = createSubscription(subscription);
-		Order order = createOrder(subscription);
-		log.debug(order.toString());
-		createTransaction(order);
+		SubscriptionOrder subscriptionOrder = createOrder(subscription);
+		createTransaction(subscriptionOrder);
 
 		return subscription;
 	}
@@ -66,23 +60,23 @@ public class SubscriptionService {
 
 	@Transactional
 	public Subscription createSubscription(Subscription subscription) {
-		subscription.changeState(new CreatedSubscription());
+		subscription.onCreate();
 		subscription = subscriptionRepository.save(subscription);
 		return subscription;
 	}
 
 	@Transactional
-	private Order createOrder(Subscription subscription) {
-		Order order = subscription.toOrder();
-		order = orderService.createOrder(order);
-		return order;
+	private SubscriptionOrder createOrder(Subscription subscription) {
+		SubscriptionOrder subscriptionOrder = subscription.toOrder();
+		subscriptionOrder = subscriptionOrderService.createOrder(subscriptionOrder);
+		return subscriptionOrder;
 	}
 
 	@Transactional
-	private Transaction createTransaction(Order order) {
-		Transaction transaction = order.toTransaction();
-		transaction = transactionService.createTransaction(transaction);
-		return transaction;
+	private SubscriptionTransaction createTransaction(SubscriptionOrder subcriptionOrder) {
+		SubscriptionTransaction subscriptionTransaction = subcriptionOrder.toTransaction();
+		subscriptionTransaction = subscriptionTransactionService.createTransaction(subscriptionTransaction);
+		return subscriptionTransaction;
 	}
 
 	// 취소

@@ -1,4 +1,4 @@
-package net.mwav.sala.order.entity;
+package net.mwav.sala.subscription.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -37,29 +37,26 @@ import net.mwav.sala.global.constant.PaymentMethod;
 import net.mwav.sala.global.constant.PaymentPeriod;
 import net.mwav.sala.global.constant.TransactionStatus;
 import net.mwav.sala.global.util.RandomUtils;
-import net.mwav.sala.order.state.OrderState;
-import net.mwav.sala.subscription.entity.Subscription;
-import net.mwav.sala.transaction.entity.Transaction;
 
 /**
  * This entity is a copy of subscription entity at the moment of creation.
  *
  */
 @Entity
-@Table(name = "order_list")
+@Table(name = "subscription_order")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @ToString
 @EqualsAndHashCode
-public class Order implements Serializable {
+public class SubscriptionOrder implements Serializable {
 
 	private static final long serialVersionUID = 3398934038310655259L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "order_id")
+	@Column(name = "subscription_order_id")
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -70,7 +67,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "subscription_id")
 	private Subscription subscription;
 
-	@Column(name = "order_no")
+	@Column(name = "subscription_order_no")
 	private String no;
 
 	@Column(name = "order_status")
@@ -108,12 +105,7 @@ public class Order implements Serializable {
 
 	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<OrderItem> items;
-
-	// delegate data handling process to OrderState
-	public void changeState(OrderState orderState) {
-		orderState.change(this);
-	}
+	private List<SubscriptionOrderItem> items;
 
 	// generate uuid when no data is null
 	public void generateNo() {
@@ -130,7 +122,7 @@ public class Order implements Serializable {
 		}
 	}
 
-	public void addItems(List<OrderItem> items) {
+	public void addItems(List<SubscriptionOrderItem> items) {
 		if (this.items == null) {
 			this.items = new ArrayList<>();
 		}
@@ -141,14 +133,20 @@ public class Order implements Serializable {
 		});
 	}
 
-	public Transaction toTransaction() {
-		Transaction transaction = Transaction.builder()
+	public void onCreate() {
+		generateNo();
+		setOrderStatus(OrderStatus.CREATED);
+		calculatePeriod();
+	}
+
+	public SubscriptionTransaction toTransaction() {
+		SubscriptionTransaction subscriptionTransaction = SubscriptionTransaction.builder()
 				.customer(this.customer)
 				.transactionStatus(TransactionStatus.PENDING)
-				.order(this)
+				.subscriptionOrder(this)
 				.build();
 
-		return transaction;
+		return subscriptionTransaction;
 	}
 
 }

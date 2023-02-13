@@ -1,4 +1,4 @@
-package net.mwav.sala.transaction.entity;
+package net.mwav.sala.subscription.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -25,23 +25,22 @@ import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.global.constant.TransactionStatus;
-import net.mwav.sala.order.entity.Order;
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "subscription_transaction")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @ToString
 @EqualsAndHashCode
-public class Transaction implements Serializable {
+public class SubscriptionTransaction implements Serializable {
 
 	private static final long serialVersionUID = 6304912106630716160L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "transaction_id")
+	@Column(name = "subscription_transaction_id")
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -49,8 +48,8 @@ public class Transaction implements Serializable {
 	private Customer customer;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "order_id")
-	private Order order;
+	@JoinColumn(name = "subscription_order_id")
+	private SubscriptionOrder subscriptionOrder;
 
 	@Column(name = "transaction_status")
 	@Enumerated(EnumType.STRING)

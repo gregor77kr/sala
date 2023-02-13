@@ -37,9 +37,6 @@ import net.mwav.sala.global.constant.PaymentMethod;
 import net.mwav.sala.global.constant.PaymentPeriod;
 import net.mwav.sala.global.constant.SubscriptionStatus;
 import net.mwav.sala.global.util.RandomUtils;
-import net.mwav.sala.order.entity.Order;
-import net.mwav.sala.order.entity.OrderItem;
-import net.mwav.sala.subscription.state.SubscriptionState;
 
 @Entity
 @Table(name = "subscription")
@@ -129,11 +126,6 @@ public class Subscription implements Serializable {
 	@JsonManagedReference
 	private List<SubscriptionItem> items;
 
-	// delegate data handling process to SubscriptionState
-	public void changeState(SubscriptionState subscriptionState) {
-		subscriptionState.change(this);
-	}
-
 	// generate uuid when no data is null
 	public void generateNo() {
 		this.no = (this.no == null) ? RandomUtils.generateUUID() : this.no;
@@ -189,9 +181,16 @@ public class Subscription implements Serializable {
 		});
 	}
 
+	public void onCreate() {
+		generateNo();
+		setSubscriptionStatus(SubscriptionStatus.CREATED);
+		calculateNextPeriod();
+		synchronizePrice();
+	}
+
 	// convert subscription entity to order entity
-	public Order toOrder() {
-		Order order = Order.builder()
+	public SubscriptionOrder toOrder() {
+		SubscriptionOrder subscriptionOrder = SubscriptionOrder.builder()
 				.customer(this.customer)
 				.subscription(this)
 				.paymentPeriod(this.paymentPeriod)
@@ -200,8 +199,8 @@ public class Subscription implements Serializable {
 				.subtotalPrice(this.subtotalPrice)
 				.build();
 
-		List<OrderItem> orderItems = this.items.stream().map(i -> {
-			OrderItem item = OrderItem.builder()
+		List<SubscriptionOrderItem> subscriptionOrderItems = this.items.stream().map(i -> {
+			SubscriptionOrderItem item = SubscriptionOrderItem.builder()
 					.product(i.getProduct())
 					.quantity(i.getQuantity())
 					.price(i.getPrice())
@@ -210,8 +209,8 @@ public class Subscription implements Serializable {
 			return item;
 		}).collect(Collectors.toList());
 
-		order.addItems(orderItems);
-		return order;
+		subscriptionOrder.addItems(subscriptionOrderItems);
+		return subscriptionOrder;
 	}
 
 }
