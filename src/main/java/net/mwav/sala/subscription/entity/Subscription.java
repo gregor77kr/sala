@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,6 +37,8 @@ import net.mwav.sala.global.constant.PaymentMethod;
 import net.mwav.sala.global.constant.PaymentPeriod;
 import net.mwav.sala.global.constant.SubscriptionStatus;
 import net.mwav.sala.global.util.RandomUtils;
+import net.mwav.sala.order.entity.Order;
+import net.mwav.sala.order.entity.OrderItem;
 import net.mwav.sala.subscription.state.SubscriptionState;
 
 @Entity
@@ -96,7 +99,7 @@ public class Subscription implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Setter
 	private PaymentMethod paymentMethod;
-	
+
 	@Column(name = "currency")
 	@Enumerated(EnumType.STRING)
 	@Setter
@@ -126,8 +129,8 @@ public class Subscription implements Serializable {
 	private List<SubscriptionItem> items;
 
 	// delegate data handling process to SubscriptionState
-	public void changeState(SubscriptionState s) {
-		s.change(this);
+	public void changeState(SubscriptionState subscriptionState) {
+		subscriptionState.change(this);
 	}
 
 	// generate uuid when no data is null
@@ -157,7 +160,7 @@ public class Subscription implements Serializable {
 		if (this.items != null) {
 			this.items.stream().forEach(i -> i.synchronizePrice());
 		}
-		
+
 		// recalculate a price after synchronizing
 		calculatePrice();
 	}
@@ -173,6 +176,36 @@ public class Subscription implements Serializable {
 	private void calculateSubtotalPrice() {
 		this.subtotalPrice = (this.items == null) ? 0
 				: this.items.stream().mapToDouble(i -> i.getTotalItemPrice()).sum();
+	}
+	
+	// convert subscription entity to order entity
+	public Order toOrder() {
+		Order order = Order.builder()
+				.customer(this.customer)
+				.subscription(this)
+				.paymentPeriod(this.paymentPeriod)
+				.paymentMethod(this.paymentMethod)
+				.currency(this.currency)
+				.subtotalPrice(this.subtotalPrice)
+				.billingName(this.billingName)
+				.billingAddress(this.billingAddress)
+				.billingEmail(this.billingEmail)
+				.billingCompanyName(this.billingCompanyName)
+				.billingMobileNumber(this.billingMobileNumber)
+				.build();
+
+		List<OrderItem> orderItems = this.items.stream().map(i -> {
+			OrderItem item = OrderItem.builder()
+					.product(i.getProduct())
+					.quantity(i.getQuantity())
+					.price(i.getPrice())
+					.totalItemPrice(i.getTotalItemPrice())
+					.build();
+			return item;
+		}).collect(Collectors.toList());
+
+		order.addItems(orderItems);
+		return order;
 	}
 
 }

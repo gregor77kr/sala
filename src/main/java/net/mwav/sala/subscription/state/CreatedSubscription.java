@@ -7,7 +7,7 @@ import net.mwav.sala.global.constant.PaymentPeriod;
 import net.mwav.sala.global.constant.SubscriptionStatus;
 import net.mwav.sala.subscription.entity.Subscription;
 
-public class CreatedState implements SubscriptionState {
+public class CreatedSubscription implements SubscriptionState {
 
     @Override
     public void change(Subscription subscription) {

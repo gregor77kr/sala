@@ -30,7 +30,7 @@ import net.mwav.sala.product.entity.Product;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@ToString(exclude = {"subscription", "product"})
+@ToString(exclude = { "subscription", "product" })
 @EqualsAndHashCode
 public class SubscriptionItem implements Serializable {
 
@@ -60,20 +60,22 @@ public class SubscriptionItem implements Serializable {
 
 	@Column(name = "total_item_price")
 	private double totalItemPrice;
-	
+
 	// override setter for subscription field(only set when subsription is null)
 	public void setSubscription(Subscription subscription) {
 		this.subscription = (this.subscription == null) ? subscription : this.subscription;
 	}
-	
+
 	// calculate item price
 	public void calculateTotalItemPrice() {
 		this.totalItemPrice = this.price * this.quantity;
 	}
-	
+
 	// synchronize price in Product and Item
 	public void synchronizePrice() {
-		this.price = (this.product == null) ? 0 : this.product.getPrice(this.getSubscription().getPaymentPeriod(), this.getSubscription().getCurrency());
+		this.price = (this.product == null) ? 0
+				: this.product
+						.getPrice(this.getSubscription().getPaymentPeriod(), this.getSubscription().getCurrency());
 	}
-	
+
 }

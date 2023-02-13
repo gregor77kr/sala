@@ -58,5 +58,10 @@ public class OrderItem implements Serializable {
 
 	@Column(name = "total_item_price")
 	private double totalItemPrice;
+	
+	// override setter for order field(only set when order is null)
+	public void setOrder(Order order) {
+		this.order = (this.order == null) ? order : this.order;
+	}
 
 }

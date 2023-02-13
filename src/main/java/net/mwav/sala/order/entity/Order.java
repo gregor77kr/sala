@@ -1,7 +1,9 @@
 package net.mwav.sala.order.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,10 +33,14 @@ import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.global.constant.Currency;
 import net.mwav.sala.global.constant.OrderStatus;
+import net.mwav.sala.global.constant.PaymentMethod;
+import net.mwav.sala.global.constant.PaymentPeriod;
+import net.mwav.sala.global.util.RandomUtils;
+import net.mwav.sala.order.state.OrderState;
 import net.mwav.sala.subscription.entity.Subscription;
 
 @Entity
-@Table(name = "order")
+@Table(name = "order_list")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -62,19 +68,31 @@ public class Order implements Serializable {
 	private String no;
 
 	@Column(name = "order_status")
+	@Enumerated(EnumType.STRING)
+	@Setter
 	private OrderStatus orderStatus;
 
 	@Column(name = "order_date")
 	@Setter
 	private LocalDateTime orderDate;
 
+	@Column(name = "payment_period")
+	@Enumerated(EnumType.STRING)
+	@Setter
+	private PaymentPeriod paymentPeriod;
+
+	@Column(name = "payment_method")
+	@Enumerated(EnumType.STRING)
+	@Setter
+	private PaymentMethod paymentMethod;
+
 	@Column(name = "period_start_date")
 	@Setter
-	private LocalDateTime periodStartDate;
+	private LocalDate periodStartDate;
 
 	@Column(name = "period_end_date")
 	@Setter
-	private LocalDateTime periodEndDate;
+	private LocalDate periodEndDate;
 
 	@Column(name = "currency")
 	@Enumerated(EnumType.STRING)
@@ -103,4 +121,25 @@ public class Order implements Serializable {
 	@JsonManagedReference
 	private List<OrderItem> items;
 	
+	// delegate data handling process to OrderState
+	public void changeState(OrderState orderState) {
+		orderState.change(this);
+	}
+	
+	// generate uuid when no data is null
+	public void generateNo() {
+		this.no = (this.no == null) ? RandomUtils.generateUUID() : this.no;
+	}
+
+	public void addItems(List<OrderItem> items) {
+		if (this.items == null) {
+			this.items = new ArrayList<>();
+		}
+
+		this.items.addAll(items);
+		this.items.forEach(i -> {
+			i.setOrder(this);
+		});
+	}
+
 }

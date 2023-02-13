@@ -9,12 +9,14 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import net.mwav.sala.order.entity.Order;
+import net.mwav.sala.order.service.OrderService;
 import net.mwav.sala.product.entity.Product;
 import net.mwav.sala.product.service.ProductService;
 import net.mwav.sala.subscription.entity.Subscription;
 import net.mwav.sala.subscription.entity.SubscriptionItem;
 import net.mwav.sala.subscription.repository.SubscriptionRepository;
-import net.mwav.sala.subscription.state.CreatedState;
+import net.mwav.sala.subscription.state.CreatedSubscription;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,8 @@ public class SubscriptionService {
 
 	private final ProductService productService;
 
+	private final OrderService orderService;
+
 	// subscribe
 	@Transactional
 	public Subscription subscribe(Subscription subscription) {
@@ -31,8 +35,9 @@ public class SubscriptionService {
 		List<SubscriptionItem> items = subscription.getItems();
 		mapItemToProduct(items);
 
-		subscription.changeState(new CreatedState());
-		subscription = subscriptionRepository.save(subscription);
+		subscription = createSubscription(subscription);
+		createOrder(subscription);
+
 		return subscription;
 	}
 
@@ -49,6 +54,20 @@ public class SubscriptionService {
 
 			i.setProduct(product);
 		});
+	}
+
+	@Transactional
+	public Subscription createSubscription(Subscription subscription) {
+		subscription.changeState(new CreatedSubscription());
+		subscription = subscriptionRepository.save(subscription);
+		return subscription;
+	}
+
+	@Transactional
+	private Order createOrder(Subscription subscription) {
+		Order order = subscription.toOrder();
+		order = orderService.createOrder(order);
+		return order;
 	}
 
 	// 취소
