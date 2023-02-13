@@ -1,6 +1,7 @@
 package net.mwav.sala.customer.service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,8 @@ public class CustomerService {
 		return customer;
 	}
 
-	public Customer findCustomer(long customerId) {
-		Customer customer = customerRepository.findById(customerId).orElse(null);
-		return customer;
+	public Optional<Customer> findCustomer(long customerId) {
+		return customerRepository.findById(customerId);
 	}
 
 }

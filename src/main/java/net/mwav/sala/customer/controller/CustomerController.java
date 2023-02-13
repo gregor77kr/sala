@@ -41,7 +41,7 @@ public class CustomerController {
 
 	@GetMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findCustomer(@PathVariable("customerId") long customerId) {
-		Customer customer = customerService.findCustomer(customerId);
+		Customer customer = customerService.findCustomer(customerId).orElse(null);
 		ProfileResponse profileResponse = ProfileResponse.from(customer);
 		StandardResponseBody<ProfileResponse> standardResponseBody = StandardResponseBody
 				.success(profileResponse);

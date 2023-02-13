@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.customer.entity.Customer;
 import net.mwav.sala.customer.entity.CustomerVerification;
-import net.mwav.sala.customer.repository.CustomerRepository;
 import net.mwav.sala.customer.repository.CustomerVerificationRepository;
 import net.mwav.sala.global.exception.ExpiryException;
 
@@ -20,7 +19,7 @@ import net.mwav.sala.global.exception.ExpiryException;
 @Slf4j
 public class CustomerVerificationService {
 
-	private final CustomerRepository customerRepository;
+	private final CustomerService customerService;
 
 	private final CustomerVerificationRepository customerVerificationRepository;
 
@@ -31,7 +30,7 @@ public class CustomerVerificationService {
 
 	@Transactional(rollbackFor = Exception.class)
 	private CustomerVerification setVerification(long customerId) {
-		Customer customer = customerRepository.findById(customerId).orElseThrow(EntityNotFoundException::new);
+		Customer customer = customerService.findCustomer(customerId).orElseThrow(EntityNotFoundException::new);
 
 		Optional<CustomerVerification> optionalCustomerVerification = customerVerificationRepository
 				.findByCustomerId(customer.getId());
