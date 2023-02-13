@@ -35,10 +35,16 @@ import net.mwav.sala.global.constant.Currency;
 import net.mwav.sala.global.constant.OrderStatus;
 import net.mwav.sala.global.constant.PaymentMethod;
 import net.mwav.sala.global.constant.PaymentPeriod;
+import net.mwav.sala.global.constant.TransactionStatus;
 import net.mwav.sala.global.util.RandomUtils;
 import net.mwav.sala.order.state.OrderState;
 import net.mwav.sala.subscription.entity.Subscription;
+import net.mwav.sala.transaction.entity.Transaction;
 
+/**
+ * This entity is a copy of subscription entity at the moment of creation.
+ *
+ */
 @Entity
 @Table(name = "order_list")
 @Builder
@@ -72,18 +78,16 @@ public class Order implements Serializable {
 	@Setter
 	private OrderStatus orderStatus;
 
-	@Column(name = "order_date")
-	@Setter
-	private LocalDateTime orderDate;
+	@Column(name = "order_date_time")
+	@Builder.Default
+	private LocalDateTime orderDateTime = LocalDateTime.now();
 
 	@Column(name = "payment_period")
 	@Enumerated(EnumType.STRING)
-	@Setter
 	private PaymentPeriod paymentPeriod;
 
 	@Column(name = "payment_method")
 	@Enumerated(EnumType.STRING)
-	@Setter
 	private PaymentMethod paymentMethod;
 
 	@Column(name = "period_start_date")
@@ -105,15 +109,25 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<OrderItem> items;
-	
+
 	// delegate data handling process to OrderState
 	public void changeState(OrderState orderState) {
 		orderState.change(this);
 	}
-	
+
 	// generate uuid when no data is null
 	public void generateNo() {
 		this.no = (this.no == null) ? RandomUtils.generateUUID() : this.no;
+	}
+
+	public void calculatePeriod() {
+		if (this.paymentPeriod != null) {
+			LocalDate stardDate = LocalDate.now();
+			LocalDate endDate = LocalDate.now().plusMonths((this.paymentPeriod == PaymentPeriod.MONTHLY) ? 1 : 12);
+
+			this.periodStartDate = stardDate;
+			this.periodEndDate = endDate;
+		}
 	}
 
 	public void addItems(List<OrderItem> items) {
@@ -125,6 +139,16 @@ public class Order implements Serializable {
 		this.items.forEach(i -> {
 			i.setOrder(this);
 		});
+	}
+
+	public Transaction toTransaction() {
+		Transaction transaction = Transaction.builder()
+				.customer(this.customer)
+				.transactionStatus(TransactionStatus.PENDING)
+				.order(this)
+				.build();
+
+		return transaction;
 	}
 
 }

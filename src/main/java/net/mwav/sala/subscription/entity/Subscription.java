@@ -71,16 +71,17 @@ public class Subscription implements Serializable {
 	private SubscriptionStatus subscriptionStatus;
 
 	@Column(name = "creation_date_time")
-	@Setter
-	private LocalDateTime creationDateTime;
+	@Builder.Default
+	private LocalDateTime creationDateTime = LocalDateTime.now();
 
 	@Column(name = "expiry_date_time")
-	@Setter
-	private LocalDateTime expiryDateTime;
+	@Builder.Default
+	private LocalDateTime expiryDateTime = LocalDateTime.of(9999, 12, 31, 0, 0);
 
 	@Column(name = "last_renewal_date_time")
+	@Builder.Default
 	@Setter
-	private LocalDateTime lastRenewalDateTime;
+	private LocalDateTime lastRenewalDateTime = LocalDateTime.now();
 
 	@Column(name = "next_renewal_date")
 	@Setter
@@ -138,21 +139,20 @@ public class Subscription implements Serializable {
 		this.no = (this.no == null) ? RandomUtils.generateUUID() : this.no;
 	}
 
-	public void addItems(List<SubscriptionItem> items) {
-		if (this.items == null) {
-			this.items = new ArrayList<>();
-		}
-
-		this.items.addAll(items);
-		this.items.forEach(i -> {
-			i.setSubscription(this);
-		});
-	}
-
 	// calculate a subtotal and total price of each items
 	public void calculatePrice() {
 		calculateTotalItemPrice();
 		calculateSubtotalPrice();
+	}
+
+	public void calculateNextPeriod() {
+		if (this.paymentPeriod != null) {
+			LocalDate nextRenewalDate = LocalDate.now()
+					.plusMonths((this.paymentPeriod == PaymentPeriod.MONTHLY) ? 1 : 12);
+
+			this.nextNotificationDate = nextRenewalDate.plusDays(-5);
+			this.nextRenewalDate = nextRenewalDate;
+		}
 	}
 
 	// synchronize price 
@@ -178,9 +178,21 @@ public class Subscription implements Serializable {
 				: this.items.stream().mapToDouble(i -> i.getTotalItemPrice()).sum();
 	}
 
+	public void addItems(List<SubscriptionItem> items) {
+		if (this.items == null) {
+			this.items = new ArrayList<>();
+		}
+
+		this.items.addAll(items);
+		this.items.forEach(i -> {
+			i.setSubscription(this);
+		});
+	}
+
 	// convert subscription entity to order entity
 	public Order toOrder() {
 		Order order = Order.builder()
+				.customer(this.customer)
 				.subscription(this)
 				.paymentPeriod(this.paymentPeriod)
 				.paymentMethod(this.paymentMethod)
