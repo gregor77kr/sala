@@ -86,9 +86,9 @@ public class Subscription implements Serializable {
 	@Setter
 	private LocalDate nextRenewalDate;
 
-	@Column(name = "next_invoice_date")
+	@Column(name = "next_notification_date")
 	@Setter
-	private LocalDate nextInvoiceDate;
+	private LocalDate nextNotificationDate;
 
 	@Column(name = "payment_period")
 	@Enumerated(EnumType.STRING)
@@ -177,21 +177,15 @@ public class Subscription implements Serializable {
 		this.subtotalPrice = (this.items == null) ? 0
 				: this.items.stream().mapToDouble(i -> i.getTotalItemPrice()).sum();
 	}
-	
+
 	// convert subscription entity to order entity
 	public Order toOrder() {
 		Order order = Order.builder()
-				.customer(this.customer)
 				.subscription(this)
 				.paymentPeriod(this.paymentPeriod)
 				.paymentMethod(this.paymentMethod)
 				.currency(this.currency)
 				.subtotalPrice(this.subtotalPrice)
-				.billingName(this.billingName)
-				.billingAddress(this.billingAddress)
-				.billingEmail(this.billingEmail)
-				.billingCompanyName(this.billingCompanyName)
-				.billingMobileNumber(this.billingMobileNumber)
 				.build();
 
 		List<OrderItem> orderItems = this.items.stream().map(i -> {

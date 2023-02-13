@@ -102,21 +102,6 @@ public class Order implements Serializable {
 	@Builder.Default
 	private double subtotalPrice = 0;
 
-	@Column(name = "billing_name")
-	private String billingName;
-
-	@Column(name = "billing_address")
-	private String billingAddress;
-
-	@Column(name = "billing_email")
-	private String billingEmail;
-
-	@Column(name = "billing_company_name")
-	private String billingCompanyName;
-
-	@Column(name = "billing_mobile_number")
-	private String billingMobileNumber;
-
 	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<OrderItem> items;

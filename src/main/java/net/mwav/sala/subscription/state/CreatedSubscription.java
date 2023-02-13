@@ -9,21 +9,22 @@ import net.mwav.sala.subscription.entity.Subscription;
 
 public class CreatedSubscription implements SubscriptionState {
 
-    @Override
-    public void change(Subscription subscription) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDate nextRenewalDate = LocalDate.now().plusMonths((subscription.getPaymentPeriod() == PaymentPeriod.MONTHLY) ? 1 : 12);
-        LocalDate nextInvoiceDate = nextRenewalDate.plusDays(-5);
-        
-        subscription.generateNo();
-        subscription.setSubscriptionStatus(SubscriptionStatus.CREATED);
-        subscription.setCreationDateTime(now);
-        subscription.setExpiryDateTime(LocalDateTime.of(9999, 12, 31, 0, 0));
-        subscription.setLastRenewalDateTime(now);
-        subscription.setNextInvoiceDate(nextInvoiceDate);
-        subscription.setNextRenewalDate(nextRenewalDate);
-        
-        subscription.synchronizePrice();
-    }
+	@Override
+	public void change(Subscription subscription) {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDate nextRenewalDate = LocalDate.now()
+				.plusMonths((subscription.getPaymentPeriod() == PaymentPeriod.MONTHLY) ? 1 : 12);
+		LocalDate nextNotificationDate = nextRenewalDate.plusDays(-5);
+
+		subscription.generateNo();
+		subscription.setSubscriptionStatus(SubscriptionStatus.CREATED);
+		subscription.setCreationDateTime(now);
+		subscription.setExpiryDateTime(LocalDateTime.of(9999, 12, 31, 0, 0));
+		subscription.setLastRenewalDateTime(now);
+		subscription.setNextNotificationDate(nextNotificationDate);
+		subscription.setNextRenewalDate(nextRenewalDate);
+
+		subscription.synchronizePrice();
+	}
 
 }

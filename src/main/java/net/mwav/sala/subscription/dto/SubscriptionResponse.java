@@ -24,13 +24,9 @@ public class SubscriptionResponse implements Serializable {
 
 	private LocalDateTime creationDateTime;
 
-	private LocalDateTime expiryDateTime;
-
 	private LocalDateTime lastRenewalDateTime;
 
 	private LocalDate nextRenewalDate;
-
-	private LocalDate nextInvoiceDate;
 
 	private String paymentPeriod;
 
@@ -56,10 +52,8 @@ public class SubscriptionResponse implements Serializable {
 				.no(subscription.getNo())
 				.status(subscription.getSubscriptionStatus().getStatus())
 				.creationDateTime(subscription.getCreationDateTime())
-				.expiryDateTime(subscription.getExpiryDateTime())
 				.lastRenewalDateTime(subscription.getLastRenewalDateTime())
 				.nextRenewalDate(subscription.getNextRenewalDate())
-				.nextInvoiceDate(subscription.getNextInvoiceDate())
 				.paymentMethod(subscription.getPaymentMethod().getMethod())
 				.subtotalPrice(subscription.getSubtotalPrice())
 				.billingName(subscription.getBillingName())
