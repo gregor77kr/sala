@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import net.mwav.sala.global.dto.StandardResponseBody;
 import net.mwav.sala.security.service.SecurityResolver;
 import net.mwav.sala.subscription.dto.SubscriptionRequest;
+import net.mwav.sala.subscription.dto.SubscriptionResponse;
 import net.mwav.sala.subscription.entity.Subscription;
 import net.mwav.sala.subscription.service.SubscriptionService;
 
@@ -28,8 +29,9 @@ public class SubscriptionController {
 	public ResponseEntity<?> subscribe(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
 		SecurityResolver.authorize(subscriptionRequest.getCustomerId());
 		Subscription subscription = subscriptionRequest.toEntity();
-		subscriptionService.subscribe(subscription);
-		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
+		SubscriptionResponse subscriptionResponse = SubscriptionResponse
+				.from(subscriptionService.subscribe(subscription));
+		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success(subscriptionResponse);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}

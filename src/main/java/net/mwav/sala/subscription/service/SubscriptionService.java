@@ -14,7 +14,6 @@ import net.mwav.sala.product.service.ProductService;
 import net.mwav.sala.subscription.entity.Subscription;
 import net.mwav.sala.subscription.entity.SubscriptionItem;
 import net.mwav.sala.subscription.entity.SubscriptionOrder;
-import net.mwav.sala.subscription.entity.SubscriptionTransaction;
 import net.mwav.sala.subscription.repository.SubscriptionRepository;
 
 @Service
@@ -27,8 +26,6 @@ public class SubscriptionService {
 
 	private final SubscriptionOrderService subscriptionOrderService;
 
-	private final SubscriptionTransactionService subscriptionTransactionService;
-
 	// subscribe
 	@Transactional
 	public Subscription subscribe(Subscription subscription) {
@@ -37,8 +34,7 @@ public class SubscriptionService {
 		mapItemToProduct(items);
 
 		subscription = createSubscription(subscription);
-		SubscriptionOrder subscriptionOrder = createOrder(subscription);
-		createTransaction(subscriptionOrder);
+		createOrder(subscription);
 
 		return subscription;
 	}
@@ -70,13 +66,6 @@ public class SubscriptionService {
 		SubscriptionOrder subscriptionOrder = subscription.toOrder();
 		subscriptionOrder = subscriptionOrderService.createOrder(subscriptionOrder);
 		return subscriptionOrder;
-	}
-
-	@Transactional
-	private SubscriptionTransaction createTransaction(SubscriptionOrder subcriptionOrder) {
-		SubscriptionTransaction subscriptionTransaction = subcriptionOrder.toTransaction();
-		subscriptionTransaction = subscriptionTransactionService.createTransaction(subscriptionTransaction);
-		return subscriptionTransaction;
 	}
 
 	// 취소
