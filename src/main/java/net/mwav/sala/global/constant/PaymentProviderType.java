@@ -5,12 +5,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ProviderType {
+public enum PaymentProviderType {
 
-	GOOGLE("GOOGLE"),
-	NAVER("NAVER"),
-	KAKAO("KAKAO");
+	TOSS("TOSS");
 
-	private final String type;
+	private final String provider;
 
 }

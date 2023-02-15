@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import net.mwav.sala.global.constant.ProviderType;
+import net.mwav.sala.global.constant.OauthProviderType;
 
 @Entity
 @Table(name = "customer_oauth")
@@ -42,7 +42,7 @@ public class CustomerOAuth implements Serializable {
 
 	@Column(name = "provider_type")
 	@Enumerated(EnumType.STRING)
-	private ProviderType providerType;
+	private OauthProviderType providerType;
 
 	@Column(name = "provider_id")
 	private String ProviderId;
