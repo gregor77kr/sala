@@ -1,4 +1,4 @@
-package net.mwav.sala.payment.dto;
+package net.mwav.sala.payment.provider.dto;
 
 import lombok.Builder;
 import lombok.Value;

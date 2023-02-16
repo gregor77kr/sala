@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
-import net.mwav.sala.global.dto.ExceptionDetail;
-import net.mwav.sala.global.dto.ExceptionResponseBody;
+import net.mwav.sala.global.model.ExceptionDetail;
+import net.mwav.sala.global.model.ExceptionResponseBody;
 
 @RestControllerAdvice
 @Slf4j

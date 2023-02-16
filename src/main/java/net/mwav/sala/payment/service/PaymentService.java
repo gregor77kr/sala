@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.mwav.sala.payment.dto.BillingKeyRequest;
 import net.mwav.sala.payment.entity.Payment;
 import net.mwav.sala.payment.provider.PaymentProvider;
+import net.mwav.sala.payment.provider.dto.BillingKeyRequest;
 
 @Service
 @RequiredArgsConstructor

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.global.dto.StandardResponseBody;
+import net.mwav.sala.global.model.StandardResponseBody;
 import net.mwav.sala.security.service.SecurityResolver;
-import net.mwav.sala.subscription.dto.SubscriptionRequest;
-import net.mwav.sala.subscription.dto.SubscriptionResponse;
+import net.mwav.sala.subscription.controller.dto.SubscriptionRequest;
+import net.mwav.sala.subscription.controller.dto.SubscriptionResponse;
 import net.mwav.sala.subscription.entity.Subscription;
 import net.mwav.sala.subscription.service.SubscriptionService;
 

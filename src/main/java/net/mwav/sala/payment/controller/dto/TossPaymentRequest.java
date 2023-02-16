@@ -1,4 +1,4 @@
-package net.mwav.sala.payment.dto;
+package net.mwav.sala.payment.controller.dto;
 
 import java.io.Serializable;
 

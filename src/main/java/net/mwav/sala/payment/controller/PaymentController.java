@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.global.dto.StandardResponseBody;
-import net.mwav.sala.payment.dto.TossPaymentRequest;
+import net.mwav.sala.global.model.StandardResponseBody;
+import net.mwav.sala.payment.controller.dto.TossPaymentRequest;
 import net.mwav.sala.payment.entity.Payment;
 import net.mwav.sala.payment.service.PaymentService;
 import net.mwav.sala.security.service.SecurityResolver;

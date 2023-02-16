@@ -1,4 +1,4 @@
-package net.mwav.sala.authentication.dto;
+package net.mwav.sala.authentication.controller.dto;
 
 import java.io.Serializable;
 

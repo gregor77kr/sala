@@ -1,8 +1,8 @@
 package net.mwav.sala.payment.provider;
 
 import net.mwav.sala.global.constant.PaymentProviderType;
-import net.mwav.sala.payment.dto.BillingKeyRequest;
-import net.mwav.sala.payment.dto.BillingKeyResponse;
+import net.mwav.sala.payment.provider.dto.BillingKeyRequest;
+import net.mwav.sala.payment.provider.dto.BillingKeyResponse;
 
 public interface PaymentProvider {
 

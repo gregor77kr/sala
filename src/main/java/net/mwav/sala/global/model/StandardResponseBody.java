@@ -1,4 +1,4 @@
-package net.mwav.sala.global.dto;
+package net.mwav.sala.global.model;
 
 import lombok.Getter;
 import net.mwav.sala.global.constant.ResponseStatus;

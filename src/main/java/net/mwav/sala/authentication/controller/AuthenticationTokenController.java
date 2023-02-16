@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.mwav.sala.authentication.dto.RefreshRequest;
-import net.mwav.sala.authentication.dto.TokenRequest;
-import net.mwav.sala.authentication.dto.TokenResponse;
+import net.mwav.sala.authentication.controller.dto.RefreshRequest;
+import net.mwav.sala.authentication.controller.dto.TokenRequest;
+import net.mwav.sala.authentication.controller.dto.TokenResponse;
 import net.mwav.sala.authentication.entity.CustomerToken;
 import net.mwav.sala.authentication.jwt.JwtWebResolver;
 import net.mwav.sala.authentication.service.AuthenticationTokenService;
-import net.mwav.sala.global.dto.StandardResponseBody;
+import net.mwav.sala.global.model.StandardResponseBody;
 
 @RestController
 @RequestMapping(value = "/api/authentication")

@@ -1,4 +1,4 @@
-package net.mwav.sala.subscription.dto;
+package net.mwav.sala.subscription.controller.dto;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,4 +1,4 @@
-package net.mwav.sala.product.dto;
+package net.mwav.sala.product.controller.dto;
 
 import java.io.Serializable;
 import java.util.List;
