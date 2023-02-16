@@ -7,8 +7,8 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Value;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.global.constant.PaymentProviderType;
 import net.mwav.sala.payment.entity.Payment;
+import net.mwav.sala.payment.provider.constant.PaymentProviderType;
 
 /**
  * Saving this information in database is illegal.

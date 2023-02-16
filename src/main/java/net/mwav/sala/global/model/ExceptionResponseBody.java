@@ -1,7 +1,7 @@
 package net.mwav.sala.global.model;
 
 import lombok.Getter;
-import net.mwav.sala.global.constant.ResponseStatus;
+import net.mwav.sala.global.model.constant.ResponseStatus;
 
 @Getter
 public class ExceptionResponseBody<T> extends AbstractResponseBody<T> {

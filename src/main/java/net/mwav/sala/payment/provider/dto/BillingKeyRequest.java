@@ -2,8 +2,8 @@ package net.mwav.sala.payment.provider.dto;
 
 import java.io.Serializable;
 
-import net.mwav.sala.global.constant.PaymentProviderType;
 import net.mwav.sala.payment.entity.Payment;
+import net.mwav.sala.payment.provider.constant.PaymentProviderType;
 
 /**
  * Marker interface for billing key request

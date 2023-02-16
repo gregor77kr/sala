@@ -23,8 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import net.mwav.sala.global.constant.Currency;
-import net.mwav.sala.global.constant.PaymentPeriod;
+import net.mwav.sala.product.entity.constant.Currency;
 
 @Entity
 @Table(name = "product")
@@ -57,15 +56,20 @@ public class Product implements Serializable {
 	@JsonManagedReference
 	private List<ProductPrice> prices;
 
-	public double getPrice(PaymentPeriod paymentPeriod, Currency currency) {
-		if (this.prices == null) {
-			return 0;
-		}
-
-		 ProductPrice productPrice = this.prices.stream().filter(p -> {
+	public ProductPrice getProductPrice(Currency currency) {
+		ProductPrice productPrice = this.prices.stream().filter(p -> {
 			return p.matches(currency);
 		}).findFirst().orElseThrow(EntityNotFoundException::new);
-		
-		 return (paymentPeriod == PaymentPeriod.MONTHLY) ? productPrice.getMontlyPrice() : productPrice.getAnnualPrice();
+
+		return productPrice;
 	}
+
+	public double getMonthlyPrice(Currency currency) {
+		return getProductPrice(currency).getMonthlyPrice();
+	}
+
+	public double getAnnualPrice(Currency currency) {
+		return getProductPrice(currency).getAnnualPrice();
+	}
+
 }

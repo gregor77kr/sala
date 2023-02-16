@@ -1,12 +1,12 @@
-package net.mwav.sala.global.constant;
+package net.mwav.sala.subscription.entity.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum OrderStatus {
-	
+public enum SubscriptionStatus {
+
 	CREATED("CREATED"),
 	PENDING("PENDING"),
 	FAILED("FAILED"),
@@ -15,5 +15,5 @@ public enum OrderStatus {
 	REFUNDED("REFUNDED");
 
 	private final String status;
-	
+
 }

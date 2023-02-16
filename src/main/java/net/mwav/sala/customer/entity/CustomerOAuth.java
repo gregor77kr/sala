@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import net.mwav.sala.global.constant.OauthProviderType;
+import net.mwav.sala.customer.entity.constant.OauthProviderType;
 
 @Entity
 @Table(name = "customer_oauth")

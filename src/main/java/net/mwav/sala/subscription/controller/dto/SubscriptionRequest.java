@@ -14,11 +14,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.global.constant.Currency;
-import net.mwav.sala.global.constant.PaymentMethod;
-import net.mwav.sala.global.constant.PaymentPeriod;
+import net.mwav.sala.product.entity.constant.Currency;
 import net.mwav.sala.subscription.entity.Subscription;
 import net.mwav.sala.subscription.entity.SubscriptionItem;
+import net.mwav.sala.subscription.entity.constant.PaymentMethod;
+import net.mwav.sala.subscription.entity.constant.PaymentPeriod;
 
 @Value
 public class SubscriptionRequest implements Serializable {

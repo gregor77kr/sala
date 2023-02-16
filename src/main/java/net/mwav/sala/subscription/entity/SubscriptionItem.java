@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.product.entity.Product;
+import net.mwav.sala.subscription.entity.constant.PaymentPeriod;
 
 @Entity
 @Table(name = "subscription_item")
@@ -73,9 +74,14 @@ public class SubscriptionItem implements Serializable {
 
 	// synchronize price in Product and Item
 	public void synchronizePrice() {
-		this.price = (this.product == null) ? 0
-				: this.product
-						.getPrice(this.getSubscription().getPaymentPeriod(), this.getSubscription().getCurrency());
+		if (this.product == null) {
+			this.price = 0;
+		} else {
+			this.price = (this.getSubscription().getPaymentPeriod() == PaymentPeriod.MONTHLY)
+					? this.product.getMonthlyPrice(this.subscription.getCurrency())
+					: this.product.getAnnualPrice(this.subscription.getCurrency());
+		}
+
 	}
 
 }

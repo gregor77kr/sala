@@ -31,12 +31,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.global.constant.Currency;
-import net.mwav.sala.global.constant.OrderStatus;
-import net.mwav.sala.global.constant.PaymentMethod;
-import net.mwav.sala.global.constant.PaymentPeriod;
-import net.mwav.sala.global.constant.TransactionStatus;
 import net.mwav.sala.global.util.RandomUtils;
+import net.mwav.sala.product.entity.constant.Currency;
+import net.mwav.sala.subscription.entity.constant.OrderStatus;
+import net.mwav.sala.subscription.entity.constant.PaymentMethod;
+import net.mwav.sala.subscription.entity.constant.PaymentPeriod;
+import net.mwav.sala.subscription.entity.constant.TransactionStatus;
 
 /**
  * This entity is a copy of subscription entity at the moment of creation.

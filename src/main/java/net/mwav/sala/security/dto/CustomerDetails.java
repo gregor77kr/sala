@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Builder;
 import lombok.Value;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.global.constant.Role;
 
 @Value
 @Builder
@@ -73,7 +72,7 @@ public class CustomerDetails implements UserDetails {
 				.build();
 
 		// TODO : 권한 테이블 생성 및 사용자 권한 체계 부여
-		customerDetails.authorities.add(new Authority(Role.USER.getRole()));
+		customerDetails.authorities.add(new Authority("ROLE_USER"));
 
 		return customerDetails;
 	}

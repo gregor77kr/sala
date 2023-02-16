@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.global.constant.TransactionStatus;
+import net.mwav.sala.subscription.entity.constant.TransactionStatus;
 
 @Entity
 @Table(name = "subscription_transaction")

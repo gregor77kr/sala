@@ -16,7 +16,6 @@ import net.mwav.sala.authentication.entity.CustomerToken;
 import net.mwav.sala.authentication.jwt.JwtTokenProvider;
 import net.mwav.sala.authentication.repository.CustomerTokenRepository;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.global.constant.Role;
 import net.mwav.sala.security.dto.Authority;
 import net.mwav.sala.security.service.SecurityService;
 
@@ -63,7 +62,7 @@ public class AuthenticationTokenService {
 				.orElseThrow(EntityNotFoundException::new);
 
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new Authority(Role.USER.getRole()));
+		authorities.add(new Authority("ROLE_USER"));
 
 		customerToken.setAccessToken(jwtTokenProvider.createAccessToken(subject, authorities));
 		customerToken.setRefreshToken(jwtTokenProvider.createRefreshToken(subject));

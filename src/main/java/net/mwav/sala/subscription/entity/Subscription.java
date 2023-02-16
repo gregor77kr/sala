@@ -32,11 +32,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.global.constant.Currency;
-import net.mwav.sala.global.constant.PaymentMethod;
-import net.mwav.sala.global.constant.PaymentPeriod;
-import net.mwav.sala.global.constant.SubscriptionStatus;
 import net.mwav.sala.global.util.RandomUtils;
+import net.mwav.sala.product.entity.constant.Currency;
+import net.mwav.sala.subscription.entity.constant.PaymentMethod;
+import net.mwav.sala.subscription.entity.constant.PaymentPeriod;
+import net.mwav.sala.subscription.entity.constant.SubscriptionStatus;
 
 @Entity
 @Table(name = "subscription")

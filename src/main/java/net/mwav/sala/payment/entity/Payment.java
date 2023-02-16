@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.global.constant.PaymentProviderType;
+import net.mwav.sala.payment.provider.constant.PaymentProviderType;
 
 @Entity
 @Table(name = "payment")
