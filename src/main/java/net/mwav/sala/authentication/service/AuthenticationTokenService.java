@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import net.mwav.sala.authentication.entity.CustomerToken;
@@ -29,7 +29,7 @@ public class AuthenticationTokenService {
 
 	private final CustomerTokenRepository customerTokenRepository;
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public CustomerToken createToken(String name, String password) throws Exception {
 		// authenticate
 		Authentication authentication = securityService.authenticate(name, password);
@@ -54,7 +54,7 @@ public class AuthenticationTokenService {
 		return customerToken;
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public CustomerToken reissue(String refreshToken) {
 		String subject = jwtTokenProvider.getSubject(refreshToken);
 		CustomerToken customerToken = customerTokenRepository

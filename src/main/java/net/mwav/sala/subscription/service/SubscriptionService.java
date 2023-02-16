@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import net.mwav.sala.product.entity.Product;
@@ -27,7 +27,7 @@ public class SubscriptionService {
 	private final SubscriptionOrderService subscriptionOrderService;
 
 	// subscribe
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public Subscription subscribe(Subscription subscription) {
 		// items의 product id로 가격을 조회하여 bind
 		List<SubscriptionItem> items = subscription.getItems();
@@ -39,6 +39,7 @@ public class SubscriptionService {
 		return subscription;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	private void mapItemToProduct(List<SubscriptionItem> items) {
 		// items의 product id로 가격을 조회하여 bind
 		List<Long> ids = items.stream().map(i -> i.getProduct().getId()).collect(Collectors.toList());
@@ -54,14 +55,14 @@ public class SubscriptionService {
 		});
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public Subscription createSubscription(Subscription subscription) {
 		subscription.onCreate();
 		subscription = subscriptionRepository.save(subscription);
 		return subscription;
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	private SubscriptionOrder createOrder(Subscription subscription) {
 		SubscriptionOrder subscriptionOrder = subscription.toOrder();
 		subscriptionOrder = subscriptionOrderService.createOrder(subscriptionOrder);
