@@ -1,4 +1,4 @@
-package net.mwav.sala.payment.provider.constant;
+package net.mwav.sala.payment.entity.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -6,13 +6,15 @@ import net.mwav.sala.payment.provider.dto.BillingKeyResponse;
 import net.mwav.sala.payment.provider.dto.TossBillingKeyRequest;
 
 @Slf4j
-public class TossPaymentProvider implements PaymentProvider {
+public class TossPaymentProvider extends PaymentProvider {
+
+	protected TossPaymentProvider(BillingKeyRequest billingKeyRequest) {
+		this.billingKeyRequest = (TossBillingKeyRequest) billingKeyRequest;
+	}
 
 	@Override
-	public BillingKeyResponse getBillingKey(BillingKeyRequest billingKeyRequest) {
-		TossBillingKeyRequest parameter = (TossBillingKeyRequest) billingKeyRequest;
-
-		log.debug(parameter.toString());
+	public BillingKeyResponse fetchBillingKey() {
+		log.debug(this.billingKeyRequest.toString());
 		return null;
 	}
 

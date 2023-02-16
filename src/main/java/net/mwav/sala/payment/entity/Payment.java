@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.payment.provider.constant.PaymentProviderType;
+import net.mwav.sala.payment.entity.constant.PaymentProviderType;
 
 @Entity
 @Table(name = "payment")
@@ -55,18 +54,5 @@ public class Payment implements Serializable {
 
 	@Column(name = "billing_key")
 	private String billingKey;
-
-	// Saving this information in database is illegal.
-	@Transient
-	private String cardNumber;
-
-	@Transient
-	private String cardExpirationYear;
-
-	@Transient
-	private String cardExpirationMonth;
-
-	@Transient
-	private String cardPassword;
 
 }

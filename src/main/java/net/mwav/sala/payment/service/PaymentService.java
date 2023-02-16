@@ -3,28 +3,22 @@ package net.mwav.sala.payment.service;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.mwav.sala.payment.entity.Payment;
+import net.mwav.sala.payment.controller.dto.PaymentRequest;
 import net.mwav.sala.payment.provider.PaymentProvider;
 import net.mwav.sala.payment.provider.dto.BillingKeyRequest;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PaymentService {
 
-	public Payment pay(Payment payment) {
-		log.debug(payment.toString());
+	public void pay(PaymentRequest paymentRequest) {
+		// toss payment와 api 통신
+		BillingKeyRequest billingKeyRequest = paymentRequest.toBillingKey();
 
-		PaymentProvider paymentProvider = PaymentProvider.getPaymentProvider(payment.getProviderType());
+		PaymentProvider paymentProvider = PaymentProvider.getProvider(billingKeyRequest);
+		paymentProvider.fetchBillingKey();
 
-		// payment to billing key request
-		BillingKeyRequest billingKeyRequest = BillingKeyRequest.from(payment);
-
-		// call payment delegator
-		paymentProvider.getBillingKey(billingKeyRequest);
-
-		return null;
+		// 받은 정보를 payment entity에 저장
 	}
 
 }

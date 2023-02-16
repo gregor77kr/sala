@@ -1,16 +1,14 @@
 package net.mwav.sala.payment.controller.dto;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
-import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.payment.entity.Payment;
-import net.mwav.sala.payment.provider.constant.PaymentProviderType;
+import net.mwav.sala.payment.provider.dto.BillingKeyRequest;
+import net.mwav.sala.payment.provider.dto.TossBillingKeyRequest;
 
 /**
  * Saving this information in database is illegal.
@@ -18,11 +16,11 @@ import net.mwav.sala.payment.provider.constant.PaymentProviderType;
  *
  */
 @Value
-public class TossPaymentRequest implements Serializable {
+public class TossPaymentRequest implements PaymentRequest {
 
 	private static final long serialVersionUID = 7528051185262350288L;
 
-	@NotBlank
+	@NotNull
 	private Long customerId;
 
 	@NotBlank
@@ -47,7 +45,7 @@ public class TossPaymentRequest implements Serializable {
 			@JsonProperty String cardExpirationYear,
 			@JsonProperty String cardExpirationMonth,
 			@JsonProperty String cardPassword) {
-		
+
 		this.customerId = customerId;
 		this.subscriptionNo = subscriptionNo;
 		this.cardNumber = cardNumber;
@@ -56,18 +54,18 @@ public class TossPaymentRequest implements Serializable {
 		this.cardPassword = cardPassword;
 	}
 
-	public Payment toEntity() {
-		Customer customer = Customer.builder().id(this.customerId).build();
-
-		return Payment.builder()
-				.customer(customer)
-				.subscriptionNo(this.subscriptionNo)
-				.providerType(PaymentProviderType.TOSS)
+	@Override
+	public BillingKeyRequest toBillingKey() {
+		TossBillingKeyRequest tossBillingKeyRequest = TossBillingKeyRequest.builder()
+				.customerIdentityNumber(String.valueOf(this.customerId))
+				.customerKey(this.subscriptionNo)
 				.cardNumber(this.cardNumber)
 				.cardExpirationYear(this.cardExpirationYear)
 				.cardExpirationMonth(this.cardExpirationMonth)
 				.cardPassword(this.cardPassword)
 				.build();
+
+		return tossBillingKeyRequest;
 	}
 
 }
