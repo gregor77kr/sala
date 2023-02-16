@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ import net.mwav.sala.authentication.service.AuthenticationTokenService;
 import net.mwav.sala.global.model.StandardResponseBody;
 
 @RestController
-@RequestMapping(value = "/api/authentication")
 @RequiredArgsConstructor
 public class AuthenticationTokenController {
 
@@ -32,7 +30,7 @@ public class AuthenticationTokenController {
 	private final JwtWebResolver jwtWebResolver;
 
 	// authenticate and get access token
-	@PostMapping(value = "/token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/api/authentication/token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createToken(@Valid @RequestBody TokenRequest authenticationRequest) throws Exception {
 		CustomerToken customerToken = authenticationTokenService.createToken(authenticationRequest.getName(),
 				authenticationRequest.getPassword());
@@ -45,7 +43,7 @@ public class AuthenticationTokenController {
 	}
 
 	// refresh token
-	@PutMapping(value = "/token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/api/authentication/token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> reissue(@Valid @RequestBody RefreshRequest refreshRequest, HttpServletRequest request)
 			throws Exception {
 		String refreshToken = jwtWebResolver.getRefreshTokenInCookie(request);
