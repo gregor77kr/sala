@@ -12,7 +12,7 @@ public class SignUpResponse implements Serializable {
 
 	private static final long serialVersionUID = 3039627668671968715L;
 
-	private final long customerId;
+	private final Long customerId;
 
 	private final boolean isVerified;
 

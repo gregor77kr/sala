@@ -3,7 +3,9 @@ package net.mwav.sala.payment.controller.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
 import net.mwav.sala.customer.entity.Customer;
@@ -20,8 +22,8 @@ public class TossPaymentRequest implements Serializable {
 
 	private static final long serialVersionUID = 7528051185262350288L;
 
-	@NotNull
-	private long customerId;
+	@NotBlank
+	private Long customerId;
 
 	@NotBlank
 	private String subscriptionNo;
@@ -38,17 +40,33 @@ public class TossPaymentRequest implements Serializable {
 	@NotBlank
 	private String cardPassword;
 
+	@JsonCreator
+	public TossPaymentRequest(@JsonProperty Long customerId,
+			@JsonProperty String subscriptionNo,
+			@JsonProperty String cardNumber,
+			@JsonProperty String cardExpirationYear,
+			@JsonProperty String cardExpirationMonth,
+			@JsonProperty String cardPassword) {
+		
+		this.customerId = customerId;
+		this.subscriptionNo = subscriptionNo;
+		this.cardNumber = cardNumber;
+		this.cardExpirationYear = cardExpirationYear;
+		this.cardExpirationMonth = cardExpirationMonth;
+		this.cardPassword = cardPassword;
+	}
+
 	public Payment toEntity() {
-		Customer customer = Customer.builder().id(customerId).build();
+		Customer customer = Customer.builder().id(this.customerId).build();
 
 		return Payment.builder()
 				.customer(customer)
-				.subscriptionNo(subscriptionNo)
+				.subscriptionNo(this.subscriptionNo)
 				.providerType(PaymentProviderType.TOSS)
-				.cardNumber(cardNumber)
-				.cardExpirationYear(cardExpirationYear)
-				.cardExpirationMonth(cardExpirationMonth)
-				.cardPassword(cardPassword)
+				.cardNumber(this.cardNumber)
+				.cardExpirationYear(this.cardExpirationYear)
+				.cardExpirationMonth(this.cardExpirationMonth)
+				.cardPassword(this.cardPassword)
 				.build();
 	}
 

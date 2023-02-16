@@ -38,7 +38,7 @@ public class CustomerVerification implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "customer_verification_id")
-	private long customerVerificationId;
+	private Long customerVerificationId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")

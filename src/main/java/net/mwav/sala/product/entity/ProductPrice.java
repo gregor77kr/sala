@@ -39,7 +39,7 @@ public class ProductPrice implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_price_id")
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")

@@ -41,7 +41,7 @@ public class CustomerToken implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "customer_token_id")
-	private long id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")

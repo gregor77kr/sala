@@ -32,7 +32,7 @@ public class CustomerService {
 		return customer;
 	}
 
-	public Optional<Customer> findCustomer(long customerId) {
+	public Optional<Customer> findCustomer(Long customerId) {
 		return customerRepository.findById(customerId);
 	}
 

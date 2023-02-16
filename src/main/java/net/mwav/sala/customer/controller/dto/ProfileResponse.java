@@ -12,7 +12,7 @@ public class ProfileResponse implements Serializable {
 
 	private static final long serialVersionUID = 4023415254323492600L;
 
-	private final long customerId;
+	private final Long customerId;
 
 	private final String name;
 

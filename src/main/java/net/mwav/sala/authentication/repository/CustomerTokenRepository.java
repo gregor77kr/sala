@@ -8,6 +8,6 @@ import net.mwav.sala.authentication.entity.CustomerToken;
 
 public interface CustomerTokenRepository extends CrudRepository<CustomerToken, Long> {
 
-	Optional<CustomerToken> findByCustomerIdAndRefreshToken(long customerId, String refreshToken);
+	Optional<CustomerToken> findByCustomerIdAndRefreshToken(Long customerId, String refreshToken);
 
 }

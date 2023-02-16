@@ -11,10 +11,10 @@ public class SecurityResolver {
 
     public static Long getCustomerId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (authentication == null) ? -1 : Long.valueOf(authentication.getName());
+        return (authentication == null) ? null : Long.valueOf(authentication.getName());
     }
 
-    public boolean authorize(long customerId) {
+    public boolean authorize(Long customerId) {
         if (getCustomerId() != customerId) {
             throw new AccessDeniedException(null);
         }

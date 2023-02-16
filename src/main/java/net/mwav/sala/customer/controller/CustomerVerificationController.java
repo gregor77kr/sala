@@ -26,7 +26,7 @@ public class CustomerVerificationController {
 	private final CustomerVerificationService customerVerificationService;
 
 	@PostMapping(value = "/api/customers/verification/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> sendVerification(@PathVariable("customerId") long customerId) {
+	public ResponseEntity<?> sendVerification(@PathVariable("customerId") Long customerId) {
 		SecurityResolver.authorize(customerId);
 		customerVerificationService.sendVerification(customerId);
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
@@ -35,7 +35,7 @@ public class CustomerVerificationController {
 	}
 
 	@PutMapping(value = "/api/customers/verification/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> authenticate(@PathVariable("customerId") long customerId,
+	public ResponseEntity<?> authenticate(@PathVariable("customerId") Long customerId,
 			@Valid @RequestBody VerificationRequest verificationRequest) throws ExpiryException {
 
 		if (customerId != verificationRequest.getCustomerId()) {

@@ -18,13 +18,13 @@ public class VerificationRequest implements Serializable {
 	private static final long serialVersionUID = -8388551690394192571L;
 
 	@NotNull
-	private final long customerId;
+	private final Long customerId;
 
 	@NotBlank
 	private final String verificationCode;
 
 	@JsonCreator
-	private VerificationRequest(@JsonProperty long customerId, @JsonProperty String verificationCode) {
+	private VerificationRequest(@JsonProperty Long customerId, @JsonProperty String verificationCode) {
 		this.customerId = customerId;
 		this.verificationCode = verificationCode;
 	}

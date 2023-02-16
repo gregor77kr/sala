@@ -26,7 +26,7 @@ public class SubscriptionRequest implements Serializable {
 	private static final long serialVersionUID = -5276218624939209139L;
 
 	@NotNull
-	private long customerId;
+	private Long customerId;
 
 	@NotBlank
 	private String paymentPeriod;
@@ -58,7 +58,7 @@ public class SubscriptionRequest implements Serializable {
 	private List<SubscriptionItemRequest> items;
 
 	@JsonCreator
-	private SubscriptionRequest(@JsonProperty long customerId,
+	private SubscriptionRequest(@JsonProperty Long customerId,
 			@JsonProperty String paymentPeriod,
 			@JsonProperty String paymentMethod,
 			@JsonProperty String currency,

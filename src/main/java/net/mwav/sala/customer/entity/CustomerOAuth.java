@@ -35,10 +35,10 @@ public class CustomerOAuth implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "customer_oauth_id")
-	private long id;
+	private Long id;
 
 	@Column(name = "customer_id")
-	private String customerId;
+	private Long customerId;
 
 	@Column(name = "provider_type")
 	@Enumerated(EnumType.STRING)

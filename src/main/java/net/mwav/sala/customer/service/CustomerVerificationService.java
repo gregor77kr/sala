@@ -23,13 +23,13 @@ public class CustomerVerificationService {
 
 	private final CustomerVerificationRepository customerVerificationRepository;
 
-	public void sendVerification(long customerId) {
+	public void sendVerification(Long customerId) {
 		CustomerVerification customerVerification = setVerification(customerId);
 		sendEmail(customerVerification);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	private CustomerVerification setVerification(long customerId) {
+	private CustomerVerification setVerification(Long customerId) {
 		Customer customer = customerService.findCustomer(customerId).orElseThrow(EntityNotFoundException::new);
 
 		Optional<CustomerVerification> optionalCustomerVerification = customerVerificationRepository
