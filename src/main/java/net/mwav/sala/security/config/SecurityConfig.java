@@ -15,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 import net.mwav.sala.authentication.jwt.JwtFilter;
 import net.mwav.sala.authentication.jwt.JwtTokenProvider;
 import net.mwav.sala.authentication.jwt.JwtWebResolver;
-import net.mwav.sala.security.impl.JsonAccessDeniedHandler;
-import net.mwav.sala.security.impl.JsonAuthenticationEntryPoint;
-import net.mwav.sala.security.impl.NoPasswordEncoder;
+import net.mwav.sala.security.handler.JsonAccessDeniedHandler;
+import net.mwav.sala.security.handler.JsonAuthenticationEntryPoint;
+import net.mwav.sala.security.handler.NoPasswordEncoder;
 
 @EnableWebSecurity
 @EnableMethodSecurity

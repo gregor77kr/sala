@@ -1,4 +1,4 @@
-package net.mwav.sala.security.impl;
+package net.mwav.sala.security.handler;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
