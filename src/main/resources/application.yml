@@ -30,10 +30,16 @@ server:
   port: 9712
   
 jwt:
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  secret: ENC(kxODmXKU4Mf6wSrJ/UrLOGiHA2NQ4QO5yCaTcYaMzNoT2aMyAlJg0YuA+nVq5H4PNPabmmtxDob6zHv5Ki95MikfMqwkR/VlPrW9RSPY7ese3quleQXb8JZLhyEGn9/7AlEAx62uVGHhGwnSnQIZeObI00vVxft0XgKWhdu63BzIBRc1/IqM2Ghmal1WOC2g)
   access-token-validity: 86400000 # 1 day
   access-token-name: Authorization
   refresh-token-validity: 1209600000 # 14 days
   refresh-token-name: SFDD
   refresh-token-url: /refresh
   domain: localhost
+  
+api:
+  bootpay:
+    app-id: ENC(4I+cdiBTyqri0YnuHHf5GXMMbHedJJ5VnQhMFgXpiSsjOxvLSMwBNg==)
+    pg: toss
+    private-key: ENC(+0aHd3h91jJUzz25GtJH/rdsSEr4i4gtjUUZten0yMuKZ9xGVVPvJWcBg1EyegqmqhHqYddvNi8=)

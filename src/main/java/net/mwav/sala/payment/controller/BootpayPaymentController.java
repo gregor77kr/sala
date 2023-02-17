@@ -11,24 +11,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import net.mwav.sala.global.model.StandardResponseBody;
-import net.mwav.sala.payment.controller.dto.TossPaymentRequest;
-import net.mwav.sala.payment.service.PaymentService;
-import net.mwav.sala.security.service.SecurityResolver;
+import net.mwav.sala.payment.controller.dto.BootpayPaymentRequest;
+import net.mwav.sala.payment.service.BootpayPaymentService;
 
 @RestController
 @RequiredArgsConstructor
-public class PaymentController {
+public class BootpayPaymentController {
 
-	private final PaymentService paymentService;
+	private final BootpayPaymentService bootpayPaymentService;
 
-	@PostMapping(value = "/api/payment/toss", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> payInToss(@Valid @RequestBody TossPaymentRequest tossPaymentRequest) {
-		SecurityResolver.authorize(tossPaymentRequest.getCustomerId());
+	@PostMapping(value = "/api/payment/bootpay", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> payInBootpay(@Valid @RequestBody BootpayPaymentRequest bootpayPaymentRequest) {
 
-		paymentService.pay(tossPaymentRequest);
+		bootpayPaymentService.pay(bootpayPaymentRequest);
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
 	}
-
+	
 }

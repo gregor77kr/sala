@@ -1,11 +1,11 @@
-package net.mwav.sala.payment.provider.dto;
+package net.mwav.sala.payment.provider.model;
 
 import lombok.Builder;
 import lombok.Value;
 
 @Value
 @Builder
-public class TossBillingKeyRequest implements BillingKeyRequest {
+public class BootpayBillingKeyRequest implements BillingKeyRequest {
 
 	private static final long serialVersionUID = 4254927558647508918L;
 

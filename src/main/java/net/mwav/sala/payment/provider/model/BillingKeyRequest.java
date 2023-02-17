@@ -1,4 +1,4 @@
-package net.mwav.sala.payment.provider.dto;
+package net.mwav.sala.payment.provider.model;
 
 import java.io.Serializable;
 

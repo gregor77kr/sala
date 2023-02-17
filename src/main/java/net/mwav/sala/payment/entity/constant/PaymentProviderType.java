@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PaymentProviderType {
 
-	TOSS("TOSS");
+	TOSS("TOSS"),
+	BOOTPAY("BOOTPAY");
 
 	private final String provider;
 
