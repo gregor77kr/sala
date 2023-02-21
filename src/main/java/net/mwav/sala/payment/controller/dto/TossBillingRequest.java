@@ -11,35 +11,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
 @Value
-public class BootpayPaymentRequest implements Serializable {
+public class TossBillingRequest implements Serializable {
 
-	private static final long serialVersionUID = 556009166525164392L;
+	private static final long serialVersionUID = -6862839646726014430L;
 
 	@NotNull
-	private Long customerId;
+	private final Long customerId;
 
 	@NotBlank
-	private String subscriptionNo;
+	private final String subscriptionNo;
 
 	@NotBlank
-	private String cardNumber;
+	private final String cardNumber;
 
 	@NotBlank
-	private String cardExpirationYear;
+	private final String cardExpirationYear;
 
 	@NotBlank
-	private String cardExpirationMonth;
+	private final String cardExpirationMonth;
 
 	@NotBlank
-	private String cardPassword;
+	private final String cardPassword;
+
+	@NotBlank
+	private final String customerIdentityNumber;
 
 	@JsonCreator
-	public BootpayPaymentRequest(@JsonProperty Long customerId,
+	public TossBillingRequest(@JsonProperty Long customerId,
 			@JsonProperty String subscriptionNo,
 			@JsonProperty String cardNumber,
 			@JsonProperty String cardExpirationYear,
 			@JsonProperty String cardExpirationMonth,
-			@JsonProperty String cardPassword) {
+			@JsonProperty String cardPassword,
+			@JsonProperty String customerIdentityNumber) {
 
 		this.customerId = customerId;
 		this.subscriptionNo = subscriptionNo;
@@ -47,6 +51,7 @@ public class BootpayPaymentRequest implements Serializable {
 		this.cardExpirationYear = cardExpirationYear;
 		this.cardExpirationMonth = cardExpirationMonth;
 		this.cardPassword = cardPassword;
+		this.customerIdentityNumber = customerIdentityNumber;
 	}
-
+	
 }
