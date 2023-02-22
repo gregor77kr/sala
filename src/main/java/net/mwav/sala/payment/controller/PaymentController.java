@@ -33,7 +33,7 @@ public class PaymentController {
 	}
 
 	@PostMapping(value = "/api/payment/toss", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> payInToss(@Valid @RequestBody TossBillingRequest tossBillingRequest) throws IOException, InterruptedException, ExecutionException {
+	public ResponseEntity<?> payInToss(@Valid @RequestBody TossBillingRequest tossBillingRequest) throws Exception {
 		paymentService.payInToss(tossBillingRequest);
 		StandardResponseBody<?> standardResponseBody = StandardResponseBody.success();
 

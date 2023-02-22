@@ -1,8 +1,5 @@
 package net.mwav.sala.external.toss;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +24,7 @@ public class TossService {
 		return tossProvider;
 	}
 
-	public void getBillingKey(TossBillingKeyRequest tossBillingKeyRequest) throws IOException, InterruptedException, ExecutionException {
+	public void getBillingKey(TossBillingKeyRequest tossBillingKeyRequest) throws Exception {
 		TossProvider tossProvider = getProvider();
 		tossProvider.getBillingKey(tossBillingKeyRequest);
 	}
