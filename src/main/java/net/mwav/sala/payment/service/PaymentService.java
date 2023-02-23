@@ -24,7 +24,7 @@ public class PaymentService {
 		bootpayService.getAccessToken();
 	}
 
-	public void payInToss(TossBillingRequest tossBillingRequest) throws Exception {
+	public void payInToss(TossBillingRequest tossBillingRequest) {
 		TossBillingKeyRequest tossBillingKeyRequest = TossBillingKeyRequest.builder()
 				.customerKey(tossBillingRequest.getSubscriptionNo())
 				.cardNumber(tossBillingRequest.getCardNumber())

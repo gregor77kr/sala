@@ -2,8 +2,6 @@ package net.mwav.sala.global.model;
 
 import java.io.Serializable;
 
-import org.springframework.http.HttpStatus.Series;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,7 +17,7 @@ public class ExceptionDetail implements Serializable {
 
 	private final int code;
 
-	private final Series type;
+	private final String type;
 
 	private final String detail;
 

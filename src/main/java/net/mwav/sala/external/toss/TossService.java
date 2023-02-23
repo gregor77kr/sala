@@ -24,7 +24,7 @@ public class TossService {
 		return tossProvider;
 	}
 
-	public void getBillingKey(TossBillingKeyRequest tossBillingKeyRequest) throws Exception {
+	public void getBillingKey(TossBillingKeyRequest tossBillingKeyRequest) {
 		TossProvider tossProvider = getProvider();
 		tossProvider.getBillingKey(tossBillingKeyRequest);
 	}

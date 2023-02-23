@@ -26,7 +26,7 @@ public class JsonAccessDeniedHandler implements AccessDeniedHandler {
 
 		ExceptionDetail exceptionDetail = ExceptionDetail.builder()
 				.code(HttpStatus.FORBIDDEN.value())
-				.type(HttpStatus.FORBIDDEN.series())
+				.type(HttpStatus.FORBIDDEN.series().name())
 				.detail(HttpStatus.FORBIDDEN.getReasonPhrase())
 				.build();
 

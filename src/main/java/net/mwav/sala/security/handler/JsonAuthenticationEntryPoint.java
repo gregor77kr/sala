@@ -26,7 +26,7 @@ public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 		ExceptionDetail exceptionDetail = ExceptionDetail.builder()
 				.code(HttpStatus.UNAUTHORIZED.value())
-				.type(HttpStatus.UNAUTHORIZED.series())
+				.type(HttpStatus.UNAUTHORIZED.series().name())
 				.detail(HttpStatus.UNAUTHORIZED.getReasonPhrase())
 				.build();
 
