@@ -137,7 +137,7 @@ public class Subscription implements Serializable {
 		calculateSubtotalPrice();
 	}
 
-	public void calculateNextPeriod() {
+	public void computeNextPeriod() {
 		if (this.paymentPeriod != null) {
 			LocalDate nextRenewalDate = LocalDate.now()
 					.plusMonths((this.paymentPeriod == PaymentPeriod.MONTHLY) ? 1 : 12);
@@ -184,7 +184,7 @@ public class Subscription implements Serializable {
 	public void onCreate() {
 		generateNo();
 		setSubscriptionStatus(SubscriptionStatus.CREATED);
-		calculateNextPeriod();
+		computeNextPeriod();
 		synchronizePrice();
 	}
 

@@ -112,7 +112,7 @@ public class SubscriptionOrder implements Serializable {
 		this.no = (this.no == null) ? RandomUtils.generateUUID() : this.no;
 	}
 
-	public void calculatePeriod() {
+	public void computePeriod() {
 		if (this.paymentPeriod != null) {
 			LocalDate stardDate = LocalDate.now();
 			LocalDate endDate = LocalDate.now().plusMonths((this.paymentPeriod == PaymentPeriod.MONTHLY) ? 1 : 12);
@@ -136,7 +136,7 @@ public class SubscriptionOrder implements Serializable {
 	public void onCreate() {
 		generateNo();
 		setOrderStatus(OrderStatus.CREATED);
-		calculatePeriod();
+		computePeriod();
 	}
 
 	public SubscriptionTransaction toTransaction() {
