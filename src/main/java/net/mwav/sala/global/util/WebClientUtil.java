@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -20,9 +21,11 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import reactor.netty.http.client.HttpClient;
 
 @UtilityClass
+@Slf4j
 public class WebClientUtil {
 
 	public static WebClient createClient() {
@@ -32,6 +35,7 @@ public class WebClientUtil {
 	public static WebClient defaultClient(ExchangeStrategies exchangeStrategies, HttpClient httpClient) {
 		return WebClient.builder()
 				.clientConnector(new ReactorClientHttpConnector(httpClient))
+				.filter(logRequest())
 				.defaultHeaders(header -> {
 					header.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 					header.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
@@ -67,6 +71,16 @@ public class WebClientUtil {
 			config.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(OM, MediaType.APPLICATION_JSON));
 			config.defaultCodecs().maxInMemorySize(1024 * 1024);
 		}).build();
+	}
+
+	private ExchangeFilterFunction logRequest() {
+		return (clientRequest, next) -> {
+			log.debug("Request: {} {}", clientRequest.method(), clientRequest.url());
+			clientRequest.headers()
+					.forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
+
+			return next.exchange(clientRequest);
+		};
 	}
 
 }

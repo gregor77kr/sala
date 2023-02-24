@@ -1,14 +1,15 @@
 package net.mwav.sala.external.toss;
 
 import java.util.Base64;
-import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.external.toss.model.TossBillingKeyRequest;
+import net.mwav.sala.external.toss.model.TossBillingKeyResponse;
 import net.mwav.sala.global.util.WebClientUtil;
+import reactor.core.publisher.Mono;
 
 @Builder
 @Slf4j
@@ -23,13 +24,15 @@ public class TossProvider {
 
 	// {@link https://docs.tosspayments.com/guides/using-api/authorization}
 	private String getBasicAuthentication() {
-		return "Basic " + Base64.getEncoder().encodeToString((this.secret + ":").getBytes());
+		String basicToken = "Basic " + Base64.getEncoder().encodeToString((this.secret + ":").getBytes());
+		log.debug(basicToken);
+		return basicToken;
 	}
 
-	public void getBillingKey(TossBillingKeyRequest tossBillingKeyRequest) {
+	public Mono<TossBillingKeyResponse> getBillingKey(TossBillingKeyRequest tossBillingKeyRequest) {
 		log.debug(tossBillingKeyRequest.toString());
 
-		Optional<String> response = WebClientUtil.createClient()
+		Mono<TossBillingKeyResponse> billingKey = WebClientUtil.createClient()
 				.post()
 				.uri(this.tossApi.getBillingKeyEndPoint())
 				.headers(header -> {
@@ -37,10 +40,9 @@ public class TossProvider {
 				})
 				.bodyValue(tossBillingKeyRequest)
 				.retrieve()
-				.bodyToMono(String.class)
-				.flux()
-				.toStream()
-				.findFirst();
+				.bodyToMono(TossBillingKeyResponse.class);
+
+		return billingKey;
 	}
 
 }
