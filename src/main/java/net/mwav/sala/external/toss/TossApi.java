@@ -33,4 +33,8 @@ public class TossApi extends DefaultApi20 {
 		return getBillingBaseUrl() + "/authorizations/card";
 	}
 
+	public String getBillingEndPoint() {
+		return getBillingBaseUrl() + "/billing";
+	}
+
 }

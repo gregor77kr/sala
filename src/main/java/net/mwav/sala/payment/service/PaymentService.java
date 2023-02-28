@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import net.mwav.sala.external.bootpay.BootpayService;
 import net.mwav.sala.external.toss.TossService;
 import net.mwav.sala.external.toss.model.TossBillingKeyRequest;
+import net.mwav.sala.external.toss.model.TossBillingKeyResponse;
 import net.mwav.sala.payment.controller.dto.BootpayBillingRequest;
 import net.mwav.sala.payment.controller.dto.TossBillingRequest;
+import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +36,11 @@ public class PaymentService {
 				.cardPassword(tossBillingRequest.getCardPassword())
 				.build();
 
-		tossService.getBillingKey(tossBillingKeyRequest);
+		Mono<TossBillingKeyResponse> tossBillingKeyResponse = tossService.getBillingKey(tossBillingKeyRequest);
+
+		tossBillingKeyResponse.subscribe(r -> {
+			r.getCustomerKey();
+		});
 	}
 
 }
