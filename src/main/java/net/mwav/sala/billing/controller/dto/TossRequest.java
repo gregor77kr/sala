@@ -1,44 +1,61 @@
-package net.mwav.sala.payment.controller.dto;
+package net.mwav.sala.billing.controller.dto;
 
 import java.io.Serializable;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Builder;
 import lombok.Value;
 
 @Value
-public class TossBillingRequest implements Serializable {
+@Builder
+public class TossRequest implements Serializable {
 
 	private static final long serialVersionUID = -6862839646726014430L;
 
-	@NotNull
 	private final Long customerId;
 
-	@NotBlank
 	private final String subscriptionNo;
 
-	@NotBlank
+	private final String orderNo;
+
+	private final String orderName;
+
+	private final String customerEmail;
+
+	private final String customerName;
+
+	private final String customerMobilePhone;
+
+	@Builder.Default
+	private final int taxFreeAmount = 0;
+
+	private final int cardInstallmentPlan;
+
+	private final int amount;
+
 	private final String cardNumber;
 
-	@NotBlank
 	private final String cardExpirationYear;
 
-	@NotBlank
 	private final String cardExpirationMonth;
 
-	@NotBlank
 	private final String cardPassword;
 
-	@NotBlank
 	private final String customerIdentityNumber;
 
 	@JsonCreator
-	public TossBillingRequest(@JsonProperty Long customerId,
+	public TossRequest(@JsonProperty Long customerId,
 			@JsonProperty String subscriptionNo,
+			@JsonProperty String orderNo,
+			@JsonProperty String orderName,
+			@JsonProperty String customerEmail,
+			@JsonProperty String customerName,
+			@JsonProperty String customerMobilePhone,
+			@JsonProperty int taxFreeAmount,
+			@JsonProperty int cardInstallmentPlan,
+			@JsonProperty int amount,
 			@JsonProperty String cardNumber,
 			@JsonProperty String cardExpirationYear,
 			@JsonProperty String cardExpirationMonth,
@@ -47,11 +64,19 @@ public class TossBillingRequest implements Serializable {
 
 		this.customerId = customerId;
 		this.subscriptionNo = subscriptionNo;
+		this.orderNo = orderNo;
+		this.orderName = orderName;
+		this.customerEmail = customerEmail;
+		this.customerName = customerName;
+		this.customerMobilePhone = customerMobilePhone;
+		this.taxFreeAmount = taxFreeAmount;
+		this.cardInstallmentPlan = cardInstallmentPlan;
+		this.amount = amount;
 		this.cardNumber = cardNumber;
 		this.cardExpirationYear = cardExpirationYear;
 		this.cardExpirationMonth = cardExpirationMonth;
 		this.cardPassword = cardPassword;
 		this.customerIdentityNumber = customerIdentityNumber;
 	}
-	
+
 }

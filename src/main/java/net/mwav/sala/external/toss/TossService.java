@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import net.mwav.sala.external.toss.model.TossBillingKeyRequest;
 import net.mwav.sala.external.toss.model.TossBillingKeyResponse;
+import net.mwav.sala.external.toss.model.TossBillingRequest;
 import net.mwav.sala.external.toss.model.TossBillingResponse;
-import net.mwav.sala.payment.controller.dto.TossBillingRequest;
 import reactor.core.publisher.Mono;
 
 @Service

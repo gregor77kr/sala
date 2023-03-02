@@ -8,9 +8,9 @@ import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import net.mwav.sala.external.toss.model.TossBillingKeyRequest;
 import net.mwav.sala.external.toss.model.TossBillingKeyResponse;
+import net.mwav.sala.external.toss.model.TossBillingRequest;
 import net.mwav.sala.external.toss.model.TossBillingResponse;
 import net.mwav.sala.global.util.WebClientUtil;
-import net.mwav.sala.payment.controller.dto.TossBillingRequest;
 import reactor.core.publisher.Mono;
 
 @Builder
@@ -51,7 +51,7 @@ public class TossProvider {
 	public Mono<TossBillingResponse> pay(TossBillingRequest tossBillingRequest) {
 		Mono<TossBillingResponse> billing = WebClientUtil.createClient()
 				.post()
-				.uri(this.tossApi.getBillingEndPoint())
+				.uri(this.tossApi.getBillingEndPoint() + "/" + tossBillingRequest.getBillingKey())
 				.headers(header -> {
 					header.add(HttpHeaders.AUTHORIZATION, getBasicAuthentication());
 				})

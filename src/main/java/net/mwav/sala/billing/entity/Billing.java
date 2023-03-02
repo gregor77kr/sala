@@ -1,4 +1,4 @@
-package net.mwav.sala.payment.entity;
+package net.mwav.sala.billing.entity;
 
 import java.io.Serializable;
 
@@ -21,24 +21,24 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import net.mwav.sala.billing.entity.constant.BillingProviderType;
 import net.mwav.sala.customer.entity.Customer;
-import net.mwav.sala.payment.entity.constant.PaymentProviderType;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "billing")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @ToString
 @EqualsAndHashCode
-public class Payment implements Serializable {
+public class Billing implements Serializable {
 
 	private static final long serialVersionUID = 3092089347154966151L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "payment_id")
+	@Column(name = "billing_id")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +47,7 @@ public class Payment implements Serializable {
 
 	@Column(name = "provider_type")
 	@Enumerated(EnumType.STRING)
-	private PaymentProviderType providerType;
+	private BillingProviderType providerType;
 
 	@Column(name = "subscription_no")
 	private String subscriptionNo;

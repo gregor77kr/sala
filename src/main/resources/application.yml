@@ -39,10 +39,6 @@ jwt:
   domain: localhost
   
 api:
-  bootpay:
-    app-id: ENC(4I+cdiBTyqri0YnuHHf5GXMMbHedJJ5VnQhMFgXpiSsjOxvLSMwBNg==)
-    secret: ENC(+0aHd3h91jJUzz25GtJH/rdsSEr4i4gtjUUZten0yMuKZ9xGVVPvJWcBg1EyegqmqhHqYddvNi8=)
-    pg: toss
   toss:
     app-id: ENC(6xbbmmiUgOM2wY7Kn3D9+uuUN1gAP1A54fRP6dJhPQM6Oi1z7VzKndupemMw+Kwl)
     secret: ENC(KQUGukz4sgJv+24s7Z61MlHF7Fk/c+0UoV3taL+K5CNauU89tohFNpUHpnZrxJ2h)

@@ -1,11 +1,11 @@
-package net.mwav.sala.payment.entity.constant;
+package net.mwav.sala.billing.entity.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum PaymentProviderType {
+public enum BillingProviderType {
 
 	TOSS("TOSS"),
 	BOOTPAY("BOOTPAY");
