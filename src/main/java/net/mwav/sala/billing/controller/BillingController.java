@@ -18,14 +18,15 @@ import net.mwav.sala.global.model.StandardResponseBody;
 public class BillingController {
 
 	private final BillingService billingService;
-	
+
 	@PostMapping(value = "/api/billing/toss", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> billInToss(@RequestBody TossRequest tossRequest) throws Exception {
 		billingService.billInToss(tossRequest);
 		StandardResponseBody<SignUpResponse> standardResponseBody = StandardResponseBody
 				.success();
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(standardResponseBody);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(standardResponseBody);
 	}
-	
+
 }
