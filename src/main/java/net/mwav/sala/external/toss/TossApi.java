@@ -26,11 +26,11 @@ public class TossApi extends DefaultApi20 {
 	}
 
 	public String getBillingBaseUrl() {
-		return "https://api.tosspayments.com/v1/billing";
+		return "https://api.tosspayments.com/v1";
 	}
 
 	public String getBillingKeyEndPoint() {
-		return getBillingBaseUrl() + "/authorizations/card";
+		return getBillingBaseUrl() + "/billing/authorizations/card";
 	}
 
 	public String getBillingEndPoint() {

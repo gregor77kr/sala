@@ -8,7 +8,6 @@ import net.mwav.sala.external.toss.TossService;
 import net.mwav.sala.external.toss.model.TossBillingKeyRequest;
 import net.mwav.sala.external.toss.model.TossBillingKeyResponse;
 import net.mwav.sala.external.toss.model.TossBillingRequest;
-import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +15,7 @@ public class BillingService {
 
 	private final TossService tossService;
 
-	public void billInToss(TossRequest tossRequest) {
+	public void billInToss(TossRequest tossRequest) throws Exception {
 		TossBillingKeyRequest tossBillingKeyRequest = TossBillingKeyRequest.builder()
 				.customerKey(tossRequest.getSubscriptionNo())
 				.cardNumber(tossRequest.getCardNumber())
@@ -26,23 +25,17 @@ public class BillingService {
 				.cardPassword(tossRequest.getCardPassword())
 				.build();
 
-		Mono<TossBillingKeyResponse> tossBillingKeyResponse = tossService.getBillingKey(tossBillingKeyRequest);
+		TossBillingKeyResponse billingKey = tossService.getBillingKey(tossBillingKeyRequest);
 
-		tossBillingKeyResponse.subscribe(billingKey -> {
+		TossBillingRequest tossBillingRequest = TossBillingRequest.builder()
+				.customerKey(tossRequest.getSubscriptionNo())
+				.billingKey(billingKey.getBillingKey())
+				.orderId(tossRequest.getOrderNo())
+				.orderName(tossRequest.getOrderName())
+				.amount(tossRequest.getAmount())
+				.build();
 
-			TossBillingRequest tossBillingRequest = TossBillingRequest.builder()
-					.customerKey(tossRequest.getSubscriptionNo())
-					.billingKey(billingKey.getBillingKey())
-					.orderId(tossRequest.getOrderNo())
-					.orderName(tossRequest.getOrderName())
-					.customerEmail(tossRequest.getCustomerEmail())
-					.customerName(tossRequest.getCustomerName())
-					.customerMobilePhone(tossRequest.getCustomerMobilePhone())
-					.amount(tossRequest.getAmount())
-					.build();
-
-			tossService.pay(tossBillingRequest).subscribe();
-		});
+		tossService.pay(tossBillingRequest);
 	}
 
 }

@@ -10,7 +10,6 @@ import net.mwav.sala.external.toss.model.TossBillingKeyRequest;
 import net.mwav.sala.external.toss.model.TossBillingKeyResponse;
 import net.mwav.sala.external.toss.model.TossBillingRequest;
 import net.mwav.sala.external.toss.model.TossBillingResponse;
-import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -32,14 +31,12 @@ public class TossService {
 				.build();
 	}
 
-	public Mono<TossBillingKeyResponse> getBillingKey(TossBillingKeyRequest tossBillingKeyRequest) {
-		Mono<TossBillingKeyResponse> billingKey = tossProvider.getBillingKey(tossBillingKeyRequest);
-		return billingKey;
+	public TossBillingKeyResponse getBillingKey(TossBillingKeyRequest tossBillingKeyRequest) throws Exception {
+		return tossProvider.getBillingKey(tossBillingKeyRequest);
 	}
 
-	public Mono<TossBillingResponse> pay(TossBillingRequest tossBillingRequest) {
-		Mono<TossBillingResponse> billing = tossProvider.pay(tossBillingRequest);
-		return billing;
+	public TossBillingResponse pay(TossBillingRequest tossBillingRequest) throws Exception {
+		return tossProvider.pay(tossBillingRequest);
 	}
 
 }
